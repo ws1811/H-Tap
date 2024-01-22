@@ -8,4 +8,7 @@
     <color name="MainColor">#FF4D2BF4</color>
     <color name="LightPurple">#D0BCFF</color>
     <color name="ReservationCardViewBg">#CC4D2BF4</color>
+    <color name="grey">#D0D0D0</color>
+    <color name="lightblack">#393838</color>
+
 </resources>
