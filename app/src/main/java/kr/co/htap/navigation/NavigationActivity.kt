@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import kr.co.htap.R
 import kr.co.htap.databinding.ActivityNavigationBinding
+import kr.co.htap.navigation.reservation.ReservationFragment
 
 /**
  *
