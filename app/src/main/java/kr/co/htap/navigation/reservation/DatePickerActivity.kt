@@ -64,8 +64,10 @@ class DatePickerActivity : AppCompatActivity() {
         }
 
         binding.confirmButton.setOnClickListener {
-            val intent = Intent(this, TimePickerActivity::class.java)
+            var intent = Intent(this, TimePickerActivity::class.java)
 
+            intent.putExtra("storeName", binding.title.text)
+            intent.putExtra("id", id)
             intent.putExtra("year", year)
             intent.putExtra("month", month)
             intent.putExtra("day", day)
