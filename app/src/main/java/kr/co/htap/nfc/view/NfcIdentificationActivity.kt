@@ -15,7 +15,7 @@ import kr.co.htap.helper.OnFailure
 import kr.co.htap.helper.OnResponse
 import kr.co.htap.helper.SimpleCallback
 import kr.co.htap.helper.ViewBindingActivity
-import kr.co.htap.helper.isNotSignedIn
+import kr.co.htap.helper.isNotLoggedIn
 import kr.co.htap.nfc.api.IdentificationAPI
 import kr.co.htap.nfc.api.IdentificationResponse
 import kr.co.htap.nfc.util.NFCUtil
@@ -41,7 +41,7 @@ class NfcIdentificationActivity : ViewBindingActivity<ActivityNfcEventBinding>()
         firebaseAuth = Firebase.auth
 
 
-        if (!firebaseAuth.isNotSignedIn()) {
+        if (!firebaseAuth.isNotLoggedIn()) {
             val errorMsg = "파이어베이스 로그인이 필요합니다."
             Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show()
             onSignInRequired(errorMsg)
