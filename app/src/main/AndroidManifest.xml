@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- NFC permission -->
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-feature android:name="android.hardware.nfc" /> <!-- 네트워크 사용 -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -13,8 +18,11 @@
         android:theme="@style/Theme.HTap"
         tools:targetApi="31">
         <activity
+            android:name=".nfc.view.MyCouponActivity"
+            android:exported="false" />
+        <activity
             android:name=".navigation.NavigationActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +31,41 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false">
+            android:exported="false" />
+        <activity
+            android:name=".CouponActivity"
+            android:exported="false" />
+        <activity
+            android:name=".nfc.view.NfcIdentificationActivity"
+            android:exported="true">
+
+            <!-- NFC 스캔 시 발생하는 Intent를 이 액티비티에서 처리할 수 있도록 필터를 등록합니다. -->
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="example.com"
+                    android:path="/nfcsample"
+                    android:scheme="hnfc" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".nfc.view.NfcCouponActivity"
+            android:exported="true">
+
+            <!-- NFC 스캔 시 발생하는 Intent를 이 액티비티에서 처리할 수 있도록 필터를 등록합니다. -->
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="example.com"
+                    android:path="/nfcsample1"
+                    android:scheme="hnfc" />
+            </intent-filter>
         </activity>
     </application>
 
