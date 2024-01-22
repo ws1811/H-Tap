@@ -1,11 +1,13 @@
 package kr.co.htap.register
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -31,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var registserView : TextView
+    private lateinit var registserView: TextView
     private lateinit var googleSignInClient: GoogleSignInClient
     private var GOOGLE_LOGIN_CODE = 9001
 
@@ -40,7 +42,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
-        val loginButton :Button = binding.btnLogin
+        val loginButton: Button = binding.btnLogin
         val googleLoginButton = binding.ivGoogleLogin
         auth = FirebaseAuth.getInstance()
         setContentView(view)
@@ -68,44 +70,77 @@ class LoginActivity : AppCompatActivity() {
         googleLoginButton.setOnClickListener {
             googleLogin()
         }
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     // 일반로그인
-    private fun customLogin(){
-        val email : String = binding.etId.text.toString().trim()
-        val password : String = binding.etPassword.text.toString().trim()
+    private fun customLogin() {
+        val email: String = binding.etId.text.toString().trim()
+        val password: String = binding.etPassword.text.toString().trim()
         if (email == null)
             Toast.makeText(this@LoginActivity, "이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
         else if (password == null)
-            Toast.makeText(this@LoginActivity,  "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@LoginActivity, "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
         else {
             Log.d("Login", "Login Try -> email : $email")
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this@LoginActivity, OnCompleteListener<AuthResult> { task ->
-                    if(task.isSuccessful) { // 로그인 성공
+                    if (task.isSuccessful) { // 로그인 성공
                         Log.d("Login", "Logined success: $email")
-                        //val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        val intent = Intent(this@LoginActivity, LoginSuccessTest::class.java)
-                        startActivity(intent)
+                        onSignInSuccess()
                     } else { //로그인 실패
                         Log.w("Login", "Login failed : ", task.exception)
-                        Toast.makeText(this@LoginActivity, task.exception.toString(), Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@LoginActivity,
+                            task.exception.toString(),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 })
         }
     }
+
+    /**
+     * 로그인에 성공한 경우 원래 액티비티로 이동하는 콜백
+     * @author hoyeon
+     */
+    private fun onSignInSuccess() {
+        // wonson's code
+        // val intent = Intent(this@LoginActivity, LoginSuccessTest::class.java)
+        // startActivity(intent)
+        setResult(Activity.RESULT_OK)
+        finish()
+    }
+
+    /**
+     * 로그인을 취소한 경우 원래 액티비티로 이동하는 콜백
+     * @author hoyeon
+     */
+    private fun onSignInCanceled() {
+        setResult(Activity.RESULT_CANCELED)
+        finish()
+    }
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            onSignInCanceled()
+        }
+    }
+
     // 구글 로그인
     private fun googleLogin() {
         val signInIntent = googleSignInClient!!.signInIntent
-        var googleLoginLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == -1) {
-                val data = result.data
-                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-                getGoogleInfo(task)
+        var googleLoginLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == -1) {
+                    val data = result.data
+                    val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+                    getGoogleInfo(task)
+                }
             }
-        }
         googleLoginLauncher.launch(signInIntent)
     }
+
     fun getGoogleInfo(completedTask: Task<GoogleSignInAccount>) {
         try {
             val TAG = "구글 로그인 결과"
@@ -114,8 +149,7 @@ class LoginActivity : AppCompatActivity() {
             Log.d(TAG, account.familyName!!)
             Log.d(TAG, account.givenName!!)
             Log.d(TAG, account.email!!)
-        }
-        catch (e: ApiException) {
+        } catch (e: ApiException) {
             Log.w("Login", "signInResult:failed code=" + e.statusCode)
         }
     }
