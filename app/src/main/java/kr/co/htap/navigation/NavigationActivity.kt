@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.firebase.auth.FirebaseAuth
@@ -15,6 +14,7 @@ import kr.co.htap.databinding.ActivityNavigationBinding
 import kr.co.htap.helper.isNotLoggedIn
 import kr.co.htap.helper.requestLogin
 import kr.co.htap.navigation.reservation.ReservationFragment
+import kr.co.htap.onboarding.OnboardingActivity
 
 /**
  *
@@ -32,7 +32,7 @@ class NavigationActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         firebaseAuth = Firebase.auth
-        firebaseAuth.signOut()
+        //firebaseAuth.signOut()
         if (firebaseAuth.isNotLoggedIn()) {
             requestLogin({ result ->
                 Toast.makeText(this, "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show()
