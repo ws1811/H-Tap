@@ -5,6 +5,9 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
@@ -21,6 +24,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kr.co.htap.databinding.ActivityRegisterBinding
+import java.util.regex.Pattern
 import kotlin.system.measureTimeMillis
 
 /**
@@ -47,7 +51,8 @@ class RegisterActivity: AppCompatActivity(){
         setContentView(view)
         Log.d("Register", "onCreate()")
 
-
+        // 전화번호 입력시 자동 하이픈(-) 처리
+       binding.etPhone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         // 뒤로가기 버튼 리스너 등록
         binding.btnBack.setOnClickListener {
             finish()
@@ -71,8 +76,6 @@ class RegisterActivity: AppCompatActivity(){
         val name = binding.etName.text.toString()
         val phone = binding.etPhone.text.toString()
         val db = Firebase.firestore
-
-        Log.d("Register", "Try register | email : $email")
         /* 입력 확인 */
         if (email.isEmpty()) {
             Toast.makeText(this, "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show()
@@ -91,7 +94,18 @@ class RegisterActivity: AppCompatActivity(){
             Toast.makeText(this, "비밀번호 확인이 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
             validation = false
         }
-
+        // 이메일 패턴(유효성) 검사
+        var pattern = android.util.Patterns.EMAIL_ADDRESS
+        if(!pattern.matcher(email).matches()) {
+            Toast.makeText(this, "이메일 형식이 올바르지 않습니다", Toast.LENGTH_SHORT).show()
+            validation = false
+        }
+        // 전화번호 유효성 검사
+        val phonePattern = """^01([0|1|6|7|8|9])-?([0-9]{4})-?([0-9]{4})$""".toRegex()
+        if (!phonePattern.matches(phone)) {
+            Toast.makeText(this, "전화번호 형식이 올바르지 않습니다", Toast.LENGTH_SHORT).show()
+            validation = false
+        }
         // 모든 검사를 통과한 경우 -> 회원 가입 진행
         if (validation == true){
             auth.createUserWithEmailAndPassword(email, password)
