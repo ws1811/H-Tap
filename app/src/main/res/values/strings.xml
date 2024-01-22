@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">hTap</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="default_web_client_id" translatable="false">518078411412-056ode11n5m3ccaicqhl77ro4oktjn1e.apps.googleusercontent.com</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

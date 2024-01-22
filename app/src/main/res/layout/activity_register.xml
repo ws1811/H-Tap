@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".register.RegisterActivity">
+
+
+    <TextView
+        android:id="@+id/tv_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="연락처"
+        app:layout_constraintBottom_toTopOf="@id/btn_register"
+        app:layout_constraintStart_toStartOf="@id/guideline_ver"
+        app:layout_constraintTop_toBottomOf="@id/et_name"
+        app:layout_constraintVertical_bias="0.047" />
+
+    <EditText
+        android:id="@+id/et_phone"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="188dp"
+        android:background="@drawable/custom_edit_text"
+        android:hint="연락처"
+        android:inputType="textPassword"
+        android:paddingStart="10dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/guideline_ver"
+        app:layout_constraintTop_toBottomOf="@id/et_password" />
+
+    <TextView
+        android:id="@+id/tv_password_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="비밀번호 확인"
+        app:layout_constraintBottom_toTopOf="@id/et_password_check"
+        app:layout_constraintStart_toStartOf="@id/guideline_ver"
+        app:layout_constraintTop_toBottomOf="@id/et_password"
+        app:layout_constraintVertical_bias="0.47" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="이름"
+        app:layout_constraintBottom_toTopOf="@id/et_name"
+        app:layout_constraintStart_toStartOf="@id/guideline_ver"
+        app:layout_constraintTop_toBottomOf="@id/et_password_check"
+        app:layout_constraintVertical_bias="0.47" />
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="108dp"
+        android:background="@drawable/custom_edit_text"
+        android:hint="이름"
+        android:inputType="textPassword"
+        android:paddingStart="10dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/guideline_ver"
+        app:layout_constraintTop_toBottomOf="@id/et_password" />
+
+    <EditText
+        android:id="@+id/et_password_check"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/custom_edit_text"
+        android:hint="비밀번호 확인"
+        android:inputType="textPassword"
+        android:paddingStart="10dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/guideline_ver"
+        app:layout_constraintTop_toBottomOf="@id/et_password" />
+
+    <TextView
+        android:id="@+id/register_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:text="회원가입"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.057"
+        app:layout_constraintStart_toStartOf="@id/guideline_ver"
+        app:layout_constraintTop_toTopOf="@id/guideline_hor"/>
+
+    <TextView
+        android:id="@+id/tv_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="아이디(이메일)"
+        app:layout_constraintBottom_toTopOf="@id/et_id"
+        app:layout_constraintStart_toStartOf="@id/guideline_ver"
+        app:layout_constraintTop_toBottomOf="@id/register_title"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/custom_edit_text"
+        android:hint="비밀번호"
+        android:inputType="textPassword"
+        android:paddingStart="10dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/guideline_ver"
+        app:layout_constraintTop_toBottomOf="@id/et_id" />
+
+    <TextView
+        android:id="@+id/tv_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="비밀번호"
+        app:layout_constraintBottom_toTopOf="@id/et_password"
+        app:layout_constraintStart_toStartOf="@id/guideline_ver"
+        app:layout_constraintTop_toBottomOf="@id/et_id"
+        app:layout_constraintVertical_bias="0.769" />
+
+    <EditText
+        android:id="@+id/et_id"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/custom_edit_text"
+        android:hint="아이디(이메일)"
+        android:inputType="textEmailAddress"
+        android:paddingStart="10dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/guideline_ver"
+        app:layout_constraintTop_toBottomOf="@id/register_title" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_ver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="41dp" />
+
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:backgroundTint="@color/blue"
+        android:text="회원 가입"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.285"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.08" />
+
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="42dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/icon_arrow_back"
+        app:layout_constraintBottom_toTopOf="@id/guideline_hor"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver" />
+
+    <Button
+        android:id="@+id/btn_menu"
+        android:layout_width="43dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/icon_menu"
+        app:layout_constraintBottom_toTopOf="@id/guideline_hor"
+        app:layout_constraintEnd_toEndOf="@id/guideline_ver_end" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_ver_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+</androidx.constraintlayout.widget.ConstraintLayout>
