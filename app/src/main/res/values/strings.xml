@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">hTap</string>
+    <string name="default_web_client_id" translatable="false">518078411412-056ode11n5m3ccaicqhl77ro4oktjn1e.apps.googleusercontent.com</string>
 </resources>
