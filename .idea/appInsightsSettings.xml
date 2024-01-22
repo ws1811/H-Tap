@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="kr.co.htap" />
+                  <option name="mobileSdkAppId" value="1:518078411412:android:98da9191a22be3a3123a81" />
+                  <option name="projectId" value="h-tap-b4427" />
+                  <option name="projectNumber" value="518078411412" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
