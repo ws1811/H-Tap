@@ -1,5 +1,6 @@
 package kr.co.htap.navigation
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +16,7 @@ import kr.co.htap.helper.isNotLoggedIn
 import kr.co.htap.helper.requestLogin
 import kr.co.htap.navigation.reservation.ReservationFragment
 import kr.co.htap.onboarding.OnboardingActivity
+import kr.co.htap.register.LoginActivity
 
 /**
  *
@@ -30,16 +32,12 @@ class NavigationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNavigationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         firebaseAuth = Firebase.auth
-        //firebaseAuth.signOut()
-        if (firebaseAuth.isNotLoggedIn()) {
-            requestLogin({ result ->
-                Toast.makeText(this, "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show()
-            }, { result ->
-                Toast.makeText(this, "로그인이 취소되었습니다.", Toast.LENGTH_SHORT).show()
-            })
-        }
+
+        setUI()
+    }
+
+    private fun setUI() {
         binding.navigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.mainFragment -> setFragment("home", MainFragment())
@@ -49,8 +47,6 @@ class NavigationActivity : AppCompatActivity() {
             }
             true
         }
-        // 온보딩 액티비티 시작
-        startActivity(Intent(this, OnboardingActivity::class.java))
     }
 
 

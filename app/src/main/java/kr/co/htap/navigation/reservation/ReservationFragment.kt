@@ -8,9 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import kr.co.htap.MainActivity
-import kr.co.htap.R
-import kr.co.htap.databinding.ActivityMainBinding
 import kr.co.htap.databinding.FragmentReservationBinding
 import kr.co.htap.navigation.NavigationActivity
 
