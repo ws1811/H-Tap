@@ -19,6 +19,8 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import kr.co.htap.R
 import kr.co.htap.databinding.ActivityLoginBinding
 
@@ -127,20 +129,52 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    // 구글 로그인
+    /**
+     * 구글 로그인
+     * @author 송원선
+     */
     private fun googleLogin() {
         val signInIntent = googleSignInClient!!.signInIntent
-        var googleLoginLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == -1) {
-                    val data = result.data
-                    val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-                    getGoogleInfo(task)
-                }
-            }
-        googleLoginLauncher.launch(signInIntent)
+        startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
+    // [START auth_with_google]
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("GoogleLogin", "signInWithCredential:success")
+                    val user = auth.currentUser
+                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("GoogleLogin", "signInWithCredential:failure", task.exception)
+                    updateUI(null)
+                }
+            }
+    }
+    // [END auth_with_google]
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                val account = task.getResult(ApiException::class.java)!!
+                Log.d("GoogleLogin", "firebaseAuthWithGoogle:" + account.id)
+                firebaseAuthWithGoogle(account.idToken!!)
+            } catch (e: ApiException) {
+                // Google Sign In failed, update UI appropriately
+                Log.w("GoogleLogin", "Google sign in failed", e)
+            }
+        }
+    }
+    private fun updateUI(user: FirebaseUser?) {
+    }
     fun getGoogleInfo(completedTask: Task<GoogleSignInAccount>) {
         try {
             val TAG = "구글 로그인 결과"
@@ -150,7 +184,12 @@ class LoginActivity : AppCompatActivity() {
             Log.d(TAG, account.givenName!!)
             Log.d(TAG, account.email!!)
         } catch (e: ApiException) {
-            Log.w("Login", "signInResult:failed code=" + e.statusCode)
+            Log.w("GoogleLogin", "signInResult:failed code=" + e.statusCode)
         }
+    }
+
+    companion object {
+        private const val TAG = "GoogleActivity"
+        private const val RC_SIGN_IN = 9001
     }
 }
