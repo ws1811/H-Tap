@@ -4,6 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#4D2BF4</color>
     <color name="navigationClicked">#FFFFFF</color>
-    <color name="navigationNotClicked">#F21C21</color>
-    <color name="MainColor">#4D2BF4</color>
+    <color name="navigationNotClicked">#000000</color>
+    <color name="MainColor">#FF4D2BF4</color>
+    <color name="LightPurple">#D0BCFF</color>
+    <color name="ReservationCardViewBg">#CC4D2BF4</color>
 </resources>
