@@ -1,5 +1,6 @@
 package kr.co.htap.navigation
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import androidx.fragment.app.FragmentManager
 import kr.co.htap.R
 import kr.co.htap.databinding.ActivityNavigationBinding
 import kr.co.htap.navigation.reservation.ReservationFragment
+import kr.co.htap.onboarding.OnboardingActivity
 
 /**
  *
@@ -31,6 +33,8 @@ class NavigationActivity : AppCompatActivity() {
             }
             true
         }
+        // 온보딩 액티비티 시작
+        startActivity(Intent(this, OnboardingActivity::class.java))
     }
 
     private fun setFragment(tag: String, fragment: Fragment) {
