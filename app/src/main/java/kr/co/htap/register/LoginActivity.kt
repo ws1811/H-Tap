@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -69,6 +70,7 @@ class LoginActivity : AppCompatActivity() {
         googleLoginButton.setOnClickListener {
             googleLogin()
         }
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     // 일반로그인
@@ -115,9 +117,14 @@ class LoginActivity : AppCompatActivity() {
      * @author hoyeon
      */
     private fun onSignInCanceled() {
-
         setResult(Activity.RESULT_CANCELED)
         finish()
+    }
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            onSignInCanceled()
+        }
     }
 
     // 구글 로그인
