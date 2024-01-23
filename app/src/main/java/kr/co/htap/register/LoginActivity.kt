@@ -21,8 +21,10 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import kr.co.htap.R
 import kr.co.htap.databinding.ActivityLoginBinding
+import kr.co.htap.navigation.NavigationActivity
 
 
 /**
@@ -37,6 +39,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var registserView: TextView
     private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var firestore:FirebaseFirestore
     private var GOOGLE_LOGIN_CODE = 9001
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +50,7 @@ class LoginActivity : AppCompatActivity() {
         val loginButton: Button = binding.btnLogin
         val googleLoginButton = binding.ivGoogleLogin
         auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
         setContentView(view)
 
         // [회원가입] 클릭 -> 회원가입 액티비티로 이동
@@ -73,6 +77,17 @@ class LoginActivity : AppCompatActivity() {
             googleLogin()
         }
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+
+        // [아이디 찾기] 클릭
+        binding.tvFindId.setOnClickListener {
+            val intent = Intent(this, FindUserIdActivity::class.java)
+            startActivity(intent)
+        }
+        // [비밀번호 찾기] 클릭
+        binding.tvFindPassword.setOnClickListener {
+            val intent = Intent(this, FindUserPasswordActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     // 일반로그인
@@ -147,6 +162,7 @@ class LoginActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("GoogleLogin", "signInWithCredential:success")
                     val user = auth.currentUser
+                    checkIfUserExistsInFirestore(user)
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -174,6 +190,17 @@ class LoginActivity : AppCompatActivity() {
         }
     }
     private fun updateUI(user: FirebaseUser?) {
+        if (user != null) {
+            val displayName = user.displayName
+            val email = user.email
+            val uid = user.uid
+
+            Log.d("GoogleLogin", "UpdateUI - Display Name: $displayName")
+            Log.d("GoogleLogin", "UpdateUI - Email: $email")
+            Log.d("GoogleLogin", "UpdateUI - UID: $uid")
+
+            onSignInSuccess()
+        }
     }
     fun getGoogleInfo(completedTask: Task<GoogleSignInAccount>) {
         try {
@@ -188,8 +215,57 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    companion object {
-        private const val TAG = "GoogleActivity"
-        private const val RC_SIGN_IN = 9001
+    // 구글 로그인한 사용자가 FireStore 에 등록 되어있는지 체크 메소드
+    private fun checkIfUserExistsInFirestore(user: FirebaseUser?) {
+        if (user != null) {
+            val userId = user.uid
+            val usersCollection = firestore.collection("users")
+
+            // Check if the user already exists in Firestore
+            usersCollection.document(userId).get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val document = task.result
+                        if (document != null && document.exists()) {
+                            // 이미 등록되어 있는 경우
+                            Log.d("Firestore", "User already exists in Firestore")
+                            updateUI(user)
+                        } else {
+                            // 등록돼있는 유저가 없다면 -> 등록
+                            addUserToFirestore(user)
+                        }
+                    } else {
+                        Log.e("Firestore", "Error checking user in Firestore", task.exception)
+                    }
+                }
+        }
     }
+    // FireStore 에 유저 추가
+    private fun addUserToFirestore(user: FirebaseUser) {
+        val userId = user.uid
+        val email = user.email
+
+        // Create user data
+        val userData = hashMapOf(
+            "userid" to userId,
+            "email" to email,
+        )
+
+        // Add user data to Firestore
+        firestore.collection("users").document(userId)
+            .set(userData)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Firestore", "User added to Firestore successfully")
+                    updateUI(user)
+                } else {
+                    Log.e("Firestore", "Error adding user to Firestore", task.exception)
+                    updateUI(null)
+                }
+            }
+    }
+companion object {
+    private const val TAG = "GoogleActivity"
+    private const val RC_SIGN_IN = 9001
+}
 }
