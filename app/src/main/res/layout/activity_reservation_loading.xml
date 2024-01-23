@@ -16,12 +16,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
-    <ImageView
-        android:id="@+id/checkImage"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/checkAnimation"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/ic_check"
+        app:lottie_rawRes="@raw/check"
         android:visibility="invisible"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="false"
         app:layout_constraintTop_toTopOf="@id/guideline1"
         app:layout_constraintBottom_toBottomOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="parent"

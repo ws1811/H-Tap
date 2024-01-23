@@ -8,10 +8,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
+import kr.co.htap.R
 import kr.co.htap.databinding.FragmentReservationBinding
 import kr.co.htap.navigation.NavigationActivity
 
@@ -77,6 +79,11 @@ class ReservationFragment : Fragment() {
             adapter = ReservationListAdapter(storeData)
             binding.reservationRecyclerView.adapter = adapter
             binding.reservationRecyclerView.layoutManager = LinearLayoutManager(navigationActivity)
+
+            val context = binding.reservationRecyclerView.context
+            val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.anim_slide)
+            binding.reservationRecyclerView.layoutAnimation = controller
+            binding.reservationRecyclerView.scheduleLayoutAnimation()
         }
     }
 
