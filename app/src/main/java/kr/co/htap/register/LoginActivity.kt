@@ -61,6 +61,7 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         setContentView(view)
         navigationIntent = Intent(this, NavigationActivity::class.java)
+        navigationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
         // [회원가입] 클릭 -> 회원가입 액티비티로 이동
         registserView = binding.tvRegister

@@ -1,15 +1,10 @@
-package kr.co.htap.navigation.reservation
+package kr.co.htap.navigation.reservation.DateSelect
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
-import android.widget.CalendarView
-import android.widget.Toast
-import kr.co.htap.R
 import kr.co.htap.databinding.ActivityDatePickerBinding
+import kr.co.htap.navigation.reservation.TimeSelect.TimePickerActivity
 import java.util.Calendar
 
 /**

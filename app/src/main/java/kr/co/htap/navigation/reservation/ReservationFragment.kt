@@ -3,11 +3,17 @@ package kr.co.htap.navigation.reservation
 import android.content.Context
 import android.graphics.Paint
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import kr.co.htap.databinding.FragmentReservationBinding
 import kr.co.htap.navigation.NavigationActivity
 
@@ -21,10 +27,19 @@ class ReservationFragment : Fragment() {
     private lateinit var binding: FragmentReservationBinding
     private lateinit var navigationActivity: NavigationActivity
     private lateinit var adapter: ReservationListAdapter
+    private lateinit var db: FirebaseFirestore
+
+    private var restaurant: ArrayList<StoreEntity> = ArrayList()
+    private var laundry: ArrayList<StoreEntity> = ArrayList()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         navigationActivity = context as NavigationActivity
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        db = FirebaseFirestore.getInstance()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -37,6 +52,29 @@ class ReservationFragment : Fragment() {
         setSelectButton()
     }
 
+    private fun setSelectButton() {
+        binding.restaurentButton.setOnClickListener {
+            if (restaurant.size == 0) {
+                configureInitData("restaurant")
+            }
+            setRecyclerView(restaurant)
+            underlineButtonText(binding.restaurentButton)
+            removeUnderlineFromButtonText(binding.laundryButton)
+        }
+
+        binding.laundryButton.setOnClickListener {
+            if (laundry.size == 0) {
+                configureInitData("laundry")
+            }
+            setRecyclerView(laundry)
+            underlineButtonText(binding.laundryButton)
+            removeUnderlineFromButtonText(binding.restaurentButton)
+        }
+
+        binding.restaurentButton.performClick()
+    }
+
+
     private fun setRecyclerView(storeData: ArrayList<StoreEntity>) {
         navigationActivity.runOnUiThread {
             adapter = ReservationListAdapter(storeData)
@@ -45,120 +83,39 @@ class ReservationFragment : Fragment() {
         }
     }
 
-    private fun setSelectButton() {
-        binding.restaurentButton.setOnClickListener {
-            setRecyclerView(configureFoodInitData())
-        }
-
-        binding.laundryButton.setOnClickListener {
-            setRecyclerView(configureLaundryInitData())
-        }
-
-        binding.restaurentButton.performClick()
+    private fun underlineButtonText(button: Button) {
+        val spannableString = SpannableString(button.text)
+        spannableString.setSpan(UnderlineSpan(), 0, spannableString.length, 0)
+        button.text = spannableString
     }
 
-    private fun configureFoodInitData(): ArrayList<StoreEntity> {
-        var data: ArrayList<StoreEntity> = ArrayList()
-
-        data.add(
-            StoreEntity(
-                "카페",
-                "스타벅스",
-                "영업중",
-                "https://i.namu.wiki/i/9p8OVxJTce_f2HnuZF1QOU6qMSHqXBHdkcx3q_hlGxvhcyaOXKxBVyoDkeg-Cb4Nx2p60W0AUh6RzjAH59vHwQ.svg",
-                12312412
-            )
-        )
-        data.add(
-            StoreEntity(
-                "카페",
-                "스타벅스000",
-                "영업중",
-                "https://cdn.pixabay.com/photo/2017/08/06/12/06/people-2591874_960_720.jpg",
-                12312412
-            )
-        )
-        data.add(
-            StoreEntity(
-                "카페",
-                "스타벅스111",
-                "영업중",
-                "https://cdn.pixabay.com/photo/2017/08/06/12/06/people-2591874_960_720.jpg",
-                12312412
-            )
-        )
-        data.add(
-            StoreEntity(
-                "카페",
-                "스타벅스222",
-                "영업중",
-                "https://cdn.pixabay.com/photo/2017/08/06/12/06/people-2591874_960_720.jpg",
-                12312412
-            )
-        )
-        data.add(
-            StoreEntity(
-                "카페",
-                "스타벅스333",
-                "영업중",
-                "https://cdn.pixabay.com/photo/2017/08/06/12/06/people-2591874_960_720.jpg",
-                12312412
-            )
-        )
-        data.add(
-            StoreEntity(
-                "카페",
-                "스타벅스444",
-                "영업중",
-                "https://cdn.pixabay.com/photo/2017/08/06/12/06/people-2591874_960_720.jpg",
-                12312412
-            )
-        )
-        data.add(
-            StoreEntity(
-                "카페",
-                "스타벅스555",
-                "영업중",
-                "https://cdn.pixabay.com/photo/2017/08/06/12/06/people-2591874_960_720.jpg",
-                12312412
-            )
-        )
-
-        data.add(
-            StoreEntity(
-                "카페",
-                "스타벅스666",
-                "영업중",
-                "https://cdn.pixabay.com/photo/2017/08/06/12/06/people-2591874_960_720.jpg",
-                12312412
-            )
-        )
-
-        return data
+    private fun removeUnderlineFromButtonText(button: Button) {
+        button.text = button.text.toString()
     }
 
-    private fun configureLaundryInitData(): ArrayList<StoreEntity> {
-        var data: ArrayList<StoreEntity> = ArrayList()
+    private fun configureInitData(type: String) {
+        db.collection("Reservation")
+            .document("store")
+            .collection(type)
+            .get()
+            .addOnSuccessListener { result ->
+                val data = if (type == "restaurant") restaurant else laundry
 
-        data.add(
-            StoreEntity(
-                "세탁",
-                "콩순이 세탁소",
-                "영업중",
-                "https://i.namu.wiki/i/9p8OVxJTce_f2HnuZF1QOU6qMSHqXBHdkcx3q_hlGxvhcyaOXKxBVyoDkeg-Cb4Nx2p60W0AUh6RzjAH59vHwQ.svg",
-                12312412
-            )
-        )
-        data.add(
-            StoreEntity(
-                "수선",
-                "콩순이 수선소",
-                "영업중",
-                "https://cdn.pixabay.com/photo/2017/08/06/12/06/people-2591874_960_720.jpg",
-                12312412
-            )
-        )
-
-        return data
+                for (document in result) {
+                    data.add(StoreEntity(
+                        document.get("name").toString(),
+                        document.get("category").toString(),
+                        document.get("description").toString(),
+                        document.get("image").toString(),
+                        document.get("telephone").toString(),
+                        document.get("address").toString(),
+                        document.get("belong").toString(),
+                        document.get("operationTime") as ArrayList<String>))
+                }
+                binding.reservationRecyclerView.adapter?.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                Log.d("hhh", "Error getting documents: ", exception)
+            }
     }
 }

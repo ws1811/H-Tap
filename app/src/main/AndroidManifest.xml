@@ -24,10 +24,10 @@
             android:name=".navigation.NavigationActivity"
             android:exported="true"/>
         <activity
-            android:name=".navigation.reservation.TimePickerActivity"
+            android:name=".navigation.reservation.TimeSelect.TimePickerActivity"
             android:exported="false" />
         <activity
-            android:name=".navigation.reservation.DatePickerActivity"
+            android:name=".navigation.reservation.DateSelect.DatePickerActivity"
             android:exported="false" />
         <activity
             android:name=".register.LoginSuccessTest"

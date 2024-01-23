@@ -27,12 +27,10 @@ import kr.co.htap.register.LoginActivity
 class NavigationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNavigationBinding
-    private lateinit var firebaseAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNavigationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        firebaseAuth = Firebase.auth
 
         setUI()
     }
@@ -43,12 +41,10 @@ class NavigationActivity : AppCompatActivity() {
                 R.id.mainFragment -> setFragment("home", MainFragment())
                 R.id.reservationFragment -> setFragment("reservation", ReservationFragment())
                 R.id.myPageFragment -> setFragment("myPage", MyPageFragment())
-
             }
             true
         }
     }
-
 
     private fun setFragment(tag: String, fragment: Fragment) {
         val manager: FragmentManager = supportFragmentManager
@@ -58,35 +54,15 @@ class NavigationActivity : AppCompatActivity() {
             fragTransaction.add(binding.mainFrameLayout.id, fragment, tag)
         }
 
-        val home = manager.findFragmentByTag("home")
-        val reservation = manager.findFragmentByTag("reservation")
-        val myPage = manager.findFragmentByTag("myPage")
+        for (fragmentTag in arrayListOf("home", "reservation", "myPage")) {
+            val fragment = manager.findFragmentByTag(fragmentTag)
 
-        if (home != null) {
-            fragTransaction.hide(home)
-        }
-
-        if (reservation != null) {
-            fragTransaction.hide(reservation)
-        }
-
-        if (myPage != null) {
-            fragTransaction.hide(myPage)
-        }
-
-        if (tag == "home") {
-            if (home != null) {
-                fragTransaction.show(home)
-            }
-        } else if (tag == "reservation") {
-            if (reservation != null) {
-                fragTransaction.show(reservation)
-            }
-        } else if (tag == "myPage") {
-            if (myPage != null) {
-                fragTransaction.show(myPage)
+            if (fragment != null) {
+                fragTransaction.hide(fragment)
+                if (fragmentTag == tag) { fragTransaction.show(fragment) }
             }
         }
+
         fragTransaction.commitAllowingStateLoss()
     }
 }

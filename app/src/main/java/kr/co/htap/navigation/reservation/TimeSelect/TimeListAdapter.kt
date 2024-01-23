@@ -1,4 +1,4 @@
-package kr.co.htap.navigation.reservation
+package kr.co.htap.navigation.reservation.TimeSelect
 
 import android.graphics.Paint
 import android.view.LayoutInflater

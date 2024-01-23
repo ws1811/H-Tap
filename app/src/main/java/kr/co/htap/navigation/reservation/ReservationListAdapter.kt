@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import kr.co.htap.databinding.ReservationListItemBinding
+import kr.co.htap.navigation.reservation.DateSelect.DatePickerActivity
 
 /**
  *
@@ -34,12 +35,12 @@ class ReservationListAdapter(private val storeList: ArrayList<StoreEntity>): Rec
         holder.storeCategory.text = storeData.category
         holder.storeName.text = storeData.name
         holder.storeDescription.text = storeData.description
-        holder.storeImage.setImageURI(storeData.imageURL.toUri())
+        holder.storeImage.setImageURI(storeData.image.toUri())
 
         holder.root.setOnClickListener {
             val intent = Intent(holder.root.context, DatePickerActivity::class.java)
             intent.putExtra("title", storeData.name)
-            intent.putExtra("id", storeData.id)
+
             holder.root.context.startActivity(intent)
         }
     }
