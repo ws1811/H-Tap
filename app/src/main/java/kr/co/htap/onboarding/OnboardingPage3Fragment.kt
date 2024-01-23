@@ -1,5 +1,6 @@
 package kr.co.htap.onboarding
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,14 @@ import kr.co.htap.R
 class OnboardingPage3Fragment:Fragment() {
     private lateinit var startBtn:Button
 
+    private lateinit var onboardingActivity: OnboardingActivity
+
+    // 김기훈
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        onboardingActivity = context as OnboardingActivity
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,7 +34,12 @@ class OnboardingPage3Fragment:Fragment() {
         startBtn = view.findViewById(R.id.btn_start)
 
         startBtn.setOnClickListener {
-            activity?.finish()
+            // 김기훈
+            val pref = onboardingActivity.getSharedPreferences("hTap", 0)
+            val editor = pref.edit()
+            editor.putBoolean("isFirstRun", false)
+            editor.apply()
+            onboardingActivity.finish()
         }
         return view
     }

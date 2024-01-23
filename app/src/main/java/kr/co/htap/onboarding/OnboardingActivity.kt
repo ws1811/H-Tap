@@ -1,14 +1,10 @@
 package kr.co.htap.onboarding
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import kr.co.htap.R
-import kr.co.htap.navigation.NavigationActivity
 
 
 class OnboardingActivity : AppCompatActivity() {
@@ -25,8 +21,13 @@ class OnboardingActivity : AppCompatActivity() {
         onboardingAdapter = OnboardingPagerAdapter(this)
         viewPager.adapter = onboardingAdapter
 
-        // skip 버튼 누르면 -> NavigationActivity 로 이동
+        // skip 버튼 누르면 -> LogInActivity 로 이동
         tvSkip.setOnClickListener {
+            // 김기훈
+            val pref = getSharedPreferences("hTap", 0)
+            val editor = pref.edit()
+            editor.putBoolean("isFirstRun", false)
+            editor.apply()
             finish()
         }
     }

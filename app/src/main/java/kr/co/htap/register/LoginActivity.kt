@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -22,9 +23,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kr.co.htap.R
 import kr.co.htap.databinding.ActivityLoginBinding
 import kr.co.htap.navigation.NavigationActivity
+import kr.co.htap.helper.isNotLoggedIn
+import kr.co.htap.onboarding.OnboardingActivity
 
 
 /**
@@ -42,6 +47,9 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var firestore:FirebaseFirestore
     private var GOOGLE_LOGIN_CODE = 9001
 
+    private lateinit var googleLoginLauncher: ActivityResultLauncher<Intent>
+    private lateinit var navigationIntent: Intent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -52,6 +60,8 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
         setContentView(view)
+        navigationIntent = Intent(this, NavigationActivity::class.java)
+        navigationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
         // [회원가입] 클릭 -> 회원가입 액티비티로 이동
         registserView = binding.tvRegister
@@ -65,18 +75,49 @@ class LoginActivity : AppCompatActivity() {
             customLogin()
         }
 
+        googleLoginLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == -1) {
+                    Log.d("GoogleLogin", result.data.toString())
+                    val data = result.data
+                    val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+                    getGoogleInfo(task)
+                }
+            }
+
         // 구글 로그인
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
+
         googleSignInClient = GoogleSignIn.getClient(this, gso)
         // 구글 로그인 버튼 클릭
         googleLoginButton.setOnClickListener {
             googleLogin()
         }
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+
+        if (isFirstRun()) {
+            startActivity(Intent(this, OnboardingActivity::class.java))
+            return
+        }
+
+        if (Firebase.auth.isNotLoggedIn() == false) {
+            startActivity(Intent(this, NavigationActivity::class.java))
+        }
+    }
+
+    // 김기훈
+    private fun isFirstRun(): Boolean {
+        val pref = getSharedPreferences("hTap", 0)
+
+        if (pref.getBoolean("isFirstRun", true)) {
+            return true
+        }
+
+        return false
 
         // [아이디 찾기] 클릭
         binding.tvFindId.setOnClickListener {
@@ -150,6 +191,7 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun googleLogin() {
         val signInIntent = googleSignInClient!!.signInIntent
+//        googleLoginLauncher.launch(signInIntent)
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
@@ -180,9 +222,12 @@ class LoginActivity : AppCompatActivity() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 // Google Sign In was successful, authenticate with Firebase
+
                 val account = task.getResult(ApiException::class.java)!!
                 Log.d("GoogleLogin", "firebaseAuthWithGoogle:" + account.id)
                 firebaseAuthWithGoogle(account.idToken!!)
+
+                startActivity(navigationIntent)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("GoogleLogin", "Google sign in failed", e)
