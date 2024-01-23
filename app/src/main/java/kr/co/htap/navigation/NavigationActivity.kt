@@ -1,22 +1,12 @@
 package kr.co.htap.navigation
 
-import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kr.co.htap.R
 import kr.co.htap.databinding.ActivityNavigationBinding
-import kr.co.htap.helper.isNotLoggedIn
-import kr.co.htap.helper.requestLogin
 import kr.co.htap.navigation.reservation.ReservationFragment
-import kr.co.htap.onboarding.OnboardingActivity
-import kr.co.htap.register.LoginActivity
 
 /**
  *

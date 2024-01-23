@@ -1,6 +1,7 @@
 package kr.co.htap.navigation.reservation.TimeSelect
 
 import android.graphics.Paint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +13,7 @@ import kr.co.htap.databinding.ReservationTimeButtonBinding
  * @author 김기훈
  *
  */
-class TimeListAdapter(private val timeList: ArrayList<TimeEntity>): RecyclerView.Adapter<TimeListAdapter.MyViewHolder>() {
+class TimeListAdapter(private val timeList: ArrayList<TimeDTO>): RecyclerView.Adapter<TimeListAdapter.MyViewHolder>() {
     inner class MyViewHolder(binding: ReservationTimeButtonBinding): RecyclerView.ViewHolder(binding.root) {
         val button = binding.button
 
@@ -30,8 +31,8 @@ class TimeListAdapter(private val timeList: ArrayList<TimeEntity>): RecyclerView
         holder.button.paintFlags = if (timeList[position].isAvailable) 0 else Paint.STRIKE_THRU_TEXT_FLAG
         holder.button.isEnabled = timeList[position].isAvailable
 
-        holder.root.setOnClickListener {
-            //버튼 클릭시
+        holder.button.setOnClickListener {
+
         }
     }
 

@@ -1,15 +1,10 @@
 package kr.co.htap.onboarding
 
-import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import kr.co.htap.R
-import kr.co.htap.navigation.NavigationActivity
 
 
 class OnboardingActivity : AppCompatActivity() {

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kr.co.htap.databinding.ReservationListItemBinding
 import kr.co.htap.navigation.reservation.DateSelect.DatePickerActivity
 
@@ -35,11 +36,11 @@ class ReservationListAdapter(private val storeList: ArrayList<StoreEntity>): Rec
         holder.storeCategory.text = storeData.category
         holder.storeName.text = storeData.name
         holder.storeDescription.text = storeData.description
-        holder.storeImage.setImageURI(storeData.image.toUri())
+        Glide.with(holder.root.context).load(storeData.image).into(holder.storeImage)
 
         holder.root.setOnClickListener {
             val intent = Intent(holder.root.context, DatePickerActivity::class.java)
-            intent.putExtra("title", storeData.name)
+            intent.putExtra("name", storeData.name)
 
             holder.root.context.startActivity(intent)
         }

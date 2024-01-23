@@ -1,9 +1,13 @@
 package kr.co.htap.navigation.reservation.TimeSelect
 
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.firebase.firestore.FirebaseFirestore
 import kr.co.htap.databinding.ActivityTimePickerBinding
+import kr.co.htap.navigation.reservation.DateSelect.DateDTO
 
 /**
  *
@@ -13,30 +17,79 @@ import kr.co.htap.databinding.ActivityTimePickerBinding
 class TimePickerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTimePickerBinding
-
     private lateinit var adapter: TimeListAdapter
-    private var timeData: ArrayList<TimeEntity> = arrayListOf(
-        TimeEntity(11, 30), TimeEntity(12, 0), TimeEntity(12, 30), TimeEntity(13, 0),
-        TimeEntity(13, 30), TimeEntity(14, 0, false), TimeEntity(14, 30), TimeEntity(15, 0),
-        TimeEntity(15, 30), TimeEntity(16, 0), TimeEntity(16, 30), TimeEntity(17, 0),
-        TimeEntity(17, 30), TimeEntity(18, 0), TimeEntity(18, 30, false), TimeEntity(19, 0),
-        TimeEntity(19, 30), TimeEntity(20, 0)
-    )
+
+    private lateinit var storeName: String
+    private lateinit var date: DateDTO
+    private var timeData: ArrayList<TimeDTO> = arrayListOf()
+
+    private lateinit var db: FirebaseFirestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTimePickerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        db = FirebaseFirestore.getInstance()
 
+        configureData()
         setUI()
     }
 
-    private fun setUI() {
-        binding.title.text = intent.getStringExtra("storeName")
+    private fun configureData() {
+        storeName = intent.getStringExtra("storeName") ?: ""
 
-        setRecyclerView()
+        date = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("date", DateDTO::class.java)?: DateDTO(0, 0, 0)
+        } else {
+            intent.getSerializableExtra("date") as DateDTO
+        }
+
+        val minute = if (date.month < 10) "0" + date.month.toString() else date.month.toString()
+
+        db
+            .collection("Reservation")
+            .document("record")
+            .collection(storeName)
+            .document(date.year.toString() + "-" + minute + "-" + date.day.toString())
+            .collection("time")
+            .get()
+            .addOnSuccessListener { documents ->
+                val map = mutableMapOf<String, Boolean>(
+                    "11:30" to true, "12:00" to true,
+                    "12:30" to true, "13:00" to true,
+                    "13:30" to true, "14:00" to true,
+                    "14:30" to true, "15:00" to true,
+                    "15:30" to true, "16:00" to true,
+                    "16:30" to true, "17:00" to true,
+                    "17:30" to true, "18:00" to true,
+                    "18:30" to true, "19:00" to true,
+                    "19:30" to true, "20:00" to true)
+
+                for (document in documents) {
+                    map[document.get("hour").toString() + ":" + document.get("minute").toString()] = false
+                }
+
+                map.forEach {data ->
+                    val t = data.key.split(":")
+                    val hour = t[0].toInt()
+                    val minute = t[1].toInt()
+
+                    timeData.add(TimeDTO(hour, minute, data.value))
+                }
+                binding.reservationTimeRecyclerView.adapter?.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                Log.d("hhh", "Error getting documents: ", exception)
+            }
     }
 
-    private fun setRecyclerView() {
+    private fun setUI() {
+        binding.title.text = storeName
+
+        binding.cancelButton.setOnClickListener {
+            finish()
+        }
+
         adapter = TimeListAdapter(timeData)
         binding.reservationTimeRecyclerView.adapter = adapter
         binding.reservationTimeRecyclerView.layoutManager = GridLayoutManager(this, 3)

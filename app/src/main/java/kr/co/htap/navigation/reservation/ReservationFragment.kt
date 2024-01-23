@@ -1,19 +1,17 @@
 package kr.co.htap.navigation.reservation
 
 import android.content.Context
-import android.graphics.Paint
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.toObject
 import kr.co.htap.databinding.FragmentReservationBinding
 import kr.co.htap.navigation.NavigationActivity
 
@@ -74,7 +72,6 @@ class ReservationFragment : Fragment() {
         binding.restaurentButton.performClick()
     }
 
-
     private fun setRecyclerView(storeData: ArrayList<StoreEntity>) {
         navigationActivity.runOnUiThread {
             adapter = ReservationListAdapter(storeData)
@@ -98,10 +95,10 @@ class ReservationFragment : Fragment() {
             .document("store")
             .collection(type)
             .get()
-            .addOnSuccessListener { result ->
+            .addOnSuccessListener { documents ->
                 val data = if (type == "restaurant") restaurant else laundry
 
-                for (document in result) {
+                for (document in documents) {
                     data.add(StoreEntity(
                         document.get("name").toString(),
                         document.get("category").toString(),
