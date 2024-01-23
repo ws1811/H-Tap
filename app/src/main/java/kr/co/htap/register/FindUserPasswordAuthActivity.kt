@@ -1,5 +1,6 @@
 package kr.co.htap.register
 
+import android.content.Intent
 import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +15,9 @@ import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.auth.auth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kr.co.htap.R
 import kr.co.htap.databinding.ActivityFindUserPasswordAuthBinding
 import java.util.concurrent.TimeUnit
@@ -35,7 +39,7 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
         binding = ActivityFindUserPasswordAuthBinding.inflate(layoutInflater)
         auth = FirebaseAuth.getInstance()
 
-        var email = intent.getStringExtra("email")
+        email = intent.getStringExtra("email") ?: ""
         binding.etEmail.setText(email)
         binding.etEmail.isEnabled = false
         setContentView(binding.root)
@@ -44,10 +48,11 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
         binding.tvAuthRequest.setOnClickListener {
             authByPhone()
         }
+
         // 인증번호 입력 후 [인증하기] 클릭
-        binding.tvAuthCheck.setOnClickListener {
+        binding.btnAuthCheck.setOnClickListener {
+            Log.d("FindPassword", "btnAuthCheck Clicked")
             val enterCode = binding.etEnterCode.text.toString()
-            Toast.makeText(this, "클릭", Toast.LENGTH_SHORT).show()
             if(enterCode.isNotEmpty()){
                 val credential = PhoneAuthProvider.getCredential(verificationId, enterCode)
                 signInWithPhoneAuthCredential(credential)
@@ -82,8 +87,6 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
             phone = formatPhoneNumber(phone) //  전화번호 E.164 형식 으로 포매팅
             Log.d("FindPassword", "변환된 전화번호 : $phone")
             sendVerifyNumber(this@FindUserPasswordAuthActivity, phone)
-
-            binding.tvAuthCheck
         }
     }
     /* 사용자 휴대전화로 인증 코드 전송 */
@@ -92,12 +95,13 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
         val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                 Log.d("FindPassword", "onVerificationCompleted:$credential")
+
             }
             override fun onVerificationFailed(e: FirebaseException) {
                 Log.w("FindPassword", "onVerificationFailed", e)
             }
             override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken,) {
-                Log.d("FindPassword", "onCodeSent:$verificationId")
+                Log.d("FindPassword", "onCodeSent:$verificationId ")
                 this@FindUserPasswordAuthActivity.verificationId = verificationId
             }
         }
@@ -107,6 +111,7 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
             .setActivity(this)
             .setCallbacks(callbacks)
             .build()
+        Log.d("FindPassword", "phoneNumber : $phoneNumber")
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
     // 전화번호 포매팅
@@ -129,7 +134,17 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
                     // 인증 성공
                     Log.d("FindPassword", "signInWithCredential:success")
                     Toast.makeText(this, "인증에 성공했습니다.", Toast.LENGTH_SHORT).show()
-                    // 여기에 인증 성공 후의 로직 추가
+                    // 비밀번호 재설정 메일 전송
+                    Firebase.auth.sendPasswordResetEmail(email)
+                        .addOnCompleteListener { task->
+                            if(task.isSuccessful){ // 이메일 전송 성공
+                                Log.d("FindPassword", "success send passwordResetEmail")
+                                val onSuccessIntent = Intent(this, FindUserPasswordSuccessActivity::class.java)
+                                startActivity(onSuccessIntent)
+                            }else{
+                                Log.w("FindPassword", "Error sending reset email", task.exception)
+                            }
+                        }
                 } else {
                     // 인증 실패
                     Log.w("FindPassword", "signInWithCredential:failure", task.exception)
