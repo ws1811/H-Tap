@@ -1,9 +1,9 @@
 package kr.co.htap.register
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import kr.co.htap.databinding.ActivityRegisterSuccessBinding
 import kr.co.htap.navigation.NavigationActivity
 

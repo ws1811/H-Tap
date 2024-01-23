@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import kr.co.htap.R
-import kr.co.htap.navigation.NavigationActivity
 
 /**
  *
