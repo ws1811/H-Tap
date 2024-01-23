@@ -13,6 +13,11 @@ import kr.co.htap.R
 import kr.co.htap.databinding.ActivityReservationLoadingBinding
 import java.util.Timer
 
+/**
+ *
+ * @author 김기훈
+ *
+ */
 class ReservationLoadingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityReservationLoadingBinding
