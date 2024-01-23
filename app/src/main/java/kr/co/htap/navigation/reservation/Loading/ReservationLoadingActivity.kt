@@ -2,16 +2,12 @@ package kr.co.htap.navigation.reservation.Loading
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
-import com.google.android.play.core.integrity.p
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
-import kr.co.htap.R
 import kr.co.htap.databinding.ActivityReservationLoadingBinding
-import java.util.Timer
 
 /**
  *
@@ -69,7 +65,8 @@ class ReservationLoadingActivity : AppCompatActivity() {
         }.addOnSuccessListener {
             binding.progressBar.visibility = android.view.View.GONE
             binding.stateText.text = "예약 완료"
-            binding.checkImage.visibility = android.view.View.VISIBLE
+            binding.checkAnimation.visibility = android.view.View.VISIBLE
+            binding.checkAnimation.playAnimation()
             binding.confirmButton.visibility = android.view.View.VISIBLE
         }.addOnFailureListener { e ->
             Toast.makeText(this, "다른 분이 예약하셨습니다.", Toast.LENGTH_SHORT).show()

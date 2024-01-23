@@ -173,3 +173,4 @@ fabric.properties
 
 ### firebase 서비스 키
 google-service.json
+.idea/

@@ -17,6 +17,12 @@ import kr.co.htap.navigation.reservation.ReservationFragment
 class NavigationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNavigationBinding
+    private var recentPosition = 0
+    private val fragments = listOf(
+        MainFragment(),
+        ReservationFragment(),
+        MyPageFragment()
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNavigationBinding.inflate(layoutInflater)
@@ -27,32 +33,58 @@ class NavigationActivity : AppCompatActivity() {
 
     private fun setUI() {
         binding.navigationView.setOnItemSelectedListener { item ->
+            val transaction = supportFragmentManager.beginTransaction()
+
             when (item.itemId) {
-                R.id.mainFragment -> setFragment("home", MainFragment())
-                R.id.reservationFragment -> setFragment("reservation", ReservationFragment())
-                R.id.myPageFragment -> setFragment("myPage", MyPageFragment())
+                R.id.mainFragment -> {
+
+                    transaction.setCustomAnimations(
+                        R.anim.anim_slide_in_from_left_fade_in,
+                        R.anim.anim_fade_out
+                    )
+                    transaction.replace(binding.mainFrameLayout.id, fragments[0])
+                    transaction.commit()
+                    recentPosition = 0
+
+                    return@setOnItemSelectedListener true
+                }
+
+                R.id.reservationFragment -> {
+
+                    if (recentPosition < 1) {
+                        transaction.setCustomAnimations(
+                            R.anim.anim_slide_in_from_right_fade_in,
+                            R.anim.anim_fade_out
+                        )
+                    } else {
+                        transaction.setCustomAnimations(
+                            R.anim.anim_slide_in_from_left_fade_in,
+                            R.anim.anim_fade_out
+                        )
+                    }
+                    transaction.replace(binding.mainFrameLayout.id, fragments[1])
+                    transaction.commit()
+                    recentPosition = 1
+                    return@setOnItemSelectedListener true
+
+//                    setFragment("reservation", ReservationFragment())
+                }
+
+                R.id.myPageFragment -> {
+
+                    transaction.setCustomAnimations(
+                        R.anim.anim_slide_in_from_right_fade_in,
+                        R.anim.anim_fade_out
+                    )
+                    transaction.replace(binding.mainFrameLayout.id, fragments[2])
+                    transaction.commit()
+                    recentPosition = 2
+                    return@setOnItemSelectedListener true
+
+//                    setFragment("myPage", MyPageFragment())
+                }
             }
-            true
+            return@setOnItemSelectedListener false
         }
-    }
-
-    private fun setFragment(tag: String, fragment: Fragment) {
-        val manager: FragmentManager = supportFragmentManager
-        val fragTransaction = manager.beginTransaction()
-
-        if (manager.findFragmentByTag(tag) == null) {
-            fragTransaction.add(binding.mainFrameLayout.id, fragment, tag)
-        }
-
-        for (fragmentTag in arrayListOf("home", "reservation", "myPage")) {
-            val fragment = manager.findFragmentByTag(fragmentTag)
-
-            if (fragment != null) {
-                fragTransaction.hide(fragment)
-                if (fragmentTag == tag) { fragTransaction.show(fragment) }
-            }
-        }
-
-        fragTransaction.commitAllowingStateLoss()
     }
 }
