@@ -18,17 +18,27 @@
         android:theme="@style/Theme.HTap"
         tools:targetApi="31">
         <activity
+            android:name=".navigation.reservation.Loading.ReservationLoadingActivity"
+            android:exported="false"
+            android:taskAffinity="kr.co.htap.reservation"
+            />
+        <activity
+            android:name=".navigation.reservation.TimeSelect.TimePickerActivity"
+            android:exported="false"
+            android:taskAffinity="kr.co.htap.reservation"
+            />
+        <activity
+            android:name=".navigation.reservation.DateSelect.DatePickerActivity"
+            android:exported="false"
+            android:taskAffinity="kr.co.htap.reservation"
+            />
+        <activity
             android:name=".onboarding.OnboardingActivity"
             android:exported="false" />
         <activity
             android:name=".navigation.NavigationActivity"
-            android:exported="true"/>
-        <activity
-            android:name=".navigation.reservation.TimeSelect.TimePickerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".navigation.reservation.DateSelect.DatePickerActivity"
-            android:exported="false" />
+            android:exported="true" />
+
         <activity
             android:name=".register.LoginSuccessTest"
             android:exported="false" />
@@ -37,6 +47,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -46,7 +57,6 @@
         <activity
             android:name=".register.RegisterActivity"
             android:exported="false" />
-
         <activity
             android:name=".nfc.view.MyCouponActivity"
             android:exported="false" />

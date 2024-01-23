@@ -41,7 +41,7 @@ class ReservationListAdapter(private val storeList: ArrayList<StoreEntity>): Rec
         holder.root.setOnClickListener {
             val intent = Intent(holder.root.context, DatePickerActivity::class.java)
             intent.putExtra("name", storeData.name)
-
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             holder.root.context.startActivity(intent)
         }
     }

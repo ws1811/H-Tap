@@ -36,7 +36,7 @@ class TimePickerActivity : AppCompatActivity() {
     }
 
     private fun configureData() {
-        storeName = intent.getStringExtra("storeName") ?: ""
+        storeName = intent.getStringExtra("name") ?: ""
 
         date = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getSerializableExtra("date", DateDTO::class.java)?: DateDTO(0, 0, 0)
@@ -66,7 +66,7 @@ class TimePickerActivity : AppCompatActivity() {
                     "19:30" to true, "20:00" to true)
 
                 for (document in documents) {
-                    map[document.get("hour").toString() + ":" + document.get("minute").toString()] = false
+                    map[document.id] = false
                 }
 
                 map.forEach {data ->
@@ -90,7 +90,7 @@ class TimePickerActivity : AppCompatActivity() {
             finish()
         }
 
-        adapter = TimeListAdapter(timeData)
+        adapter = TimeListAdapter(timeData, storeName, date)
         binding.reservationTimeRecyclerView.adapter = adapter
         binding.reservationTimeRecyclerView.layoutManager = GridLayoutManager(this, 3)
     }
