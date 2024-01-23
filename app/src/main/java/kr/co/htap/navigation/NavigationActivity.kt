@@ -2,8 +2,6 @@ package kr.co.htap.navigation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import kr.co.htap.R
 import kr.co.htap.databinding.ActivityNavigationBinding
 import kr.co.htap.navigation.reservation.ReservationFragment
@@ -37,7 +35,6 @@ class NavigationActivity : AppCompatActivity() {
 
             when (item.itemId) {
                 R.id.mainFragment -> {
-
                     transaction.setCustomAnimations(
                         R.anim.anim_slide_in_from_left_fade_in,
                         R.anim.anim_fade_out
@@ -50,7 +47,6 @@ class NavigationActivity : AppCompatActivity() {
                 }
 
                 R.id.reservationFragment -> {
-
                     if (recentPosition < 1) {
                         transaction.setCustomAnimations(
                             R.anim.anim_slide_in_from_right_fade_in,
@@ -66,12 +62,9 @@ class NavigationActivity : AppCompatActivity() {
                     transaction.commit()
                     recentPosition = 1
                     return@setOnItemSelectedListener true
-
-//                    setFragment("reservation", ReservationFragment())
                 }
 
                 R.id.myPageFragment -> {
-
                     transaction.setCustomAnimations(
                         R.anim.anim_slide_in_from_right_fade_in,
                         R.anim.anim_fade_out
@@ -80,8 +73,6 @@ class NavigationActivity : AppCompatActivity() {
                     transaction.commit()
                     recentPosition = 2
                     return@setOnItemSelectedListener true
-
-//                    setFragment("myPage", MyPageFragment())
                 }
             }
             return@setOnItemSelectedListener false
