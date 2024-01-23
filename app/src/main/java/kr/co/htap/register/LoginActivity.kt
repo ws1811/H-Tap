@@ -75,6 +75,16 @@ class LoginActivity : AppCompatActivity() {
             customLogin()
         }
 
+        // [아이디 찾기] 클릭
+        binding.tvFindId.setOnClickListener {
+            val intent = Intent(this, FindUserIdActivity::class.java)
+            startActivity(intent)
+        }
+        // [비밀번호 찾기] 클릭
+        binding.tvFindPassword.setOnClickListener {
+            val intent = Intent(this, FindUserPasswordActivity::class.java)
+            startActivity(intent)
+        }
         googleLoginLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == -1) {
@@ -112,23 +122,7 @@ class LoginActivity : AppCompatActivity() {
     // 김기훈
     private fun isFirstRun(): Boolean {
         val pref = getSharedPreferences("hTap", 0)
-
-        if (pref.getBoolean("isFirstRun", true)) {
-            return true
-        }
-
-        return false
-
-        // [아이디 찾기] 클릭
-        binding.tvFindId.setOnClickListener {
-            val intent = Intent(this, FindUserIdActivity::class.java)
-            startActivity(intent)
-        }
-        // [비밀번호 찾기] 클릭
-        binding.tvFindPassword.setOnClickListener {
-            val intent = Intent(this, FindUserPasswordActivity::class.java)
-            startActivity(intent)
-        }
+        return pref.getBoolean("isFirstRun", true)
     }
 
     // 일반로그인

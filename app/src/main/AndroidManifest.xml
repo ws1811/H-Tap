@@ -33,6 +33,15 @@
             android:taskAffinity="kr.co.htap.reservation"
             />
         <activity
+            android:name=".register.FindUserIdActivity"
+            android:exported="false" />
+        <activity
+            android:name=".register.FindUserPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".register.FindUserPasswordAuthActivity"
+            android:exported="false" />
+        <activity
             android:name=".onboarding.OnboardingActivity"
             android:exported="false" />
         <activity
