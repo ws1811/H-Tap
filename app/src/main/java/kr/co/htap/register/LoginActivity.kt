@@ -158,10 +158,9 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun onSignInSuccess() {
         // wonson's code
-        // val intent = Intent(this@LoginActivity, LoginSuccessTest::class.java)
-        // startActivity(intent)
+        val intent = Intent(this@LoginActivity, NavigationActivity::class.java)
         setResult(Activity.RESULT_OK)
-        finish()
+        startActivity(intent)
     }
 
     /**
@@ -170,7 +169,7 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun onSignInCanceled() {
         setResult(Activity.RESULT_CANCELED)
-        finish()
+        Toast.makeText(this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show()
     }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
