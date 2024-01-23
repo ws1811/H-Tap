@@ -58,6 +58,7 @@
 
     <!-- ProgressBar for progress -->
     <LinearLayout
+        android:id="@+id/fr_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"
@@ -65,7 +66,7 @@
         android:weightSum="2">
 
         <Button
-            android:id="@+id/checkReservation"
+            android:id="@+id/bt_checkReservation"
             android:layout_width="0dp"
 
             android:layout_height="120dp"
@@ -80,7 +81,7 @@
             android:textSize="20dp" />
 
         <Button
-            android:id="@+id/sampleButton"
+            android:id="@+id/bt_findBranch"
             android:layout_width="0dp"
             android:layout_height="120dp"
             android:layout_gravity="center_horizontal"

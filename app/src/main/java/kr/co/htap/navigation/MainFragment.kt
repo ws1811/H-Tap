@@ -9,20 +9,27 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import kr.co.htap.R
 import kr.co.htap.databinding.FragmentMainBinding
+import kr.co.htap.navigation.location.CheckLocationFragment
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private lateinit var navigationActivity: NavigationActivity
-    private lateinit var adapter: ViewPagerAdapter
+    private lateinit var adapter: HomeViewPagerAdapter
     override fun onAttach(context: Context) {
         super.onAttach(context)
         navigationActivity = context as NavigationActivity
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentMainBinding.inflate(inflater)
+
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -35,10 +42,15 @@ class MainFragment : Fragment() {
         )
 
         // Initialize the ViewPagerAdapter with the foodList
-        adapter = ViewPagerAdapter(foodList)
-
+        adapter = HomeViewPagerAdapter(foodList)
         binding.sliderViewPager.adapter = adapter
         binding.sliderViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
+        binding.btFindBranch.setOnClickListener {
+            val dialog = CheckLocationFragment()
+            dialog.show(requireActivity().supportFragmentManager, "CheckLocationFragment")
+        }
+
     }
 
 }
