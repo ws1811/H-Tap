@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
+import android.util.Log
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
@@ -18,9 +19,12 @@ import kr.co.htap.navigation.reservation.BranchEntity
  *
  * @author eunku
  */
-class LocationProvider(private val context: Context){
-   private val REQUEST_LOCATION = 1
-    private lateinit var locations : Location
+class LocationProvider(private val context: Context) {
+    private val REQUEST_LOCATION = 1
+    private var locations: Location? = null
+    init {
+        locations = getLocation()
+    }
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private val permissionsLocationUpApi29Impl = arrayOf(
@@ -34,6 +38,7 @@ class LocationProvider(private val context: Context){
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
+
     fun requestLocation() {
         if (Build.VERSION.SDK_INT >= 29) {
             if (ActivityCompat.checkSelfPermission(
@@ -54,8 +59,9 @@ class LocationProvider(private val context: Context){
                     permissionsLocationUpApi29Impl,
                     REQUEST_LOCATION
                 )
-            }
-        } else {
+                Log.d("test111", "1번")
+            } else Log.d("test", "null값인가")
+        } else if (Build.VERSION.SDK_INT < 29) {
             if (ActivityCompat.checkSelfPermission(
                     context,
                     permissionsLocationDownApi29Impl[0]
@@ -70,54 +76,38 @@ class LocationProvider(private val context: Context){
                     permissionsLocationDownApi29Impl,
                     REQUEST_LOCATION
                 )
-            }
+                Log.d("test", "22번")
+            } else Log.d("test", "null값인가")
         }
     }
 
     @SuppressLint("MissingPermission")
-    public fun getLocation(textView: TextView) {
-        val fusedLocationProviderClient =
+    public fun getLocation(): Location? {
+        var fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(context)
         fusedLocationProviderClient.lastLocation
             .addOnSuccessListener { success: Location? ->
                 success?.let { location ->
-                    locations = location
-                }
+                    this.locations = location }
             }
             .addOnFailureListener { fail ->
-                textView.text = fail.localizedMessage
-            }
-    }
-    @SuppressLint("MissingPermission")
-    public fun getDistance(textView: TextView) {
-        val fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(context)
+                Log.d("testtest", "실패")
 
-        fusedLocationProviderClient.lastLocation
-            .addOnSuccessListener { success: Location? ->
-                success?.let { location ->
-                    val testLocal = Location("testPoint")
-                    testLocal.apply {
-                        latitude = 37.525730
-                        longitude = 126.927856
-                    }
-                    textView.text = "${String.format("%0.1f", location.distanceTo(testLocal) / 1000)}KM"
-                }
             }
-            .addOnFailureListener { fail ->
-                textView.text = fail.localizedMessage
-            }
+        return this.locations
     }
-    @SuppressLint("MissingPermission")
-    public fun getDistances(branch : BranchEntity) : String {
-        val testLocal = Location("testPoint")
-        testLocal.apply {
+
+    fun getDistance(branch: BranchEntity, textView: TextView) {
+
+        val endPoint = Location("endPoint")
+        endPoint.apply {
             latitude = branch.latitude
             longitude = branch.longitude
         }
-
-        var response= "${String.format("%0.1f", locations.distanceTo(testLocal) / 1000)}KM"
-
-        return response
+        if (locations != null) {
+            textView.text = "${String.format("%0.1f", this.locations!!.distanceTo(endPoint) / 1000)}KM"
+        } else {
+            Log.d("test", "오류")
+        }
     }
 }
