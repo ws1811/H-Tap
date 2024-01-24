@@ -144,7 +144,7 @@ class LoginActivity : AppCompatActivity() {
                         Log.w("Login", "Login failed : ", task.exception)
                         Toast.makeText(
                             this@LoginActivity,
-                            task.exception.toString(),
+                            "로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요",
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -183,21 +183,28 @@ class LoginActivity : AppCompatActivity() {
      * @author 송원선
      */
     private fun googleLogin() {
+        Log.d("GoogleLogin", "googleLogin()")
         val signInIntent = googleSignInClient!!.signInIntent
 //        googleLoginLauncher.launch(signInIntent)
         startActivityForResult(signInIntent, RC_SIGN_IN)
+        // -> onActivityResult 콜백 호출
     }
 
     // [START auth_with_google]
-    private fun firebaseAuthWithGoogle(idToken: String) {
+    private fun firebaseAuthWithGoogle(idToken: String, data:Intent?) {
+        Log.d("GoogleLogin", "firebasAuthWithGoogle(idToken : $idToken ) ")
         val credential = GoogleAuthProvider.getCredential(idToken, null)
+        var user = auth.currentUser
+        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+        val account = task.getResult(ApiException::class.java)!!
+        Log.d("GoogleLogin", "firebaseAuthWithGoogle() | account email : ${account.email}")
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
+                Log.d("GoogleLogin", "signInWithCredentail | task : $task")
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("GoogleLogin", "signInWithCredential:success")
-                    val user = auth.currentUser
-                    checkIfUserExistsInFirestore(user)
+                    checkIfUserExistsInFirestore(account)
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -209,18 +216,20 @@ class LoginActivity : AppCompatActivity() {
     // [END auth_with_google]
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        Log.d("GoogleLogin", "onActivityResult() 호출 | requestCode : $requestCode, resultCode : $resultCode, data : $data")
+        auth = FirebaseAuth.getInstance()
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 // Google Sign In was successful, authenticate with Firebase
-
+                Log.d("GoogleLogin", "onActivityResult() | auth.currentuser = ${auth.currentUser}")
                 val account = task.getResult(ApiException::class.java)!!
-                Log.d("GoogleLogin", "firebaseAuthWithGoogle:" + account.id)
-                firebaseAuthWithGoogle(account.idToken!!)
+                Log.d("GoogleLogin", "onActivityResult() | account = $account")
+                Log.d("GoogleLogin", "onActivityResult() | account.id :" + account.id)
+                firebaseAuthWithGoogle(account.idToken!!, data)
 
-                startActivity(navigationIntent)
+                //startActivity(navigationIntent)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("GoogleLogin", "Google sign in failed", e)
@@ -254,50 +263,59 @@ class LoginActivity : AppCompatActivity() {
     }
 
     // 구글 로그인한 사용자가 FireStore 에 등록 되어있는지 체크 메소드
-    private fun checkIfUserExistsInFirestore(user: FirebaseUser?) {
-        if (user != null) {
-            val userId = user.uid
+    private fun checkIfUserExistsInFirestore(account: GoogleSignInAccount) {
+        Log.d("GoogleLogin", "checkIfUserExistsInFirestore($account)")
+        if (account != null) {
+            val userId = account.id
             val usersCollection = firestore.collection("users")
-
+            val userEamil = account.email
             // Check if the user already exists in Firestore
-            usersCollection.document(userId).get()
+            usersCollection.whereEqualTo("email", userEamil).get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        val document = task.result
-                        if (document != null && document.exists()) {
-                            // 이미 등록되어 있는 경우
-                            Log.d("Firestore", "User already exists in Firestore")
-                            updateUI(user)
+                        // 조회된 문서의 개수를 확인
+                        val documentCount = task.result?.size() ?: 0
+
+                        if (documentCount > 0) {
+                            // 이미 등록된 사용자인 경우
+                            Log.d("GoogleLogin", "checkIfUserExistsInFirestore: 이미 등록된 사용자")
                         } else {
-                            // 등록돼있는 유저가 없다면 -> 등록
-                            addUserToFirestore(user)
+                            // 등록되지 않은 사용자인 경우
+                            addUserToFirestore(account)
+                            Log.d("GoogleLogin", "checkIfUserExistsInFirestore: 사용자 등록 완료")
                         }
                     } else {
-                        Log.e("Firestore", "Error checking user in Firestore", task.exception)
+                        // task 실패
+                        Log.e("GoogleLogin", "Error checking user in Firestore", task.exception)
                     }
+                }
+                .addOnFailureListener { e->
+                    Log.w("GoogleLogin", "Failed to check existence of user : $e")
                 }
         }
     }
-    // FireStore 에 유저 추가
-    private fun addUserToFirestore(user: FirebaseUser) {
-        val userId = user.uid
-        val email = user.email
+    // 구글 로그인 유저 FireStore 에 추가
+    private fun addUserToFirestore(account: GoogleSignInAccount) {
+        val userId = account.id
+        val email = account.email
+        val name = account.displayName
 
         // Create user data
         val userData = hashMapOf(
             "userid" to userId,
             "email" to email,
+            "name" to name,
         )
 
         // Add user data to Firestore
-        firestore.collection("users").document(userId)
+        firestore.collection("users").document(email!!)
             .set(userData)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.d("Firestore", "User added to Firestore successfully")
-                    updateUI(user)
+                    Log.d("GoogleLogin", "User added to Firestore successfully")
+                    startActivity(navigationIntent)
                 } else {
-                    Log.e("Firestore", "Error adding user to Firestore", task.exception)
+                    Log.e("GoogleLogin", "Error adding user to Firestore", task.exception)
                     updateUI(null)
                 }
             }

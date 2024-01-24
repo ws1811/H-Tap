@@ -112,9 +112,10 @@ class RegisterActivity: AppCompatActivity(){
                         )
                         // Firestore 에 회원 추가
                         db.collection("users")
-                            .add(user)
+                            .document(email)
+                            .set(user)
                             .addOnSuccessListener { documentReference ->
-                                Log.d("FireStore", "DocumentSnapshot added with ID: ${documentReference.id}")
+                                Log.d("FireStore", "Success adding user : email = $email")
                             }
                             .addOnFailureListener{e->
                                 Log.w("FireStore", "Error adding user", e)
