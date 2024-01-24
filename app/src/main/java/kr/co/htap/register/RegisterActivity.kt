@@ -44,10 +44,7 @@ class RegisterActivity: AppCompatActivity(){
         binding.btnBack.setOnClickListener {
             finish()
         }
-        // 메뉴 버튼 리스너 등록
-        binding.btnMenu.setOnClickListener {
-            TODO("메뉴 버튼 눌렀을 때 로직 구현")
-        }
+
         // 회원 가입 버튼 리스너 등록
         binding.btnRegister.setOnClickListener {
             register()
@@ -112,9 +109,10 @@ class RegisterActivity: AppCompatActivity(){
                         )
                         // Firestore 에 회원 추가
                         db.collection("users")
-                            .add(user)
+                            .document(email)
+                            .set(user)
                             .addOnSuccessListener { documentReference ->
-                                Log.d("FireStore", "DocumentSnapshot added with ID: ${documentReference.id}")
+                                Log.d("FireStore", "Success adding user : email = $email")
                             }
                             .addOnFailureListener{e->
                                 Log.w("FireStore", "Error adding user", e)
@@ -137,6 +135,4 @@ class RegisterActivity: AppCompatActivity(){
         }
 
     }
-
-
 }
