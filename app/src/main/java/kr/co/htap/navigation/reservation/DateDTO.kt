@@ -1,4 +1,4 @@
-package kr.co.htap.navigation.reservation.DateSelect
+package kr.co.htap.navigation.reservation
 
 import java.io.Serializable
 

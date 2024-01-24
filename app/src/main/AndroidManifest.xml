@@ -29,10 +29,6 @@
             android:exported="false"
             android:taskAffinity="kr.co.htap.reservation" />
         <activity
-            android:name=".navigation.reservation.DateSelect.DatePickerActivity"
-            android:exported="false"
-            android:taskAffinity="kr.co.htap.reservation" />
-        <activity
             android:name=".register.FindUserIdActivity"
             android:exported="false" />
         <activity
