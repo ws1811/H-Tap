@@ -31,6 +31,7 @@
         android:textSize="28sp"
         android:inputType="phone"
         android:hint="전화번호 [숫자만 입력]"
+        android:maxLength="13"
         app:layout_constraintEnd_toStartOf="@id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_hor"
         app:layout_constraintTop_toBottomOf="@id/et_name" />
@@ -88,7 +89,7 @@
         android:layout_height="wrap_content"
         android:text="[사용자 이메일]"
         android:textColor="@color/MainColor"
-        android:textSize="28sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@id/tv_result"
@@ -102,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:textColor="@color/MainColor"
+        android:textColor="@color/LightGreen"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -112,30 +113,37 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_find_id"
         app:layout_constraintVertical_bias="0.292" />
 
-    <Button
+    <TextView
         android:id="@+id/btn_hidden_tofindpassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="144dp"
-        android:backgroundTint="@color/MainColor"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:background="@color/MainColor"
+        android:textColor="@color/white"
         android:text="비밀번호 찾기"
-        android:textStyle="bold"
+        android:textSize="28dp"
         android:visibility="invisible"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_hor" />
 
-    <Button
+    <TextView
         android:id="@+id/btn_hidden_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="124dp"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginBottom="56dp"
-        android:backgroundTint="@color/MainColor"
+        android:background="@color/MainColor"
+        android:textColor="@color/white"
         android:text="로그인"
-        android:textStyle="bold"
+        android:textSize="28dp"
         android:visibility="invisible"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_hor" />
 </androidx.constraintlayout.widget.ConstraintLayout>

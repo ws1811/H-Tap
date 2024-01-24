@@ -1,11 +1,13 @@
 package kr.co.htap.register
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -35,6 +37,9 @@ class FindUserIdActivity : AppCompatActivity() {
         findBtn = binding.btnFindId
         binding.etPhone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         findBtn.setOnClickListener {
+            //키패드 숨기기
+            hideKeyboard()
+            // 아이디 찾기 함수 호출
             findUser()
         }
 
@@ -62,6 +67,7 @@ class FindUserIdActivity : AppCompatActivity() {
                         for(document in documents){
                             val userData = document.data
                             val userEmail = userData["email"].toString()
+                            binding.tvResultTitle.text = "[$name] 님의 이메일입니다."
                             binding.tvResultTitle.visibility = View.VISIBLE
                             binding.tvResult.text = "$userEmail"
 
@@ -95,5 +101,13 @@ class FindUserIdActivity : AppCompatActivity() {
         }
 
 
+    }
+    // 키패드 숨기는 함수
+    private fun hideKeyboard() {
+        val view = this.currentFocus
+        if (view != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 }
