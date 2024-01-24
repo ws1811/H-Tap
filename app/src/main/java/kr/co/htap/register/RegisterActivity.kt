@@ -54,10 +54,6 @@ class RegisterActivity: AppCompatActivity(){
             }
 
         })
-        // 뒤로가기 버튼 리스너 등록
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
 
         // 회원 가입 버튼 리스너 등록
         binding.btnRegister.setOnClickListener {
