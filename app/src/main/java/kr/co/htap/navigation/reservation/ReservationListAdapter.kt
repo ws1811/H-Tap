@@ -3,9 +3,12 @@ package kr.co.htap.navigation.reservation
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.play.core.integrity.p
+import kr.co.htap.R
 import kr.co.htap.databinding.ReservationListItemBinding
 import kr.co.htap.navigation.reservation.DateSelect.DatePickerActivity
 
@@ -17,7 +20,6 @@ import kr.co.htap.navigation.reservation.DateSelect.DatePickerActivity
 
 class ReservationListAdapter(private val storeList: ArrayList<StoreEntity>): RecyclerView.Adapter<ReservationListAdapter.MyViewHolder>() {
     inner class MyViewHolder(binding: ReservationListItemBinding): RecyclerView.ViewHolder(binding.root) {
-        val storeCategory = binding.storeCategory
         val storeName = binding.storeName
         val storeDescription = binding.storeDescription
         val storeImage = binding.storeImage
@@ -33,7 +35,6 @@ class ReservationListAdapter(private val storeList: ArrayList<StoreEntity>): Rec
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val storeData = storeList[position]
 
-        holder.storeCategory.text = storeData.category
         holder.storeName.text = storeData.name
         holder.storeDescription.text = storeData.description
         Glide.with(holder.root.context).load(storeData.image).into(holder.storeImage)
