@@ -12,4 +12,5 @@
     <color name="ReservationCardViewBg">#CC4D2BF4</color>
     <color name="LightGreen">#66BAA8</color>
     <color name="red">#ff0000</color>
+    <color name="grey">#B1B1B1</color>
 </resources>
