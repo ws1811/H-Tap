@@ -17,6 +17,8 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.maps.GeoApiContext
+import com.google.maps.PlacesApi
 import com.google.type.LatLng
 
 /**
@@ -136,36 +138,4 @@ class LocationProvider(private val context: Context) {
             Log.d("test", "update 위치 실패")
         }
     }
-    fun getLatLngForLocation(apiKey: String, locationName: String): LatLng? {
-        val context = GeoApiContext.Builder().apiKey(apiKey).build()
-
-        try {
-            val result = PlacesApi.textSearchQuery(context, locationName).await()
-
-            if (result.isNotEmpty()) {
-                val place = result[0]
-                return place.geometry.location
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        return null
-    }
-
-    fun main() {
-        val apiKey = "YOUR_API_KEY"
-        val locationName = "Modern Point" // Replace with the location you are interested in
-
-        val latLng = getLatLngForLocation(apiKey, locationName)
-
-        if (latLng != null) {
-            println("Latitude: ${latLng.lat}, Longitude: ${latLng.lng}")
-        } else {
-            println("Failed to retrieve location data.")
-        }
-    }
-
-
-
 }
