@@ -59,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
-        val loginButton: Button = binding.btnLogin
+        val loginButton: TextView = binding.btnLogin
         val googleLoginButton = binding.ivGoogleLogin
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
