@@ -16,8 +16,7 @@ import kr.co.htap.navigation.NavigationActivity
 class RegisterSuccessActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterSuccessBinding
-    private lateinit var buttonHome:Button
-    private lateinit var buttonLogin:Button
+    private lateinit var buttonToMain:Button
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,17 +25,11 @@ class RegisterSuccessActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         
+
+        buttonToMain = binding.btnToMain
         
-        buttonHome = binding.btnHome
-        buttonLogin = binding.btnLogin
-        
-        // [홈으로] 버튼 -> 메인 액티비티로 이동
-        buttonHome.setOnClickListener {
-            val intent = Intent(this, NavigationActivity::class.java)
-            startActivity(intent)
-        }
-        // [로그인] 버튼 -> 로그인 액티비티로 이동
-        buttonLogin.setOnClickListener {
+        // [메인으로] 버튼 -> 로그인 액티비티로 이동
+        buttonToMain.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }

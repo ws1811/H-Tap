@@ -65,7 +65,10 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
     private fun authByPhone() {
         var phone = binding.etPhone.text.toString()
         Log.d("FindPassword", "전화번호 : $phone")
-
+        if(phone.isEmpty()){
+            Toast.makeText(this, "전화번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+            return
+        }
         if(phone != null){
             binding.tvRetryAuth.visibility = View.VISIBLE // [인증번호 재발송] 보이게 표시
             binding.etEnterCode.isEnabled = true

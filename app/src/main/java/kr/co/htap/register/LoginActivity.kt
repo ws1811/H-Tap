@@ -1,9 +1,13 @@
 package kr.co.htap.register
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextWatcher
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -72,6 +76,9 @@ class LoginActivity : AppCompatActivity() {
 
         // 로그인 버튼 클릭 (일반로그인)
         loginButton.setOnClickListener {
+            // 키보드 숨기기
+            hideKeyBoard(it)
+            // 로그인 함수 호출
             customLogin()
         }
 
@@ -119,6 +126,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
     // 김기훈
     private fun isFirstRun(): Boolean {
         val pref = getSharedPreferences("hTap", 0)
@@ -129,11 +137,13 @@ class LoginActivity : AppCompatActivity() {
     private fun customLogin() {
         val email: String = binding.etId.text.toString().trim()
         val password: String = binding.etPassword.text.toString().trim()
-        if (email == null)
+        if (email.isEmpty()) {
             Toast.makeText(this@LoginActivity, "이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
-        else if (password == null)
+            return
+        }else if (password.isEmpty()) {
             Toast.makeText(this@LoginActivity, "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
-        else {
+            return
+        }else {
             Log.d("Login", "Login Try -> email : $email")
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this@LoginActivity, OnCompleteListener<AuthResult> { task ->
@@ -320,7 +330,12 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
     }
-companion object {
-    private const val RC_SIGN_IN = 9001
-}
+    companion object {
+        private const val RC_SIGN_IN = 9001
+    }
+    /* 키보드 숨기는 함수 */
+    private fun hideKeyBoard(view: View) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
 }

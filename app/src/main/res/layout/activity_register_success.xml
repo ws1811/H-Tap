@@ -7,16 +7,18 @@
     tools:context=".register.RegisterSuccessActivity">
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_toMain"
         style="@style/Widget.Material3.Button.TonalButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="64dp"
-        android:text="로그인"
+        android:text="메인으로"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/MainColor"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
         app:layout_constraintTop_toBottomOf="@+id/tv_register_success" />
 
     <ImageView
@@ -44,16 +46,18 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_success"
         app:layout_constraintVertical_bias="0.135" />
 
-    <Button
-        android:id="@+id/btn_home"
-        style="@style/Widget.Material3.Button.TonalButton"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_ver_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="홈으로"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_login"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_register_success" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_ver_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
