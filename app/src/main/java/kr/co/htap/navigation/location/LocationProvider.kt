@@ -8,11 +8,16 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
+import android.os.Looper
 import android.util.Log
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
 import kr.co.htap.navigation.reservation.BranchEntity
 
 /**
@@ -22,6 +27,8 @@ import kr.co.htap.navigation.reservation.BranchEntity
 class LocationProvider(private val context: Context) {
     private val REQUEST_LOCATION = 1
     private var locations: Location? = null
+    private var fusedLocationProviderClient =
+        LocationServices.getFusedLocationProviderClient(context)
     init {
         locations = getLocation()
     }
@@ -83,12 +90,11 @@ class LocationProvider(private val context: Context) {
 
     @SuppressLint("MissingPermission")
     public fun getLocation(): Location? {
-        var fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(context)
         fusedLocationProviderClient.lastLocation
             .addOnSuccessListener { success: Location? ->
                 success?.let { location ->
-                    this.locations = location }
+                    this.locations = location
+                }
             }
             .addOnFailureListener { fail ->
                 Log.d("testtest", "실패")
@@ -104,10 +110,33 @@ class LocationProvider(private val context: Context) {
             latitude = branch.latitude
             longitude = branch.longitude
         }
-        if (locations != null) {
-            textView.text = "${String.format("%0.1f", this.locations!!.distanceTo(endPoint) / 1000)}KM"
-        } else {
-            Log.d("test", "오류")
+        try {
+            Log.d("test", "${locations?.longitude}")
+//            textView.text = "${String.format("%0.1f", locations?.distanceTo(endPoint))}KM"
+            textView.text = String.format("%.2fkm",(locations!!.distanceTo(endPoint) / 1000))
+        } catch (e: Exception) {
+            textView.text = "0"
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun updateLocation() {
+        try {
+            val locationRequest =
+                LocationRequest.Builder(1).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                    .build()
+            var locationCallback = object : LocationCallback() {
+                override fun onLocationResult(p0: LocationResult) {
+                    locations = p0.lastLocation
+                }
+            }
+            fusedLocationProviderClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+        } catch (e :Exception){
+            Log.d("test", "update 위치 실패")
         }
     }
 }

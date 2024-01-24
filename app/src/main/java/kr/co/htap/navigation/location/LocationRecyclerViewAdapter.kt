@@ -1,4 +1,5 @@
 package kr.co.htap.navigation.location
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +29,9 @@ class LocationRecyclerViewAdapter(private val locationProvider: LocationProvider
             val branch_name = binding.itemTvBranch
             val branch_distance = binding.itemTvDistance
             branch_name.text =  branchItem.name
+            Log.d("test", "바인드")
             locationProvider.getDistance(branchItem, branch_distance)
+            Log.d("test", "바인드 성공")
         }
     }
     override fun getItemCount(): Int = branchList.size

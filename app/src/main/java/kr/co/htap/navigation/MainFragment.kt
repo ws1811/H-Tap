@@ -7,20 +7,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.google.firebase.firestore.FirebaseFirestore
 import kr.co.htap.R
 import kr.co.htap.databinding.FragmentMainBinding
 import kr.co.htap.navigation.location.CheckLocationFragment
 import kr.co.htap.navigation.location.LocationProvider
+import kr.co.htap.navigation.reservation.BranchEntity
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private lateinit var navigationActivity: NavigationActivity
     private lateinit var adapter: HomeViewPagerAdapter
+    private lateinit var db: FirebaseFirestore
     override fun onAttach(context: Context) {
         super.onAttach(context)
         navigationActivity = context as NavigationActivity
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        db = FirebaseFirestore.getInstance()
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,5 +63,20 @@ class MainFragment : Fragment() {
         }
 
     }
-
+    private fun configureInitData() :ArrayList<BranchEntity> {
+        var branchList = ArrayList<BranchEntity>()
+        val docRef = db.collection("Branch").whereEqualTo("capital", true)
+            .get().addOnSuccessListener { documents ->
+                for (document in documents){
+                    branchList.add(
+                        BranchEntity(
+                            document.get("name").toString(),
+                            document.get("latitude") as Double,
+                            document.get("longitude") as Double,
+                        )
+                    )
+                }
+            }
+        return branchList
+    }
 }
