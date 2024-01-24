@@ -306,7 +306,6 @@ class LoginActivity : AppCompatActivity() {
             "email" to email,
             "name" to name,
         )
-
         // Add user data to Firestore
         firestore.collection("users").document(email!!)
             .set(userData)

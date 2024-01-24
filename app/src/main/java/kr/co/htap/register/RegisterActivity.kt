@@ -44,10 +44,7 @@ class RegisterActivity: AppCompatActivity(){
         binding.btnBack.setOnClickListener {
             finish()
         }
-        // 메뉴 버튼 리스너 등록
-        binding.btnMenu.setOnClickListener {
-            TODO("메뉴 버튼 눌렀을 때 로직 구현")
-        }
+
         // 회원 가입 버튼 리스너 등록
         binding.btnRegister.setOnClickListener {
             register()
