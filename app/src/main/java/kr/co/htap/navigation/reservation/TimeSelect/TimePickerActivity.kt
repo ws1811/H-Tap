@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
 import kr.co.htap.databinding.ActivityTimePickerBinding
-import kr.co.htap.navigation.reservation.DateSelect.DateDTO
+import kr.co.htap.navigation.reservation.DateDTO
 
 /**
  *
