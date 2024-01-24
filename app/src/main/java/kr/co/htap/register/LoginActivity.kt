@@ -279,6 +279,7 @@ class LoginActivity : AppCompatActivity() {
                         if (documentCount > 0) {
                             // 이미 등록된 사용자인 경우
                             Log.d("GoogleLogin", "checkIfUserExistsInFirestore: 이미 등록된 사용자")
+                            startActivity(navigationIntent)
                         } else {
                             // 등록되지 않은 사용자인 경우
                             addUserToFirestore(account)
