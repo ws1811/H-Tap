@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import kr.co.htap.R
 import kr.co.htap.databinding.FragmentMainBinding
 import kr.co.htap.navigation.location.CheckLocationFragment
+import kr.co.htap.navigation.location.LocationProvider
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
@@ -46,8 +47,11 @@ class MainFragment : Fragment() {
         binding.sliderViewPager.adapter = adapter
         binding.sliderViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
+        var locationProvider = LocationProvider(navigationActivity)
+        locationProvider.getLocation()
+
         binding.btFindBranch.setOnClickListener {
-            val dialog = CheckLocationFragment()
+            val dialog = CheckLocationFragment(locationProvider)
             dialog.show(requireActivity().supportFragmentManager, "CheckLocationFragment")
         }
 
