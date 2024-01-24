@@ -1,10 +1,13 @@
 package kr.co.htap.register
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -32,8 +35,11 @@ class FindUserIdActivity : AppCompatActivity() {
         var view = binding.root
         setContentView(view)
         findBtn = binding.btnFindId
-
+        binding.etPhone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         findBtn.setOnClickListener {
+            //키패드 숨기기
+            hideKeyboard()
+            // 아이디 찾기 함수 호출
             findUser()
         }
 
@@ -61,13 +67,15 @@ class FindUserIdActivity : AppCompatActivity() {
                         for(document in documents){
                             val userData = document.data
                             val userEmail = userData["email"].toString()
-                            binding.tvResult.text = "사용자 이메일 : $userEmail"
+                            binding.tvResultTitle.text = "[$name] 님의 이메일입니다."
+                            binding.tvResultTitle.visibility = View.VISIBLE
+                            binding.tvResult.text = "$userEmail"
 
                             // invsibile 버튼 사용자에게 보여주기 (홈으로, 로그인)
-                            binding.btnHiddenHome.visibility = View.VISIBLE
+                            binding.btnHiddenTofindpassword.visibility = View.VISIBLE
                             binding.btnHiddenLogin.visibility = View.VISIBLE
-                            binding.btnHiddenHome.setOnClickListener {
-                                val intent = Intent(this, NavigationActivity::class.java)
+                            binding.btnHiddenTofindpassword.setOnClickListener {
+                                val intent = Intent(this, FindUserPasswordActivity::class.java)
                                 startActivity(intent)
                             }
                             binding.btnHiddenLogin.setOnClickListener {
@@ -93,5 +101,13 @@ class FindUserIdActivity : AppCompatActivity() {
         }
 
 
+    }
+    // 키패드 숨기는 함수
+    private fun hideKeyboard() {
+        val view = this.currentFocus
+        if (view != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 }

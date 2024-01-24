@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomDatePickerDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/LightPurple</item> <!-- 선택된 날짜의 배경색 -->
+        <item name="android:textColorPrimary">@color/white</item> <!-- 기본 날짜의 텍스트 색상 -->
+    </style>
+</resources>

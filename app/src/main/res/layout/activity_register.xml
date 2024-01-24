@@ -11,35 +11,33 @@
         android:id="@+id/tv_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="연락처"
-        app:layout_constraintBottom_toTopOf="@id/btn_register"
+        app:layout_constraintBottom_toTopOf="@id/et_phone"
         app:layout_constraintStart_toStartOf="@id/guideline_ver"
         app:layout_constraintTop_toBottomOf="@id/et_name"
         app:layout_constraintVertical_bias="0.047" />
 
     <EditText
         android:id="@+id/et_phone"
-        android:layout_width="280dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="188dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
         android:background="@drawable/custom_edit_text"
         android:hint="010-0000-0000"
-        android:textStyle="italic"
+        android:inputType="phone"
+        android:maxLength="13"
         android:paddingStart="10dp"
         android:textSize="20sp"
-        android:inputType="phone"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@id/guideline_ver"
-        app:layout_constraintTop_toBottomOf="@id/et_password" />
+        app:layout_constraintTop_toBottomOf="@id/tv_phone" />
 
     <TextView
         android:id="@+id/tv_password_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="비밀번호 확인"
@@ -52,39 +50,38 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="이름"
         app:layout_constraintBottom_toTopOf="@id/et_name"
         app:layout_constraintStart_toStartOf="@id/guideline_ver"
-        app:layout_constraintTop_toBottomOf="@id/et_password_check"
-        app:layout_constraintVertical_bias="0.47" />
+        app:layout_constraintTop_toBottomOf="@id/et_password_check" />
 
     <EditText
         android:id="@+id/et_name"
-        android:layout_width="280dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="20dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
         android:layout_marginTop="108dp"
         android:background="@drawable/custom_edit_text"
         android:hint="이름"
+        android:inputType="text|textNoSuggestions"
         android:paddingStart="10dp"
         android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@id/guideline_ver"
         app:layout_constraintTop_toBottomOf="@id/et_password" />
 
     <EditText
         android:id="@+id/et_password_check"
-        android:layout_width="280dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="20dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
         android:layout_marginTop="36dp"
         android:background="@drawable/custom_edit_text"
         android:hint="비밀번호 확인"
         android:inputType="textPassword"
         android:paddingStart="10dp"
         android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@id/guideline_ver"
         app:layout_constraintTop_toBottomOf="@id/et_password" />
 
@@ -92,14 +89,11 @@
         android:id="@+id/register_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:text="회원가입"
         android:textColor="@color/black"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.057"
         app:layout_constraintStart_toStartOf="@id/guideline_ver"
         app:layout_constraintTop_toTopOf="@id/guideline_hor"/>
 
@@ -107,7 +101,6 @@
         android:id="@+id/tv_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="아이디(이메일)"
@@ -118,15 +111,15 @@
 
     <EditText
         android:id="@+id/et_password"
-        android:layout_width="280dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="20dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
         android:layout_marginTop="28dp"
         android:background="@drawable/custom_edit_text"
         android:hint="비밀번호"
         android:inputType="textPassword"
         android:paddingStart="10dp"
         android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@id/guideline_ver"
         app:layout_constraintTop_toBottomOf="@id/et_id" />
 
@@ -134,7 +127,6 @@
         android:id="@+id/tv_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="비밀번호"
@@ -145,15 +137,15 @@
 
     <EditText
         android:id="@+id/et_id"
-        android:layout_width="280dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="20dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/custom_edit_text"
         android:hint="아이디(이메일)"
-        android:inputType="textEmailAddress"
+        android:inputType="textEmailAddress|textNoSuggestions"
         android:paddingStart="10dp"
         android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@id/guideline_ver"
         app:layout_constraintTop_toBottomOf="@id/register_title" />
 
@@ -167,16 +159,14 @@
 
     <Button
         android:id="@+id/btn_register"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="@color/blue"
         android:text="회원 가입"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.285"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_hor_bottom"
+        app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -186,25 +176,13 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.08" />
 
-    <Button
-        android:id="@+id/btn_back"
-        android:layout_width="42dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/icon_arrow_back"
-        app:layout_constraintBottom_toTopOf="@id/guideline_hor"
-        app:layout_constraintStart_toStartOf="@+id/guideline_ver" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hor_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
 
-    <Button
-        android:id="@+id/btn_menu"
-        android:layout_width="43dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/icon_menu"
-        app:layout_constraintBottom_toTopOf="@id/guideline_hor"
-        app:layout_constraintEnd_toEndOf="@id/guideline_ver_end" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_ver_end"

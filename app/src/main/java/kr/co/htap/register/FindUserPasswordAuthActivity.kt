@@ -1,11 +1,12 @@
 package kr.co.htap.register
 
 import android.content.Intent
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -20,6 +21,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kr.co.htap.R
 import kr.co.htap.databinding.ActivityFindUserPasswordAuthBinding
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 /**
@@ -32,6 +34,7 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
     private lateinit var binding:ActivityFindUserPasswordAuthBinding
     private lateinit var email:String
     private lateinit var auth:FirebaseAuth
+    private lateinit var countdownTimer:CountDownTimer
     private var verificationId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +46,18 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
         binding.etEmail.setText(email)
         binding.etEmail.isEnabled = false
         setContentView(binding.root)
+        /* 타이머 설정 */
+        val timerTextView: TextView = binding.tvTimer
+        countdownTimer = object : CountDownTimer(120000, 1000) { // 2분(120000ms) 동안 1초(1000ms)마다 호출
+            override fun onTick(millisUntilFinished: Long) {
+                val minutes = millisUntilFinished / 60000
+                val seconds = (millisUntilFinished % 60000) / 1000
+                timerTextView.text = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
+            }
+            override fun onFinish() {
+                timerTextView.text = "00:00" // 타이머 종료 시간
+            }
+        }
 
         // [인증 요청] 클릭 -> 인증 번호 발송
         binding.tvAuthRequest.setOnClickListener {
@@ -58,17 +73,28 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
                 signInWithPhoneAuthCredential(credential)
             }
         }
-
+        // [인증번호 재발송] 클릭
+        binding.tvRetryAuth.setOnClickListener {
+            authByPhone()
+        }
     }
 
     // [인증 요청] 클릭
     private fun authByPhone() {
         var phone = binding.etPhone.text.toString()
         Log.d("FindPassword", "전화번호 : $phone")
-
+        if(phone.isEmpty()){
+            Toast.makeText(this, "전화번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+            return
+        }
         if(phone != null){
             binding.tvRetryAuth.visibility = View.VISIBLE // [인증번호 재발송] 보이게 표시
+            binding.tvTimer.visibility = View.VISIBLE // 2분 타이머 표시
             binding.etEnterCode.isEnabled = true
+
+            // 타이머 시작
+            countdownTimer?.cancel() // 기존에 동작중인 타이머가 있다면 취소
+            countdownTimer.start()
 
             /* 사용자 휴대전화로 인증 코드 전송 */
             auth.setLanguageCode("kr") // 한국어 설정
