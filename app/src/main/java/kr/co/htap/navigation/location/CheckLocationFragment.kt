@@ -1,5 +1,7 @@
 package kr.co.htap.navigation.location
 
+import android.location.Geocoder
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,8 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kr.co.htap.databinding.FragmentCheckLocationBinding
+import java.util.Locale
 
 /**
  *
@@ -38,7 +44,9 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
         binding.createChattingRoom.setOnClickListener {
             setBranchList()
         }
-
+        binding.sortItemByName.setOnClickListener{
+            // TODO:  목록 정렬하기 
+        }
         return binding.root
     }
 
@@ -70,4 +78,5 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
         binding.locationRecycler.adapter = adapter
         binding.locationRecycler.layoutManager = LinearLayoutManager(context)
     }
+    
 }

@@ -31,7 +31,7 @@
                 android:layout_weight="1" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/cancel_create"
+                android:id="@+id/sort_item_by_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/MainColor"

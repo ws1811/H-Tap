@@ -138,4 +138,6 @@ class LocationProvider(private val context: Context) {
             Log.d("test", "update 위치 실패")
         }
     }
+
+
 }
