@@ -30,6 +30,10 @@ class NavigationActivity : AppCompatActivity() {
     }
 
     private fun setUI() {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(binding.mainFrameLayout.id, fragments[0])
+        transaction.commit()
+
         binding.navigationView.setOnItemSelectedListener { item ->
             val transaction = supportFragmentManager.beginTransaction()
 
@@ -77,5 +81,7 @@ class NavigationActivity : AppCompatActivity() {
             }
             return@setOnItemSelectedListener false
         }
+
+
     }
 }
