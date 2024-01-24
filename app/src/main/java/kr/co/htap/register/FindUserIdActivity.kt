@@ -3,6 +3,7 @@ package kr.co.htap.register
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -32,7 +33,7 @@ class FindUserIdActivity : AppCompatActivity() {
         var view = binding.root
         setContentView(view)
         findBtn = binding.btnFindId
-
+        binding.etPhone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         findBtn.setOnClickListener {
             findUser()
         }
@@ -61,13 +62,14 @@ class FindUserIdActivity : AppCompatActivity() {
                         for(document in documents){
                             val userData = document.data
                             val userEmail = userData["email"].toString()
-                            binding.tvResult.text = "사용자 이메일 : $userEmail"
+                            binding.tvResultTitle.visibility = View.VISIBLE
+                            binding.tvResult.text = "$userEmail"
 
                             // invsibile 버튼 사용자에게 보여주기 (홈으로, 로그인)
-                            binding.btnHiddenHome.visibility = View.VISIBLE
+                            binding.btnHiddenTofindpassword.visibility = View.VISIBLE
                             binding.btnHiddenLogin.visibility = View.VISIBLE
-                            binding.btnHiddenHome.setOnClickListener {
-                                val intent = Intent(this, NavigationActivity::class.java)
+                            binding.btnHiddenTofindpassword.setOnClickListener {
+                                val intent = Intent(this, FindUserPasswordActivity::class.java)
                                 startActivity(intent)
                             }
                             binding.btnHiddenLogin.setOnClickListener {

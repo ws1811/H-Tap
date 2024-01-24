@@ -4,7 +4,11 @@ package kr.co.htap.register
 import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -40,6 +44,16 @@ class RegisterActivity: AppCompatActivity(){
 
         // 전화번호 입력시 자동 하이픈(-) 처리
        binding.etPhone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        // 전화번호 13자리 모두 입력시 키보드 숨김처리
+        binding.etPhone.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                if(s?.length == 13)
+                    hideKeyboard(binding.etPhone)
+            }
+
+        })
         // 뒤로가기 버튼 리스너 등록
         binding.btnBack.setOnClickListener {
             finish()
@@ -134,5 +148,11 @@ class RegisterActivity: AppCompatActivity(){
 
         }
 
+    }
+
+    // 키보드 숨기는 함수
+    private fun hideKeyboard(view: View) {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
