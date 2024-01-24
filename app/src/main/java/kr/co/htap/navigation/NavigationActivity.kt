@@ -1,9 +1,7 @@
 package kr.co.htap.navigation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AppCompatActivity
 import kr.co.htap.R
 import kr.co.htap.databinding.ActivityNavigationBinding
 import kr.co.htap.navigation.reservation.ReservationFragment
@@ -17,61 +15,67 @@ import kr.co.htap.navigation.reservation.ReservationFragment
 class NavigationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNavigationBinding
+    private var recentPosition = 0
+    private val fragments = listOf(
+        MainFragment(),
+        ReservationFragment(),
+        MyPageFragment()
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNavigationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.navigationView.setOnItemSelectedListener { item ->
-            when(item.itemId) {
-                R.id.mainFragment -> setFragment("home", MainFragment())
-                R.id.reservationFragment -> setFragment("reservation", ReservationFragment())
-                R.id.myPageFragment -> setFragment("myPage", MyPageFragment())
-
-            }
-            true
-        }
+        setUI()
     }
 
-    private fun setFragment(tag: String, fragment: Fragment) {
-        val manager: FragmentManager = supportFragmentManager
-        val fragTransaction = manager.beginTransaction()
+    private fun setUI() {
+        binding.navigationView.setOnItemSelectedListener { item ->
+            val transaction = supportFragmentManager.beginTransaction()
 
-        if (manager.findFragmentByTag(tag) == null){
-            fragTransaction.add(binding.mainFrameLayout.id, fragment, tag)
-        }
+            when (item.itemId) {
+                R.id.mainFragment -> {
+                    transaction.setCustomAnimations(
+                        R.anim.anim_slide_in_from_left_fade_in,
+                        R.anim.anim_fade_out
+                    )
+                    transaction.replace(binding.mainFrameLayout.id, fragments[0])
+                    transaction.commit()
+                    recentPosition = 0
 
-        val home = manager.findFragmentByTag("home")
-        val reservation = manager.findFragmentByTag("reservation")
-        val myPage = manager.findFragmentByTag("myPage")
+                    return@setOnItemSelectedListener true
+                }
 
-        if (home != null){
-            fragTransaction.hide(home)
-        }
+                R.id.reservationFragment -> {
+                    if (recentPosition < 1) {
+                        transaction.setCustomAnimations(
+                            R.anim.anim_slide_in_from_right_fade_in,
+                            R.anim.anim_fade_out
+                        )
+                    } else {
+                        transaction.setCustomAnimations(
+                            R.anim.anim_slide_in_from_left_fade_in,
+                            R.anim.anim_fade_out
+                        )
+                    }
+                    transaction.replace(binding.mainFrameLayout.id, fragments[1])
+                    transaction.commit()
+                    recentPosition = 1
+                    return@setOnItemSelectedListener true
+                }
 
-        if (reservation != null){
-            fragTransaction.hide(reservation)
-        }
-
-        if (myPage != null) {
-            fragTransaction.hide(myPage)
-        }
-
-        if (tag == "home") {
-            if (home != null) {
-                fragTransaction.show(home)
+                R.id.myPageFragment -> {
+                    transaction.setCustomAnimations(
+                        R.anim.anim_slide_in_from_right_fade_in,
+                        R.anim.anim_fade_out
+                    )
+                    transaction.replace(binding.mainFrameLayout.id, fragments[2])
+                    transaction.commit()
+                    recentPosition = 2
+                    return@setOnItemSelectedListener true
+                }
             }
+            return@setOnItemSelectedListener false
         }
-        else if (tag == "reservation") {
-            if (reservation!=null){
-                fragTransaction.show(reservation)
-            }
-        }
-        else if (tag == "myPage"){
-            if (myPage != null){
-                fragTransaction.show(myPage)
-            }
-        }
-        fragTransaction.commitAllowingStateLoss()
     }
 }

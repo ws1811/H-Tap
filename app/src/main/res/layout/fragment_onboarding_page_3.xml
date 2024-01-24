@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".onboarding.OnboardingPage3Fragment">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="70dp"
+        android:text="NFC"
+        android:textStyle="bold"
+        android:textColor="@color/MainColor"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="150dp"
+        android:text="NFC 태깅을 통한 본인 인증, 쿠폰 발급 등의 서비스를 이용하세요" />
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="350dp"
+        android:src="@drawable/img_onboarding_coupon"
+        android:layout_gravity="center"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="150dp"
+        android:text="3 / 3"
+        android:textSize="24sp"/>
+
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="시작하기"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/MainColor"
+        />
+</FrameLayout>

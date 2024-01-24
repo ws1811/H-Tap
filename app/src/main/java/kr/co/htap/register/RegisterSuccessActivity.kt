@@ -1,12 +1,12 @@
 package kr.co.htap.register
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import kr.co.htap.MainActivity
-import kr.co.htap.R
+import androidx.appcompat.app.AppCompatActivity
 import kr.co.htap.databinding.ActivityRegisterSuccessBinding
+import kr.co.htap.navigation.NavigationActivity
+
 /**
  *
  * @author 송원선
@@ -31,8 +31,8 @@ class RegisterSuccessActivity : AppCompatActivity() {
         buttonLogin = binding.btnLogin
         
         // [홈으로] 버튼 -> 메인 액티비티로 이동
-        buttonHome.setOnClickListener { 
-            val intent = Intent(this, MainActivity::class.java)
+        buttonHome.setOnClickListener {
+            val intent = Intent(this, NavigationActivity::class.java)
             startActivity(intent)
         }
         // [로그인] 버튼 -> 로그인 액티비티로 이동

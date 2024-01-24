@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".onboarding.OnboardingPage2Fragment">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="70dp"
+        android:text="예약"
+        android:textStyle="bold"
+        android:textColor="@color/MainColor"
+        android:textSize="24sp"/>
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="150dp"
+        android:text="간편한 예약으로 더 편리한 쇼핑을" />
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="350dp"
+        android:src="@drawable/img_onboarding_page_2"
+        android:layout_gravity="center"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="100dp"
+        android:text="2 / 3"
+        android:textSize="24sp"/>
+</FrameLayout>

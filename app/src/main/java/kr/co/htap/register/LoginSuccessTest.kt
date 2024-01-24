@@ -1,12 +1,11 @@
 package kr.co.htap.register
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
-import kr.co.htap.R
 import kr.co.htap.databinding.ActivityLoginSuccessTestBinding
 
 class LoginSuccessTest : AppCompatActivity() {

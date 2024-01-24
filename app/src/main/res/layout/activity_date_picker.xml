@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:padding="20dp"
-    tools:context=".navigation.reservation.DatePickerActivity">
+    tools:context=".navigation.reservation.DateSelect.DatePickerActivity">
 
     <TextView
         android:id="@+id/title"
