@@ -10,9 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kr.co.htap.R
 import kr.co.htap.databinding.FragmentReservationBinding
 import kr.co.htap.navigation.NavigationActivity
@@ -29,8 +34,14 @@ class ReservationFragment : Fragment() {
     private lateinit var adapter: ReservationListAdapter
     private lateinit var db: FirebaseFirestore
 
-    private var restaurant: ArrayList<StoreEntity> = ArrayList()
-    private var laundry: ArrayList<StoreEntity> = ArrayList()
+    private lateinit var restaurant: ArrayList<StoreEntity>
+    private lateinit var restaurantQuery: Query
+    private var isLastRestaurant: Boolean = false
+    private lateinit var laundry: ArrayList<StoreEntity>
+    private lateinit var laundryQuery: Query
+    private var isLastLaundry: Boolean = false
+
+    private var currentCategory: String = "restaurant"
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,27 +60,49 @@ class ReservationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setSelectButton()
+        configureData()
+        setUI()
+    }
+    private fun configureData() {
+        restaurant = arrayListOf()
+        restaurantQuery = db
+            .collection("Reservation")
+            .document("store")
+            .collection("restaurant")
+            .orderBy("telephone")
+            .limit(10)
+        isLastRestaurant = false
+        laundry = arrayListOf()
+        laundryQuery = db.collection("Reservation")
+            .document("store")
+            .collection("laundry")
+            .orderBy("telephone")
+            .limit(10)
+        isLastLaundry = false
     }
 
-    private fun setSelectButton() {
+    private fun setUI() {
         binding.restaurentButton.setOnClickListener {
-            if (restaurant.size == 0) {
-                configureInitData("restaurant")
-            }
-            setRecyclerView(restaurant)
-            underlineButtonText(binding.restaurentButton)
-            removeUnderlineFromButtonText(binding.laundryButton)
+            changeCategory("restaurant", restaurant, restaurantQuery)
         }
 
         binding.laundryButton.setOnClickListener {
-            if (laundry.size == 0) {
-                configureInitData("laundry")
-            }
-            setRecyclerView(laundry)
-            underlineButtonText(binding.laundryButton)
-            removeUnderlineFromButtonText(binding.restaurentButton)
+            changeCategory("laundry", laundry, laundryQuery)
         }
+
+        binding.reservationRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!binding.reservationRecyclerView.canScrollVertically(1) && newState == SCROLL_STATE_IDLE) {
+                    binding.progressBar.visibility = View.VISIBLE
+
+                    if (currentCategory == "restaurant") {
+                        fetchStoreData(currentCategory, restaurant, isLastRestaurant, restaurantQuery)
+                    } else {
+                        fetchStoreData(currentCategory, laundry, isLastLaundry, laundryQuery)
+                    }
+                }
+            }
+        })
 
         binding.restaurentButton.performClick()
     }
@@ -97,16 +130,28 @@ class ReservationFragment : Fragment() {
         button.text = button.text.toString()
     }
 
-    private fun configureInitData(type: String) {
-        db.collection("Reservation")
-            .document("store")
-            .collection(type)
-            .get()
-            .addOnSuccessListener { documents ->
-                val data = if (type == "restaurant") restaurant else laundry
+    private fun changeCategory(type: String, arrayList: ArrayList<StoreEntity>, query: Query) {
+        if (arrayList.size == 0) { fetchStoreData(type, arrayList, false, query) }
+        setRecyclerView(arrayList)
+        underlineButtonText(if (type.equals("restaurant")) binding.restaurentButton else binding.laundryButton)
+        removeUnderlineFromButtonText(if (type.equals("restaurant")) binding.laundryButton else binding.restaurentButton)
+        currentCategory = type
+    }
 
-                for (document in documents) {
-                    data.add(StoreEntity(
+    private fun fetchStoreData(type: String, arrayList: ArrayList<StoreEntity>, isLast: Boolean, query: Query) {
+        if (isLast) {
+            Toast.makeText(navigationActivity, "가게를 모두 불러왔습니다.", Toast.LENGTH_SHORT).show()
+            binding.progressBar.visibility = View.GONE
+            return
+        }
+
+        query
+            .get()
+            .addOnSuccessListener { documentSnapshots ->
+                val oldSize = arrayList.size
+
+                for (document in documentSnapshots) {
+                    arrayList.add(StoreEntity(
                         document.get("name").toString(),
                         document.get("category").toString(),
                         document.get("description").toString(),
@@ -116,10 +161,23 @@ class ReservationFragment : Fragment() {
                         document.get("belong").toString(),
                         document.get("operationTime") as ArrayList<String>))
                 }
-                binding.reservationRecyclerView.adapter?.notifyDataSetChanged()
+
+                val lastVisible = documentSnapshots.documents[documentSnapshots.size() - 1]
+
+                if (type == "restaurant") {
+                    restaurantQuery = query.startAfter(lastVisible).limit(10)
+                    isLastRestaurant = documentSnapshots.size() < 10
+                } else {
+                    laundryQuery = query.startAfter(lastVisible).limit(10)
+                    isLastLaundry = documentSnapshots.size() < 10
+                }
+
+                val newSize = arrayList.size
+                adapter.notifyItemRangeInserted(oldSize, newSize - oldSize)
+                binding.progressBar.visibility = View.GONE
             }
             .addOnFailureListener { exception ->
-                Log.d("hhh", "Error getting documents: ", exception)
+                Toast.makeText(navigationActivity, "데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
             }
     }
 }

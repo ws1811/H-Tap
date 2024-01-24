@@ -11,27 +11,11 @@
     android:clipToOutline="true"
     >
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="한식"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:padding="10dp"
-            android:layout_margin="10dp"
-            android:layout_weight="2"
-            app:layout_constraintDimensionRatio="1:1"
-            android:backgroundTint="@color/LightPurple"
-            android:background="@drawable/shape_circle"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:id="@+id/store_category"
-            />
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginStart="20dp"
             android:layout_weight="5"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
