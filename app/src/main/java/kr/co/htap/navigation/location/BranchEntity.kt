@@ -1,4 +1,4 @@
-package kr.co.htap.navigation.reservation
+package kr.co.htap.navigation.location
 
 /**
  *
@@ -8,4 +8,5 @@ data class BranchEntity (
     val name : String,
     val latitude : Double,
     val longitude : Double,
+    var distance : Double
 )

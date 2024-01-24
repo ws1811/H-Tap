@@ -8,17 +8,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.firebase.firestore.FirebaseFirestore
-import kr.co.htap.R
 import kr.co.htap.databinding.FragmentMainBinding
 import kr.co.htap.navigation.location.CheckLocationFragment
+import kr.co.htap.navigation.location.HomeDTO
 import kr.co.htap.navigation.location.LocationProvider
-import kr.co.htap.navigation.reservation.BranchEntity
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private lateinit var navigationActivity: NavigationActivity
     private lateinit var adapter: HomeViewPagerAdapter
     private lateinit var db: FirebaseFirestore
+    var itemList = ArrayList<HomeDTO>()
     override fun onAttach(context: Context) {
         super.onAttach(context)
         navigationActivity = context as NavigationActivity
@@ -28,6 +28,7 @@ class MainFragment : Fragment() {
         super.onCreate(savedInstanceState)
         db = FirebaseFirestore.getInstance()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,18 +42,8 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Sample data for the food items
-        val foodList = arrayListOf(
-            R.drawable.food1,
-            R.drawable.food2,
-            R.drawable.food3,
-            // Add more food items as needed
-        )
 
-        // Initialize the ViewPagerAdapter with the foodList
-        adapter = HomeViewPagerAdapter(foodList)
-        binding.sliderViewPager.adapter = adapter
-        binding.sliderViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        getInitData()
 
         var locationProvider = LocationProvider(navigationActivity)
         locationProvider.getLocation()
@@ -61,22 +52,67 @@ class MainFragment : Fragment() {
             val dialog = CheckLocationFragment(locationProvider)
             dialog.show(requireActivity().supportFragmentManager, "CheckLocationFragment")
         }
-
     }
-    private fun configureInitData() :ArrayList<BranchEntity> {
-        var branchList = ArrayList<BranchEntity>()
-        val docRef = db.collection("Branch").whereEqualTo("capital", true)
+
+    private fun getInitData(): ArrayList<HomeDTO> {
+        var count = 10;
+        db.collection("Reservation2")
+            .document("store")
+            .collection("restaurant")
             .get().addOnSuccessListener { documents ->
-                for (document in documents){
-                    branchList.add(
-                        BranchEntity(
+
+                for (document in documents.shuffled()) {
+                    itemList.add(
+                        HomeDTO(
                             document.get("name").toString(),
-                            document.get("latitude") as Double,
-                            document.get("longitude") as Double,
+                            document.get("belong").toString(),
+                            document.get("image").toString()
                         )
                     )
+                    count--
+                    if (count == 0) break
+                }
+                adapter = HomeViewPagerAdapter(itemList)
+                binding.sliderViewPager.adapter = adapter
+                binding.sliderViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+//                binding.sliderViewPager.setPageTransformer(ZoomOutPageTransformer())
+            }
+        return itemList
+    }
+
+    class ZoomOutPageTransformer : ViewPager2.PageTransformer {
+        private val MIN_SCALE = 0.90f
+        private val MIN_ALPHA = 0.7f
+        override fun transformPage(page: View, position: Float) {
+            page.apply {
+                val pageWidth = width
+                val pageHeight = height
+                when {
+                    position < -1 -> {
+                        alpha = 0f
+                    }
+
+                    position <= 1 -> {
+                        val scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position))
+                        val vertMargin = pageHeight * (1 - scaleFactor) / 2
+                        val horzMargin = pageWidth * (1 - scaleFactor) / 2
+                        translationX = if (position < 0) {
+                            horzMargin - vertMargin / 2
+                        } else {
+                            horzMargin + vertMargin / 2
+                        }
+                        scaleX = scaleFactor
+                        scaleY = scaleFactor
+
+                        alpha = (MIN_ALPHA +
+                                (((scaleFactor - MIN_SCALE) / (1 - MIN_SCALE)) * (1 - MIN_ALPHA)))
+                    }
+
+                    else -> {
+                        alpha = 0f
+                    }
                 }
             }
-        return branchList
+        }
     }
 }
