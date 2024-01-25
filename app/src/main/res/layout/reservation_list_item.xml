@@ -34,12 +34,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="가게 소개"
+                android:text="가게 소속"
                 android:ellipsize="end"
                 android:textSize="15sp"
                 android:maxLines="1"
                 android:textColor="@color/black"
-                android:id="@+id/store_description"
+                android:id="@+id/store_belong"
                 />
         </LinearLayout>
 
