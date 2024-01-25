@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
 import kr.co.htap.databinding.ActivityTimePickerBinding
 import kr.co.htap.navigation.reservation.DateDTO
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 /**
  *
@@ -73,8 +75,9 @@ class TimePickerActivity : AppCompatActivity() {
                     val t = data.key.split(":")
                     val hour = t[0].toInt()
                     val minute = t[1].toInt()
+                    val value = if (isAfterTime(data.key)) data.value else false
 
-                    timeData.add(TimeDTO(hour, minute, data.value))
+                    timeData.add(TimeDTO(hour, minute, value))
                 }
                 binding.reservationTimeRecyclerView.adapter?.notifyDataSetChanged()
             }
@@ -93,5 +96,14 @@ class TimePickerActivity : AppCompatActivity() {
         adapter = TimeListAdapter(timeData, storeName, date)
         binding.reservationTimeRecyclerView.adapter = adapter
         binding.reservationTimeRecyclerView.layoutManager = GridLayoutManager(this, 3)
+    }
+
+    private fun isAfterTime(time: String): Boolean {
+        val currentTime = System.currentTimeMillis()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val selectedTimeString = date.year.toString() + "-" + date.month.toString() + "-" + date.day.toString() + " $time" + ":00"
+        val selectedTimeMillis = dateFormat.parse(selectedTimeString)?.time ?: 0
+
+        return currentTime < selectedTimeMillis
     }
 }
