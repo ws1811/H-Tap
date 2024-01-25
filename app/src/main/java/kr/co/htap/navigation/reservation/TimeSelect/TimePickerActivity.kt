@@ -22,6 +22,7 @@ class TimePickerActivity : AppCompatActivity() {
     private lateinit var adapter: TimeListAdapter
 
     private lateinit var storeName: String
+    private lateinit var documentId: String
     private lateinit var date: DateDTO
     private var timeData: ArrayList<TimeDTO> = arrayListOf()
 
@@ -39,6 +40,7 @@ class TimePickerActivity : AppCompatActivity() {
 
     private fun configureData() {
         storeName = intent.getStringExtra("name") ?: ""
+        documentId = intent.getStringExtra("documentId") ?: ""
 
         date = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getSerializableExtra("date", DateDTO::class.java)?: DateDTO(0, 0, 0)
@@ -51,7 +53,7 @@ class TimePickerActivity : AppCompatActivity() {
         db
             .collection("Reservation")
             .document("record")
-            .collection(storeName)
+            .collection(documentId)
             .document(date.year.toString() + "-" + minute + "-" + date.day.toString())
             .collection("time")
             .get()
@@ -93,7 +95,7 @@ class TimePickerActivity : AppCompatActivity() {
             finish()
         }
 
-        adapter = TimeListAdapter(timeData, storeName, date)
+        adapter = TimeListAdapter(timeData, documentId, date)
         binding.reservationTimeRecyclerView.adapter = adapter
         binding.reservationTimeRecyclerView.layoutManager = GridLayoutManager(this, 3)
     }

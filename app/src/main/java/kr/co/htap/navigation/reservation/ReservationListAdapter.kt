@@ -51,11 +51,12 @@ class ReservationListAdapter(private val storeList: ArrayList<StoreEntity>): Rec
                 holder.itemView.context,
                 R.style.CustomDatePickerDialog,
                 { _, year, month, dayOfMonth ->
-                val selectedDate = DateDTO(year, month + 1, dayOfMonth)
-                val intent = Intent(holder.itemView.context, TimePickerActivity::class.java)
-                intent.putExtra("name", storeData.name)
-                intent.putExtra("date", selectedDate)
-                startActivity(holder.itemView.context, intent, null) },
+                    val selectedDate = DateDTO(year, month + 1, dayOfMonth)
+                    val intent = Intent(holder.itemView.context, TimePickerActivity::class.java)
+                    intent.putExtra("name", storeData.name)
+                    intent.putExtra("date", selectedDate)
+                    intent.putExtra("documentId", storeData.documentId)
+                    startActivity(holder.itemView.context, intent, null) },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH))
