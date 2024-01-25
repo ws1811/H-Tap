@@ -4,17 +4,17 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -35,12 +35,11 @@ import kr.co.htap.navigation.NavigationActivity
 import kr.co.htap.helper.isNotLoggedIn
 import kr.co.htap.onboarding.OnboardingActivity
 
-
 /**
  *
  * @author 송원선
  * 로그인
- *
+ * 1. 일반 로그인 , 2. 구글 로그인
  */
 class LoginActivity : AppCompatActivity() {
 
@@ -50,11 +49,14 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var firestore:FirebaseFirestore
     private var GOOGLE_LOGIN_CODE = 9001
+    private lateinit var splashScreen: SplashScreen
+    private var isSplashEnd = false
 
     private lateinit var googleLoginLauncher: ActivityResultLauncher<Intent>
     private lateinit var navigationIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -66,32 +68,39 @@ class LoginActivity : AppCompatActivity() {
         setContentView(view)
         navigationIntent = Intent(this, NavigationActivity::class.java)
         navigationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
         // [회원가입] 클릭 -> 회원가입 액티비티로 이동
         registserView = binding.tvRegister
-        registserView.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-        }
+        registserView.setOnClickListener(object : OnSingleClickListener() {
+            override fun onSingleClick(v: View?) {
+                val intent = Intent(v?.context, RegisterActivity::class.java)
+                startActivity(intent)
+            }
+        })
 
         // 로그인 버튼 클릭 (일반로그인)
-        loginButton.setOnClickListener {
-            // 키보드 숨기기
-            hideKeyBoard(it)
-            // 로그인 함수 호출
-            customLogin()
-        }
+        loginButton.setOnClickListener (object : OnSingleClickListener(){
+            override fun onSingleClick(v: View?) {
+                // 키보드 숨기기
+                hideKeyBoard(v!!)
+                // 로그인 함수 호출
+                customLogin()
+            }
+        })
 
         // [아이디 찾기] 클릭
-        binding.tvFindId.setOnClickListener {
-            val intent = Intent(this, FindUserIdActivity::class.java)
-            startActivity(intent)
-        }
+        binding.tvFindId.setOnClickListener(object : OnSingleClickListener(){
+            override fun onSingleClick(v: View?) {
+                val intent = Intent(v?.context, FindUserIdActivity::class.java)
+                startActivity(intent)
+            }
+        })
         // [비밀번호 찾기] 클릭
-        binding.tvFindPassword.setOnClickListener {
-            val intent = Intent(this, FindUserPasswordActivity::class.java)
-            startActivity(intent)
-        }
+        binding.tvFindPassword.setOnClickListener(object : OnSingleClickListener(){
+            override fun onSingleClick(v: View?) {
+                val intent = Intent(v?.context, FindUserPasswordActivity::class.java)
+                startActivity(intent)
+            }
+        })
         googleLoginLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == -1) {
@@ -102,7 +111,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
 
-        // 구글 로그인
+        /* 구글 로그인 */
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -111,9 +120,12 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
         // 구글 로그인 버튼 클릭
-        googleLoginButton.setOnClickListener {
-            googleLogin()
-        }
+        googleLoginButton.setOnClickListener (object : OnSingleClickListener(){
+            override fun onSingleClick(v: View?) {
+                googleLogin()
+            }
+        })
+
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 
         if (isFirstRun()) {
@@ -123,9 +135,14 @@ class LoginActivity : AppCompatActivity() {
 
         if (Firebase.auth.isNotLoggedIn() == false) {
             startActivity(Intent(this, NavigationActivity::class.java))
+            finish()
         }
     }
 
+    private fun timeSleep() {
+        Thread.sleep(2000)
+        isSplashEnd = true
+    }
 
     // 김기훈
     private fun isFirstRun(): Boolean {
@@ -171,6 +188,7 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this@LoginActivity, NavigationActivity::class.java)
         setResult(Activity.RESULT_OK)
         startActivity(intent)
+        finish()
     }
 
     /**
@@ -197,7 +215,7 @@ class LoginActivity : AppCompatActivity() {
         val signInIntent = googleSignInClient!!.signInIntent
 //        googleLoginLauncher.launch(signInIntent)
         startActivityForResult(signInIntent, RC_SIGN_IN)
-        // -> onActivityResult 콜백 호출
+        // startActivityForResult() -> onActivityResult 콜백 호출
     }
 
     // [START auth_with_google]
@@ -333,7 +351,8 @@ class LoginActivity : AppCompatActivity() {
     companion object {
         private const val RC_SIGN_IN = 9001
     }
-    /* 키보드 숨기는 함수 */
+
+   /* 키보드 숨기는 함수 */
     private fun hideKeyBoard(view: View) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)

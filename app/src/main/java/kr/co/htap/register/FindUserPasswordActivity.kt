@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import com.google.firebase.auth.FirebaseAuth
@@ -33,9 +34,18 @@ class FindUserPasswordActivity : AppCompatActivity() {
 
 
         // [확인] 버튼 클릭
-        binding.btnInputEmail.setOnClickListener {
-            findPassword()
-        }
+        binding.btnInputEmail.setOnClickListener(object :OnSingleClickListener(){
+            override fun onSingleClick(v: View?) {
+                findPassword()
+            }
+        })
+
+        // 뒤로가기 아이콘 클릭
+        binding.ivGoback.setOnClickListener(object : OnSingleClickListener(){
+            override fun onSingleClick(v: View?) {
+                finish()
+            }
+        })
     }
 
     /*

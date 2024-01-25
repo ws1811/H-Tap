@@ -159,7 +159,8 @@ class ReservationFragment : Fragment() {
                         document.get("telephone").toString(),
                         document.get("address").toString(),
                         document.get("belong").toString(),
-                        document.get("operationTime") as ArrayList<String>))
+                        document.get("operationTime") as ArrayList<String>,
+                        document.id))
                 }
 
                 val lastVisible = documentSnapshots.documents[documentSnapshots.size() - 1]

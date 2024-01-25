@@ -1,9 +1,11 @@
 package kr.co.htap.register
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -58,25 +60,37 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
                 timerTextView.text = "00:00" // 타이머 종료 시간
             }
         }
-
+        // 전화번호 입력시 자동 하이픈(-) 처리
+        binding.etPhone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         // [인증 요청] 클릭 -> 인증 번호 발송
-        binding.tvAuthRequest.setOnClickListener {
-            authByPhone()
-        }
-
-        // 인증번호 입력 후 [인증하기] 클릭
-        binding.btnAuthCheck.setOnClickListener {
-            Log.d("FindPassword", "btnAuthCheck Clicked")
-            val enterCode = binding.etEnterCode.text.toString()
-            if(enterCode.isNotEmpty()){
-                val credential = PhoneAuthProvider.getCredential(verificationId, enterCode)
-                signInWithPhoneAuthCredential(credential)
+        binding.tvAuthRequest.setOnClickListener (object :OnSingleClickListener(){
+            override fun onSingleClick(v: View?) {
+                authByPhone()
             }
-        }
+        })
+        // 인증번호 입력 후 [인증하기] 클릭 -> 인증 진행
+        binding.btnAuthCheck.setOnClickListener (object : OnSingleClickListener() {
+            override fun onSingleClick(v: View?) {
+                Log.d("FindPassword", "btnAuthCheck Clicked")
+                val enterCode = binding.etEnterCode.text.toString()
+                if(enterCode.isNotEmpty()){
+                    val credential = PhoneAuthProvider.getCredential(verificationId, enterCode)
+                    signInWithPhoneAuthCredential(credential)
+                }
+            }
+        })
         // [인증번호 재발송] 클릭
-        binding.tvRetryAuth.setOnClickListener {
-            authByPhone()
-        }
+        binding.tvRetryAuth.setOnClickListener(object :OnSingleClickListener() {
+            override fun onSingleClick(v: View?) {
+                authByPhone()
+            }
+        })
+        // 뒤로가기 아이콘 클릭
+        binding.ivGoback.setOnClickListener(object : OnSingleClickListener(){
+            override fun onSingleClick(v: View?) {
+                finish()
+            }
+        })
     }
 
     // [인증 요청] 클릭
@@ -88,6 +102,9 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
             return
         }
         if(phone != null){
+            binding.tvAuthRequest.isEnabled = false // [인증 요청] 비활성화 & 회색으로 변경
+            binding.tvAuthRequest.setTextColor(Color.rgb(128, 128, 128))
+            Toast.makeText(this, "인증번호가 발송되었습니다.", Toast.LENGTH_SHORT).show()
             binding.tvRetryAuth.visibility = View.VISIBLE // [인증번호 재발송] 보이게 표시
             binding.tvTimer.visibility = View.VISIBLE // 2분 타이머 표시
             binding.etEnterCode.isEnabled = true

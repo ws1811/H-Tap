@@ -16,7 +16,7 @@ import kr.co.htap.navigation.reservation.Loading.ReservationLoadingActivity
  *
  */
 class TimeListAdapter(private val timeList: ArrayList<TimeDTO>,
-                      private val storeName: String,
+                      private val documentId: String,
                       private val date: DateDTO
 ): RecyclerView.Adapter<TimeListAdapter.MyViewHolder>() {
     inner class MyViewHolder(binding: ReservationTimeButtonBinding): RecyclerView.ViewHolder(binding.root) {
@@ -40,7 +40,7 @@ class TimeListAdapter(private val timeList: ArrayList<TimeDTO>,
             val intent = Intent(holder.root.context, ReservationLoadingActivity::class.java)
             val month = if (date.month < 10) "0" + date.month else date.month.toString()
 
-            intent.putExtra("name", storeName)
+            intent.putExtra("documentId", documentId)
             intent.putExtra("date", date.year.toString() + "-" + month + "-" + date.day.toString())
             intent.putExtra("time", timeList[position].hour.toString() + ":" + minute)
             holder.root.context.startActivity(intent)

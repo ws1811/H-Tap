@@ -13,44 +13,44 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
         android:layout_marginTop="70dp"
-        android:text="H-Tap 소개"
+        android:text="H-Tap"
         android:textSize="24sp"
         android:textColor="@color/MainColor"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline_hor_title"/>
 
     <TextView
         android:id="@+id/content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
-        android:text="H-Tap은  쇼핑을 더욱 편리하게 만들어줍니다.
-                     \n간단한 예약을 통해 더 효율적으로 쇼핑하세요!"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        android:layout_marginTop="20dp"
+        android:text="H-Tap은  쇼핑을 더욱 편리하게 만들어줍니다. \n간단한 예약을 통해 더 효율적으로 쇼핑하세요!"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor_title"
         app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
         app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
-        app:layout_constraintBottom_toTopOf="@id/iv_img"
         />
 
     <ImageView
         android:id="@+id/iv_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
         android:layout_gravity="center"
-        android:src="@drawable/icon_logo_sample"
+        android:src="@drawable/logo"
         app:layout_constraintBottom_toTopOf="@+id/guideline_hor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/content"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@id/content" />
 
     <TextView
         android:id="@+id/tv_page"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
-        android:layout_marginTop="20dp"
         android:text="1 / 3"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +62,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.7" />
+        app:layout_constraintGuide_percent="0.85" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hor_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_ver_start"

@@ -50,6 +50,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.7.6'
     implementation 'androidx.navigation:navigation-ui-ktx:2.7.6'
     implementation 'com.google.firebase:firebase-database:20.3.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -59,6 +61,9 @@ dependencies {
 
     // Lottie
     implementation 'com.airbnb.android:lottie:6.3.0'
+
+    // Splash Screen
+    implementation 'androidx.core:core-splashscreen:1.0.1'
 
     // Firebase
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
@@ -75,11 +80,14 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation 'com.ramotion.paperonboarding:paper-onboarding:1.1.3'
-
     // For Coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1"
 
     implementation 'androidx.fragment:fragment-ktx:1.6.2'
+    // https://mvnrepository.com/artifact/androidx.viewpager2/viewpager2
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    // kakao
+    implementation "com.kakao.sdk:v2-all:2.19.0" // 전체 모듈 설치, 2.11.0 버전부터 지원
 }

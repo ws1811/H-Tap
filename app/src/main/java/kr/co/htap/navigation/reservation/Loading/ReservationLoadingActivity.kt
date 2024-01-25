@@ -40,7 +40,7 @@ class ReservationLoadingActivity : AppCompatActivity() {
     }
 
     private fun reserve() {
-        val storeName = intent.getStringExtra("name")?: ""
+        val documentId = intent.getStringExtra("documentId")?: ""
         val date = intent.getStringExtra("date")?: ""
         val time = intent.getStringExtra("time")?: ""
         val userid = Firebase.auth.currentUser?.uid
@@ -48,7 +48,7 @@ class ReservationLoadingActivity : AppCompatActivity() {
         val ref = db
             .collection("Reservation")
             .document("record")
-            .collection(storeName)
+            .collection(documentId)
             .document(date)
             .collection("time")
             .document(time)
