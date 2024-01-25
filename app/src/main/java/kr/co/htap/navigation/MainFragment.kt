@@ -67,7 +67,7 @@ class MainFragment : Fragment() {
     private fun getInitView(): ArrayList<HomeDTO> {
         itemList.clear()
         var count = 10;
-        db.collection("Reservation2")
+        db.collection("Reservation")
             .document("store")
             .collection("restaurant")
             .get().addOnSuccessListener { documents ->
@@ -91,7 +91,7 @@ class MainFragment : Fragment() {
     fun getViewByBranch(name : String): ArrayList<HomeDTO> {
         itemList.clear()
         var count = 10;
-        db.collection("Reservation2")
+        db.collection("Reservation")
             .document("store")
             .collection("restaurant")
             .get().addOnSuccessListener { documents ->
