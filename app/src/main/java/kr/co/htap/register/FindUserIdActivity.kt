@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,7 +24,7 @@ import kr.co.htap.navigation.NavigationActivity
  */
 class FindUserIdActivity : AppCompatActivity() {
     private lateinit var binding:ActivityFindUserIdBinding
-    private lateinit var findBtn:Button
+    private lateinit var findBtn:TextView
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
 
@@ -68,21 +69,28 @@ class FindUserIdActivity : AppCompatActivity() {
                         for(document in documents){
                             val userData = document.data
                             val userEmail = userData["email"].toString()
+                            // 결과 보여주기
                             binding.tvResultTitle.text = "[$name] 님의 이메일입니다."
                             binding.tvResultTitle.visibility = View.VISIBLE
+                            binding.tvResult.visibility = View.VISIBLE
                             binding.tvResult.text = "$userEmail"
 
                             // invsibile 버튼 사용자에게 보여주기 (홈으로, 로그인)
                             binding.btnHiddenTofindpassword.visibility = View.VISIBLE
                             binding.btnHiddenLogin.visibility = View.VISIBLE
-                            binding.btnHiddenTofindpassword.setOnClickListener {
-                                val intent = Intent(this, FindUserPasswordActivity::class.java)
-                                startActivity(intent)
-                            }
-                            binding.btnHiddenLogin.setOnClickListener {
-                                val intent = Intent(this, LoginActivity::class.java)
-                                startActivity(intent)
-                            }
+                            binding.btnHiddenTofindpassword.setOnClickListener(object : OnSingleClickListener() {
+                                override fun onSingleClick(v: View?) {
+                                    val intent = Intent(v?.context, FindUserPasswordActivity::class.java)
+                                    startActivity(intent)
+                                }
+                            })
+                            binding.btnHiddenLogin.setOnClickListener (object : OnSingleClickListener() {
+                                override fun onSingleClick(v: View?) {
+                                    auth.signOut()
+                                    val intent = Intent(v?.context, LoginActivity::class.java)
+                                    startActivity(intent)
+                                }
+                            })
                         }
                     }else{ // 사용자가 존재하지 않는 경우
                         Toast.makeText(this, "해당하는 사용자 정보가 없습니다.", Toast.LENGTH_LONG).show()

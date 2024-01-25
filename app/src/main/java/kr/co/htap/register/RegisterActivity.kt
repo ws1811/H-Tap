@@ -52,7 +52,6 @@ class RegisterActivity: AppCompatActivity(){
                 if(s?.length == 13)
                     hideKeyboard(binding.etPhone)
             }
-
         })
 
         // 회원 가입 버튼 리스너 등록
