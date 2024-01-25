@@ -69,10 +69,12 @@ class LoginActivity : AppCompatActivity() {
 
         // [회원가입] 클릭 -> 회원가입 액티비티로 이동
         registserView = binding.tvRegister
-        registserView.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-        }
+        registserView.setOnClickListener(object : OnSingleClickListener() {
+            override fun onSingleClick(v: View?) {
+                val intent = Intent(v?.context, RegisterActivity::class.java)
+                startActivity(intent)
+            }
+        })
 
         // 로그인 버튼 클릭 (일반로그인)
         loginButton.setOnClickListener (object : OnSingleClickListener(){
@@ -85,15 +87,19 @@ class LoginActivity : AppCompatActivity() {
         })
 
         // [아이디 찾기] 클릭
-        binding.tvFindId.setOnClickListener {
-            val intent = Intent(this, FindUserIdActivity::class.java)
-            startActivity(intent)
-        }
+        binding.tvFindId.setOnClickListener(object : OnSingleClickListener(){
+            override fun onSingleClick(v: View?) {
+                val intent = Intent(v?.context, FindUserIdActivity::class.java)
+                startActivity(intent)
+            }
+        })
         // [비밀번호 찾기] 클릭
-        binding.tvFindPassword.setOnClickListener {
-            val intent = Intent(this, FindUserPasswordActivity::class.java)
-            startActivity(intent)
-        }
+        binding.tvFindPassword.setOnClickListener(object : OnSingleClickListener(){
+            override fun onSingleClick(v: View?) {
+                val intent = Intent(v?.context, FindUserPasswordActivity::class.java)
+                startActivity(intent)
+            }
+        })
         googleLoginLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == -1) {
@@ -113,9 +119,11 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
         // 구글 로그인 버튼 클릭
-        googleLoginButton.setOnClickListener {
-            googleLogin()
-        }
+        googleLoginButton.setOnClickListener (object : OnSingleClickListener(){
+            override fun onSingleClick(v: View?) {
+                googleLogin()
+            }
+        })
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 
         if (isFirstRun()) {
@@ -199,7 +207,7 @@ class LoginActivity : AppCompatActivity() {
         val signInIntent = googleSignInClient!!.signInIntent
 //        googleLoginLauncher.launch(signInIntent)
         startActivityForResult(signInIntent, RC_SIGN_IN)
-        // -> onActivityResult 콜백 호출
+        // startActivityForResult() -> onActivityResult 콜백 호출
     }
 
     // [START auth_with_google]
