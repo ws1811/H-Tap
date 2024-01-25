@@ -77,12 +77,14 @@ class LoginActivity : AppCompatActivity() {
         }
 
         // 로그인 버튼 클릭 (일반로그인)
-        loginButton.setOnClickListener {
-            // 키보드 숨기기
-            hideKeyBoard(it)
-            // 로그인 함수 호출
-            customLogin()
-        }
+        loginButton.setOnClickListener (object : OnSingleClickListener(){
+            override fun onSingleClick(v: View?) {
+                // 키보드 숨기기
+                hideKeyBoard(v!!)
+                // 로그인 함수 호출
+                customLogin()
+            }
+        })
 
         // [아이디 찾기] 클릭
         binding.tvFindId.setOnClickListener {

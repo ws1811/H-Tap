@@ -56,9 +56,11 @@ class RegisterActivity: AppCompatActivity(){
         })
 
         // 회원 가입 버튼 리스너 등록
-        binding.btnRegister.setOnClickListener {
-            register()
-        }
+        binding.btnRegister.setOnClickListener(object : OnSingleClickListener() {
+            override fun onSingleClick(v: View?) {
+                register()
+            }
+        })
     }
 
     // 회원 가입

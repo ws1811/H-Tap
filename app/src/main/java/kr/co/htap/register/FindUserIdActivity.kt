@@ -36,13 +36,14 @@ class FindUserIdActivity : AppCompatActivity() {
         setContentView(view)
         findBtn = binding.btnFindId
         binding.etPhone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
-        findBtn.setOnClickListener {
-            //키패드 숨기기
-            hideKeyboard()
-            // 아이디 찾기 함수 호출
-            findUser()
-        }
-
+        findBtn.setOnClickListener (object : OnSingleClickListener(){
+            override fun onSingleClick(v: View?) {
+                //키패드 숨기기
+                hideKeyboard()
+                // 아이디 찾기 함수 호출
+                findUser()
+            }
+        })
     }
 
     private fun findUser(){
