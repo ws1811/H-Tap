@@ -90,7 +90,7 @@
         android:gravity="center"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/divider"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_hor_social"
         app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
         app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver"
@@ -124,15 +124,26 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
     <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
+        android:id="@+id/divider_left"
+        android:layout_width="120dp"
+        android:layout_height="2dp"
         android:layout_marginBottom="272dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver" />
+
+    <View
+        android:id="@+id/divider_right"
+        android:layout_width="120dp"
+        android:layout_height="2dp"
+        android:layout_marginBottom="272dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
+        app:layout_constraintHorizontal_bias="0.0"
+        />
 
     <TextView
         android:id="@+id/tv_register"
@@ -158,15 +169,58 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
+    <TextView
+        android:id="@+id/tv_or"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="or"
+        android:textStyle="bold"
+        android:textColor="@color/MainColor"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_marginTop="-5dp"
+        app:layout_constraintStart_toEndOf="@id/divider_left"
+        app:layout_constraintEnd_toStartOf="@id/divider_right"
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor_social"/>
+
     <ImageView
         android:id="@+id/iv_google_login"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
-        app:layout_constraintStart_toStartOf="@+id/guideline_ver"
-        app:layout_constraintTop_toBottomOf="@id/divider"
-        app:srcCompat="@drawable/icon_google_signin"
+        app:layout_constraintStart_toStartOf="@+id/guideline_social_login"
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor_social"
+        app:srcCompat="@drawable/icon_google_custom"
         tools:layout_editor_absoluteY="479dp" />
+
+    <ImageView
+        android:id="@+id/iv_kakao_login"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_social_login"
+        app:layout_constraintTop_toBottomOf="@id/iv_google_login"
+        app:srcCompat="@drawable/icon_kakao_login"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteY="479dp" />
+
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_social_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hor_social"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.63" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

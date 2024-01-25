@@ -66,9 +66,6 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
         binding.tvAuthRequest.setOnClickListener (object :OnSingleClickListener(){
             override fun onSingleClick(v: View?) {
                 authByPhone()
-                binding.tvAuthRequest.isEnabled = false // [인증 요청] 비활성화 & 회색으로 변경
-                binding.tvAuthRequest.setTextColor(Color.rgb(128, 128, 128))
-                Toast.makeText(v?.context, "인증번호가 발송되었습니다.", Toast.LENGTH_SHORT).show()
             }
         })
         // 인증번호 입력 후 [인증하기] 클릭 -> 인증 진행
@@ -88,6 +85,12 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
                 authByPhone()
             }
         })
+        // 뒤로가기 아이콘 클릭
+        binding.ivGoback.setOnClickListener(object : OnSingleClickListener(){
+            override fun onSingleClick(v: View?) {
+                finish()
+            }
+        })
     }
 
     // [인증 요청] 클릭
@@ -99,6 +102,9 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
             return
         }
         if(phone != null){
+            binding.tvAuthRequest.isEnabled = false // [인증 요청] 비활성화 & 회색으로 변경
+            binding.tvAuthRequest.setTextColor(Color.rgb(128, 128, 128))
+            Toast.makeText(this, "인증번호가 발송되었습니다.", Toast.LENGTH_SHORT).show()
             binding.tvRetryAuth.visibility = View.VISIBLE // [인증번호 재발송] 보이게 표시
             binding.tvTimer.visibility = View.VISIBLE // 2분 타이머 표시
             binding.etEnterCode.isEnabled = true

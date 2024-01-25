@@ -19,18 +19,19 @@
         android:textSize="24sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline_hor_title"/>
     <TextView
         android:id="@+id/content"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
         android:layout_marginTop="20dp"
-        android:text="간편한 예약으로 더 편리한 쇼핑을"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        android:gravity="center"
+        android:text="간편한 예약으로 더 편리한 쇼핑을 즐겨보세요"
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor_title"
         app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
-        app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
-        app:layout_constraintBottom_toTopOf="@id/iv_img"/>
+        app:layout_constraintEnd_toEndOf="@id/guideline_ver_end" />
 
     <ImageView
         android:id="@+id/iv_img"
@@ -52,7 +53,6 @@
         android:layout_marginBottom="100dp"
         android:text="2 / 3"
         android:textSize="24sp"
-        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline_hor"/>
@@ -62,8 +62,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.7" />
-
+        app:layout_constraintGuide_percent="0.85" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hor_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_ver_start"
         android:layout_width="wrap_content"

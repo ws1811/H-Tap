@@ -29,6 +29,11 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.common.util.Utility
+import com.kakao.sdk.user.UserApiClient
 import kr.co.htap.R
 import kr.co.htap.databinding.ActivityLoginBinding
 import kr.co.htap.navigation.NavigationActivity
@@ -68,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(view)
         navigationIntent = Intent(this, NavigationActivity::class.java)
         navigationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
+        Log.d("kakao", "keyhash : ${Utility.getKeyHash(this)}")
         // [회원가입] 클릭 -> 회원가입 액티비티로 이동
         registserView = binding.tvRegister
         registserView.setOnClickListener(object : OnSingleClickListener() {
@@ -112,7 +117,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
 
-        // 구글 로그인
+        /* 구글 로그인 */
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -126,6 +131,15 @@ class LoginActivity : AppCompatActivity() {
                 googleLogin()
             }
         })
+
+        /* 카카오 로그인 */
+        // 카카오 로그인 버튼 클릭
+        binding.ivKakaoLogin.setOnClickListener(object :OnSingleClickListener() {
+            override fun onSingleClick(v: View?) {
+                kakaoLogin()
+            }
+        })
+        /**/
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 
         if (isFirstRun()) {
@@ -135,6 +149,7 @@ class LoginActivity : AppCompatActivity() {
 
         if (Firebase.auth.isNotLoggedIn() == false) {
             startActivity(Intent(this, NavigationActivity::class.java))
+            finish()
         }
     }
 
@@ -187,6 +202,7 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this@LoginActivity, NavigationActivity::class.java)
         setResult(Activity.RESULT_OK)
         startActivity(intent)
+        finish()
     }
 
     /**
@@ -348,6 +364,49 @@ class LoginActivity : AppCompatActivity() {
     }
     companion object {
         private const val RC_SIGN_IN = 9001
+    }
+
+    /* 카카오 로그인 */
+    private fun kakaoLogin() {
+        // 카카오계정으로 로그인 공통 callback 구성
+        // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
+        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+            if (error != null) {
+                Log.e("KakaoLogin", "카카오계정으로 로그인 실패", error)
+            } else if (token != null) {
+                Log.i("KaKaoLogin", "카카오계정으로 로그인 성공 ${token.accessToken}")
+                // 카카오 로그인 사용자 Firebase 등록
+                checkAndAddUserToFirestore()
+            }
+        }
+        // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+        if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+            UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
+                if (error != null) {
+                    Log.e("KakaoLogin", "카카오톡으로 로그인 실패", error)
+
+                    // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+                    // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+                    if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                        return@loginWithKakaoTalk
+                    }
+
+                    // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
+                    UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+                } else if (token != null) {
+                    Log.i("KakaoLogin", "카카오톡으로 로그인 성공 ${token.accessToken}")
+                }
+            }
+        } else {
+            UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+        }
+    }
+    // 카카오 로그인 사용자가 Firestore에 저장되어 있는지 확인하고 없으면 추가
+    private fun checkAndAddUserToFirestore(){
+        // 1. 카카오 토큰 받기
+        // 2. 토큰을 사용해 카카오 유저 아이디 얻기
+        // 3. Firebase Admin SDK에서 유저 아이디를 통하여 firebase 토큰 생성
+        // 4. signInWithCustomToken으로 유저 등록
     }
     /* 키보드 숨기는 함수 */
     private fun hideKeyBoard(view: View) {
