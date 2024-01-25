@@ -5,5 +5,16 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <!-- Splash 화면의 배경색 지정 -->
+        <item name="windowSplashScreenBackground">@color/LightPurple</item>
+        <!-- Splash 화면의 중앙에 위치할 아이콘 Drawable 지정 -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/icon_main</item>
+        <!-- Splash 화면이 나타나는 시간 지정 -->
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/Theme.HTap</item>
+    </style>
+
+
     <style name="Theme.HTap" parent="Base.Theme.HTap" />
 </resources>

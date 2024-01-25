@@ -4,17 +4,17 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -35,7 +35,6 @@ import kr.co.htap.navigation.NavigationActivity
 import kr.co.htap.helper.isNotLoggedIn
 import kr.co.htap.onboarding.OnboardingActivity
 
-
 /**
  *
  * @author 송원선
@@ -50,11 +49,14 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var firestore:FirebaseFirestore
     private var GOOGLE_LOGIN_CODE = 9001
+    private lateinit var splashScreen: SplashScreen
+    private var isSplashEnd = false
 
     private lateinit var googleLoginLauncher: ActivityResultLauncher<Intent>
     private lateinit var navigationIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -126,6 +128,10 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun timeSleep() {
+        Thread.sleep(2000)
+        isSplashEnd = true
+    }
 
     // 김기훈
     private fun isFirstRun(): Boolean {
