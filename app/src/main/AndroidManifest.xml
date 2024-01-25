@@ -6,6 +6,8 @@
 
     <uses-feature android:name="android.hardware.nfc" /> <!-- 네트워크 사용 -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCEPT_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"

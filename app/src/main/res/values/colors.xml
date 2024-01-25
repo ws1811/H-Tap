@@ -13,5 +13,6 @@
     <color name="LightGreen">#66BAA8</color>
     <color name="mint">#C5FCEE</color>
     <color name="red">#ff0000</color>
+    <color name="grey">#B1B1B1</color>
     <color name="lilac">#E6E0E9</color>
 </resources>
