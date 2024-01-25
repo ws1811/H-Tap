@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kr.co.htap.R
 import kr.co.htap.databinding.ActivityNavigationBinding
+import kr.co.htap.navigation.myPage.views.MyPageFragment
 import kr.co.htap.navigation.reservation.ReservationFragment
 
 /**
