@@ -71,13 +71,11 @@
         <activity
             android:name=".nfc.view.NfcIdentificationActivity"
             android:exported="true">
-
             <!-- NFC 스캔 시 발생하는 Intent를 이 액티비티에서 처리할 수 있도록 필터를 등록합니다. -->
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data
                     android:host="example.com"
                     android:path="/nfcsample"
@@ -93,7 +91,6 @@
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data
                     android:host="example.com"
                     android:path="/nfcsample1"
