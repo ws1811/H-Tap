@@ -7,13 +7,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kr.co.htap.databinding.FragmentCheckLocationBinding
+import kr.co.htap.navigation.MainFragment
 import java.util.Locale
 
 /**
@@ -31,6 +35,7 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
         isCancelable = true
         db = FirebaseFirestore.getInstance()
 
+
     }
 
     override fun onCreateView(
@@ -38,17 +43,36 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCheckLocationBinding.inflate(inflater)
+        binding = FragmentCheckLocationBinding.inflate(inflater, container, false)
         configureInitData()
 
-        binding.createChattingRoom.setOnClickListener {
+        binding.btnRefreshLocation.setOnClickListener {
             setBranchList()
         }
-        binding.sortItemByName.setOnClickListener{
-            // TODO:  목록 정렬하기 
+        binding.btnSortByname.setOnClickListener{
+            // TODO: 기능 고민
         }
+
         return binding.root
     }
+
+
+    private fun setBranchList() {
+        locationProvider.updateLocation()
+        adapter = LocationRecyclerViewAdapter(locationProvider, branchList)
+
+        adapter.itemClickListener = object : LocationRecyclerViewAdapter.OnItemClickListener{
+            override fun onItemClick(name : String) {
+                Log.d("test22", "${name}")
+                val result = name
+                setFragmentResult("requestKey", bundleOf("bundleKey" to result))
+                parentFragmentManager.beginTransaction().remove(this@CheckLocationFragment).commit()//현재 프레그먼트 닫기
+            }
+        }
+        binding.locationRecycler.adapter = adapter
+        binding.locationRecycler.layoutManager = LinearLayoutManager(context)
+    }
+
 
     fun configureInitData(): ArrayList<BranchEntity> {
         db.collection("Branch").get().addOnSuccessListener { documents ->
@@ -62,21 +86,10 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
                     )
                 )
             }
-            adapter = LocationRecyclerViewAdapter(locationProvider, branchList)
-            binding.locationRecycler.adapter = adapter
-            binding.locationRecycler.layoutManager = LinearLayoutManager(context)
+            setBranchList()
         }.addOnFailureListener { exception ->
             Log.d("test", "불러오기 실패")
-
         }
         return branchList
     }
-
-    private fun setBranchList() {
-        locationProvider.updateLocation()
-        adapter = LocationRecyclerViewAdapter(locationProvider, branchList)
-        binding.locationRecycler.adapter = adapter
-        binding.locationRecycler.layoutManager = LinearLayoutManager(context)
-    }
-    
 }

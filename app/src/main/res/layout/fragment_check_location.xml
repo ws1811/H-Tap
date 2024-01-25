@@ -3,11 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+
+    >
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:weightSum="10">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/location_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -15,32 +24,27 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="20dp"
+            android:layout_weight="2"
             android:orientation="horizontal">
-
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/create_chatting_room"
+                android:id="@+id/btn_refresh_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/LightPurple"
                 android:fontFamily="@font/happiness_sans_regular"
-                android:text="갱신" />
-
+                android:text="위치갱신" />
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
-
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/sort_item_by_name"
+                android:id="@+id/btn_sort_byname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/MainColor"
+                android:background="@color/grey"
                 android:fontFamily="@font/happiness_sans_regular"
                 android:text="모든지점보기" />
         </LinearLayout>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/location_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
     </LinearLayout>
+
 </FrameLayout>
