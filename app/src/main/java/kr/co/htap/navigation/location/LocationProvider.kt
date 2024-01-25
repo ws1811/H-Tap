@@ -10,16 +10,12 @@ import android.location.Location
 import android.os.Build
 import android.os.Looper
 import android.util.Log
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.maps.GeoApiContext
-import com.google.maps.PlacesApi
-import com.google.type.LatLng
 
 /**
  *
