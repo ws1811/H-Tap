@@ -198,19 +198,6 @@
         app:srcCompat="@drawable/icon_google_custom"
         tools:layout_editor_absoluteY="479dp" />
 
-    <ImageView
-        android:id="@+id/iv_kakao_login"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
-        app:layout_constraintStart_toStartOf="@+id/guideline_social_login"
-        app:layout_constraintTop_toBottomOf="@id/iv_google_login"
-        app:srcCompat="@drawable/icon_kakao_login"
-        android:visibility="invisible"
-        tools:layout_editor_absoluteY="479dp" />
-
-
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_social_login"
