@@ -1,21 +1,29 @@
 package kr.co.htap.navigation
 
 import android.content.Context
+import android.graphics.Point
+import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.viewpager2.widget.ViewPager2
 import com.google.firebase.firestore.FirebaseFirestore
+import kr.co.htap.R
 import kr.co.htap.databinding.FragmentMainBinding
 import kr.co.htap.navigation.location.CheckLocationFragment
 import kr.co.htap.navigation.location.HomeDTO
 import kr.co.htap.navigation.location.LocationProvider
 import kr.co.htap.navigation.location.LocationRecyclerViewAdapter
-
+/**
+ *
+ * @author eunku
+ */
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private lateinit var navigationActivity: NavigationActivity
@@ -60,6 +68,7 @@ class MainFragment : Fragment() {
         locationProvider.getLocation()
         binding.btFindBranch.setOnClickListener {
             val dialog = CheckLocationFragment(locationProvider)
+
             dialog.show(requireActivity().supportFragmentManager, "CheckLocationFragment")
         }
     }

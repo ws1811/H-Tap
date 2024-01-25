@@ -44,7 +44,7 @@ class HomeViewPagerAdapter(private val itemList: ArrayList<HomeDTO>) :
                 .into(binding.blurImage)
 
             binding.textImageNumber.text = "${num+1}/${itemList.size}"
-            binding.progressBar.progress = (num+1) * 10
+            binding.progressBar.progress = (num+1) * 100 / itemList.size
             binding.branchName.text = item.belong
             binding.storeName.text = item.name
 
