@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.HTap" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <!-- Splash 화면의 배경색 지정 -->
@@ -10,4 +17,5 @@
         <item name="android:windowSplashScreenAnimationDuration">1000</item>
         <item name="postSplashScreenTheme">@style/Theme.HTap</item>
     </style>
+    <style name="Theme.HTap" parent="Base.Theme.HTap" />
 </resources>
