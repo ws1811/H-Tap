@@ -10,18 +10,16 @@ import android.widget.Toast
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import kr.co.htap.databinding.ActivityNfcEventBinding
-import kr.co.htap.helper.OnFailure
-import kr.co.htap.helper.OnResponse
-import kr.co.htap.helper.SimpleCallback
 import kr.co.htap.helper.ViewBindingActivity
 import kr.co.htap.helper.isNotLoggedIn
-import kr.co.htap.nfc.api.IdentificationAPI
-import kr.co.htap.nfc.api.IdentificationResponse
 import kr.co.htap.nfc.util.NFCUtil
-import retrofit2.Callback
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.TimeZone
 
 /**
  * 읽은 NFC 유형이 인증(/identification])인 경우 동작하는 액티비티
@@ -32,6 +30,7 @@ class NfcIdentificationActivity : ViewBindingActivity<ActivityNfcEventBinding>()
     private var nfcAdapter: NfcAdapter? = null
     private var pendingIntent: PendingIntent? = null
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
     override fun initViewBinding(): ActivityNfcEventBinding =
         ActivityNfcEventBinding.inflate(layoutInflater)
 
@@ -39,9 +38,9 @@ class NfcIdentificationActivity : ViewBindingActivity<ActivityNfcEventBinding>()
         super.onCreate(savedInstanceState)
 
         firebaseAuth = Firebase.auth
+        firestore = Firebase.firestore
 
-
-        if (!firebaseAuth.isNotLoggedIn()) {
+        if (firebaseAuth.isNotLoggedIn()) {
             val errorMsg = "파이어베이스 로그인이 필요합니다."
             Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show()
             onSignInRequired(errorMsg)
@@ -88,13 +87,87 @@ class NfcIdentificationActivity : ViewBindingActivity<ActivityNfcEventBinding>()
     private fun parseNFC(intent: Intent) {
         NFCUtil.parseNFCContent(intent) { eventSource ->
             Log.w(this@NfcIdentificationActivity.toString(), eventSource.toString())
+            val key = "storeId"
+            if (!eventSource.addtionalData.containsKey(key)) return@parseNFCContent
 
-            sendAuthGetRequest(
-                "hoyeon", SimpleCallback(
-                    onIdentificationWasSuccessful, onRequestFailure
-                )
-            )
+            findReservation(eventSource.addtionalData[key]!!)
         }
+    }
+
+    private fun getReservationCollectionPath(documentId: String, dateString: String): String {
+        return String.format("/Reservation/record/${documentId}/${dateString}/time")
+    }
+
+    private fun findReservation(documentId: String) {
+        val defaultTimezone = "Asia/Seoul"
+        val timeZone = TimeZone.getTimeZone(defaultTimezone)
+        val calendar = Calendar.getInstance(timeZone)
+
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+        val time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
+
+        val absoluteCollectionPath = getReservationCollectionPath(documentId, today)
+
+        // 해당 가계의 오늘 예약을 읽어 옵니다.
+        val className = this@NfcIdentificationActivity.toString()
+        firestore.collection(absoluteCollectionPath).get().addOnSuccessListener {
+            if (it.isEmpty) { // 해당 가계의 예약목록이 존재하지 않는 경우
+                Log.e(className, "failed block case : 0")
+                onFailure("예약을 찾을 수 없습니다.")
+            } else { // 해당 가계의 예약목록이 존재하는 경우
+                val userId = firebaseAuth.currentUser?.uid ?: ""
+                Log.d(
+                    className, "found collection : collectionPath $absoluteCollectionPath"
+                )
+                if (userId.isEmpty()) {
+                    Log.e(className, "failed block case : 1 ")
+                    onFailure("예약을 찾을 수 없습니다.")
+                    return@addOnSuccessListener
+                } else {
+                    var result: TimeCompareResult? = null
+                    val documents = it.documents
+                    for (document in documents) {
+                        if (document.getString("userid") == userId) {
+                            val reservationTime = document.id
+                            Log.d(className, reservationTime)
+                            result = compareTime(time, reservationTime)
+                            if (result == TimeCompareResult.AVAILABLE) {
+                                val identificationFragment =
+                                    NfcIdentificationSuccessFragment.newInstance()
+                                supportFragmentManager.beginTransaction().apply {
+                                    replace(binding.nfcFragment.id, identificationFragment)
+                                    commit()
+                                }
+                                return@addOnSuccessListener
+                            }
+                        }
+                    }
+                    onFailure(result?.resultMessage ?: "예약을 찾을 수 없습니다.")
+                }
+            }
+
+        }.addOnFailureListener {
+            onFailure("예약을 찾을 수 없습니다.")
+        }
+    }
+
+
+    private fun compareTime(time: String, reservationTime: String): TimeCompareResult {
+        fun timeToInt(time: String): Int {
+            with(time.split(":")) {
+                val hour = this[0].toInt()
+                val minute = this[1].toInt()
+                return (hour * 60) + minute
+            }
+        }
+
+        val currentTime = timeToInt(time)
+        val reserve = timeToInt(reservationTime)
+
+        if (Math.abs(currentTime - reserve) <= 30) {
+            return TimeCompareResult.AVAILABLE
+        }
+        return if (currentTime < reserve) TimeCompareResult.TOO_EARLY else TimeCompareResult.TOO_LATE
     }
 
     /**
@@ -111,84 +184,17 @@ class NfcIdentificationActivity : ViewBindingActivity<ActivityNfcEventBinding>()
         }
     }
 
-    /**
-     * 시나리오 2: NFC 태깅 후 로그인 된 상태
-     */
-    private fun sendAuthGetRequest(
-        tagId: String, callback: Callback<IdentificationResponse>
-    ) {
-        val retrofit = Retrofit.Builder().baseUrl("https://nfcsignin-7bs2chzkrq-uc.a.run.app")
-            .addConverterFactory(GsonConverterFactory.create()).build()
-
-        val apiService = retrofit.create(IdentificationAPI::class.java)
-        apiService.nfcSignIn(tagId).enqueue(callback) // 태그 ID를 전달하는 GET 요청
-    }
-
-
-    /**
-     * 시나리오 2-1: 서버에 성공적으로 요청을 보냈음
-     * 인증 성공시 프래그먼트 교체
-     * 인증 실패시 시나리오 2-2로 이동
-     */
-    private val onIdentificationWasSuccessful: OnResponse<IdentificationResponse> =
-        OnResponse { _, response ->
-            if (!response.isSuccessful) {
-                Toast.makeText(
-                    this@NfcIdentificationActivity,
-                    "auth : ${response.errorBody().toString()}",
-                    Toast.LENGTH_SHORT
-                ).show()
-                onIdentificationWasNotSuccessful(response.message())
-                finish()
-            }
-            val data: IdentificationResponse? = response.body()
-            Log.w(this@NfcIdentificationActivity.toString(), data.toString())
-
-            // 응답 데이터 처리
-            Toast.makeText(
-                this@NfcIdentificationActivity, "auth : ${data.toString()}", Toast.LENGTH_SHORT
-            ).show()
-
-            val identificationFragment = NfcIdentificationSuccessFragment.newInstance()
-            supportFragmentManager.beginTransaction().apply {
-                replace(binding.nfcFragment.id, identificationFragment)
-                addToBackStack(null)
-                commit()
-            }
-
-        }
-
-
-    /**
-     * 시나리오 2-2: 서버에 성공적으로 요청을 보냈으나 무언가 문제가 있음
-     * 사용자에게 오류 메시지를 표시
-     */
-    private fun onIdentificationWasNotSuccessful(errorMsg: String): OnFailure<IdentificationResponse> =
-
-        OnFailure { _, _ ->
-            val nfcIdentificationFailedFragment =
-                NfcIdentificationFailedFragment.newInstance(errorMsg)
-            supportFragmentManager.beginTransaction().apply {
-                replace(binding.nfcFragment.id, nfcIdentificationFailedFragment)
-                addToBackStack(null)
-                commit()
-            }
-        }
-
-    /**
-     * 시나리오 2-3: 서버에 요청을 보낼 때 문제가 생겼음
-     * 사용자에게 오류 메시지를 표시
-     */
-    private val onRequestFailure: OnFailure<IdentificationResponse> = OnFailure { _, t ->
+    private fun onFailure(errorMsg: String) {
+        val nfcIdentificationFailedFragment = NfcIdentificationFailedFragment.newInstance(errorMsg)
         supportFragmentManager.beginTransaction().apply {
-            addToBackStack(null)
-            val nfcIdentificationFailedFragment =
-                NfcIdentificationFailedFragment.newInstance(t?.message)
             replace(binding.nfcFragment.id, nfcIdentificationFailedFragment)
             addToBackStack(null)
             commit()
         }
     }
 
+    private enum class TimeCompareResult(val resultMessage: String) {
+        AVAILABLE(""), TOO_LATE("예약시간 30분을 초과했습니다."), TOO_EARLY("예약까지 30분 이상남았습니다.")
+    }
 }
 

@@ -11,14 +11,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:paddingStart="10dp"
-        android:textSize="28sp"
+        android:textSize="24sp"
         android:inputType="text|textNoSuggestions"
         android:hint="이름"
-        android:padding="10dp"
+        android:padding="12dp"
         android:background="@drawable/custom_edit_text"
         app:layout_constraintEnd_toStartOf="@id/guideline_ver_end"
-        app:layout_constraintStart_toStartOf="@+id/guideline_hor"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
         app:layout_constraintTop_toBottomOf="@id/tv_find_userid" />
 
     <EditText
@@ -27,24 +26,31 @@
         android:layout_height="wrap_content"
         android:background="@drawable/custom_edit_text"
         android:layout_marginTop="15dp"
-        android:padding="10dp"
-        android:textSize="28sp"
+        android:padding="12dp"
+        android:textSize="24sp"
         android:inputType="phone"
         android:hint="전화번호 [숫자만 입력]"
         android:maxLength="13"
         app:layout_constraintEnd_toStartOf="@id/guideline_ver_end"
-        app:layout_constraintStart_toStartOf="@+id/guideline_hor"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
         app:layout_constraintTop_toBottomOf="@id/et_name" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_ver_start"
+        android:id="@+id/guideline_hor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.15" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_hor"
+        android:id="@+id/guideline_ver_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_ver_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -57,8 +63,8 @@
         android:text="아이디 찾기"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/guideline_hor"
-        app:layout_constraintTop_toTopOf="@+id/guideline_ver_start" />
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toTopOf="@+id/guideline_hor" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_ver_end"
@@ -67,20 +73,23 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.85" />
 
-    <Button
+    <TextView
         android:id="@+id/btn_find_id"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
         android:text="아이디 찾기"
         android:textSize="28sp"
-        android:backgroundTint="@color/MainColor"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:background="@color/MainColor"
+
         app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline_hor"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
         app:layout_constraintTop_toBottomOf="@+id/et_phone"
-        app:layout_constraintVertical_bias="0.138" />
+  />
 
 
     <TextView
@@ -94,22 +103,24 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@id/tv_result"
         app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
-        app:layout_constraintStart_toStartOf="@+id/guideline_hor"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
         app:layout_constraintTop_toBottomOf="@id/btn_find_id"
  />
 
     <TextView
         android:id="@+id/tv_result"
+        style="@style/TextViewWithBorder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
         android:textColor="@color/LightGreen"
         android:textSize="22sp"
         android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
         app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="@+id/guideline_hor"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
         app:layout_constraintTop_toBottomOf="@+id/btn_find_id"
         app:layout_constraintVertical_bias="0.292" />
 
@@ -120,15 +131,15 @@
         android:layout_marginBottom="144dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:background="@color/MainColor"
-        android:textColor="@color/white"
+        android:background="@color/mint"
+        android:textColor="@color/black"
         android:text="비밀번호 찾기"
-        android:textSize="28dp"
+        android:textSize="24sp"
         android:visibility="invisible"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
-        app:layout_constraintStart_toStartOf="@+id/guideline_hor" />
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start" />
 
     <TextView
         android:id="@+id/btn_hidden_login"
@@ -137,13 +148,26 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="56dp"
-        android:background="@color/MainColor"
-        android:textColor="@color/white"
+        android:background="@color/mint"
+        android:textColor="@color/black"
         android:text="로그인"
-        android:textSize="28dp"
+        android:textSize="24sp"
         android:visibility="invisible"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
-        app:layout_constraintStart_toStartOf="@+id/guideline_hor" />
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start" />
+
+    <ImageView
+        android:id="@+id/iv_goback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="20dp"
+        app:srcCompat="@drawable/icon_arrow_back"
+        app:layout_constraintStart_toEndOf="@id/guideline_ver_icon"
+        app:layout_constraintBottom_toTopOf="@id/guideline_hor"
+        />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

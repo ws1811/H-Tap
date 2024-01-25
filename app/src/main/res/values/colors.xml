@@ -11,6 +11,8 @@
     <color name="LightPurple">#D0BCFF</color>
     <color name="ReservationCardViewBg">#CC4D2BF4</color>
     <color name="LightGreen">#66BAA8</color>
+    <color name="mint">#C5FCEE</color>
     <color name="red">#ff0000</color>
     <color name="grey">#B1B1B1</color>
+    <color name="lilac">#E6E0E9</color>
 </resources>

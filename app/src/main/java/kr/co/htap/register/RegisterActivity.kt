@@ -12,6 +12,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.ktx.firestore
@@ -22,8 +24,6 @@ import kr.co.htap.databinding.ActivityRegisterBinding
  *
  * @author 송원선
  * 회원 가입
- * < 미구현 목록 >
- * 1. 회원 가입시 인증
  *
  */
 class RegisterActivity: AppCompatActivity(){
@@ -52,13 +52,21 @@ class RegisterActivity: AppCompatActivity(){
                 if(s?.length == 13)
                     hideKeyboard(binding.etPhone)
             }
-
         })
 
         // 회원 가입 버튼 리스너 등록
-        binding.btnRegister.setOnClickListener {
-            register()
-        }
+        binding.btnRegister.setOnClickListener(object : OnSingleClickListener() {
+            override fun onSingleClick(v: View?) {
+                register()
+            }
+        })
+
+        // 뒤로가기 아이콘 클릭
+        binding.ivGoback.setOnClickListener(object : OnSingleClickListener() {
+            override fun onSingleClick(v: View?) {
+                finish()
+            }
+        })
     }
 
     // 회원 가입
@@ -113,7 +121,7 @@ class RegisterActivity: AppCompatActivity(){
                         val user = hashMapOf(
                             "userid" to userid,
                             "email" to email,
-                            "password" to password,
+                            //"password" to password,
                             "name" to name,
                             "phone" to phone
                         )
@@ -122,10 +130,23 @@ class RegisterActivity: AppCompatActivity(){
                             .document(email)
                             .set(user)
                             .addOnSuccessListener { documentReference ->
-                                Log.d("FireStore", "Success adding user : email = $email")
+                                Log.d("Register", "Success adding user : email = $email")
                             }
                             .addOnFailureListener{e->
-                                Log.w("FireStore", "Error adding user", e)
+                                Log.w("Register", "Error adding user", e)
+                            }
+                        // Firebase 사용자 displayName 설정
+                        val curUser = auth.currentUser
+                        val profileUpdates = UserProfileChangeRequest.Builder()
+                            .setDisplayName(name)
+                            .build()
+                        curUser?.updateProfile(profileUpdates)
+                            ?.addOnCompleteListener {task->
+                                if(task.isSuccessful){
+                                    Log.d("Register", "Display name updated successfully -> displayName : ${curUser.displayName}")
+                                }else{
+                                    Log.w("Register", "Failed to set Display name")
+                                }
                             }
                         // 회원가입 성공 화면으로 이동
                         val intent = Intent(this, RegisterSuccessActivity::class.java)

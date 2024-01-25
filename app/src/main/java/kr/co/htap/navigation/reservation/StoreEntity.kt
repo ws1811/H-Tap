@@ -14,6 +14,7 @@ data class StoreEntity(
     val telephone: String,
     val address: String,
     val belong: String,
-    val operationTime: ArrayList<String>
+    val operationTime: ArrayList<String>,
+    val documentId: String
     ) {
 }

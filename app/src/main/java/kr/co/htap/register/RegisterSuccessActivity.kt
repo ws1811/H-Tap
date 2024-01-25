@@ -2,6 +2,7 @@ package kr.co.htap.register
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import kr.co.htap.databinding.ActivityRegisterSuccessBinding
@@ -29,10 +30,11 @@ class RegisterSuccessActivity : AppCompatActivity() {
         buttonToMain = binding.btnToMain
         
         // [메인으로] 버튼 -> 로그인 액티비티로 이동
-        buttonToMain.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-        }
-        
+        buttonToMain.setOnClickListener (object : OnSingleClickListener() {
+            override fun onSingleClick(v: View?) {
+                val intent = Intent(v?.context, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        })
     }
 }

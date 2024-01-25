@@ -1,5 +1,6 @@
 package kr.co.htap.nfc.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import kr.co.htap.databinding.FragmentNfcIdentificationFailedBinding
 import kr.co.htap.helper.ViewBindingFragment
+import kr.co.htap.register.LoginActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,7 +44,12 @@ class NfcIdentificationFailedFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.tvInfo.text = errorMsg
-        binding.btnToSignIn.visibility = if (loginRequired) VISIBLE else GONE
+        with(binding.btnToSignIn) {
+            visibility = if (loginRequired) VISIBLE else GONE
+            setOnClickListener {
+                startActivity(Intent(requireActivity(), LoginActivity::class.java))
+            }
+        }
     }
 
     companion object {
