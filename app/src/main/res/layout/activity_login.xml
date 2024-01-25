@@ -76,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="41dp" />
+        app:layout_constraintGuide_percent="0.10218978" />
 
 
     <TextView
@@ -115,13 +115,14 @@
         android:id="@+id/tv_find_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
         android:layout_marginEnd="10dp"
         android:text="아이디 찾기"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/tv_find_password"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_login"
+        app:layout_constraintBottom_toTopOf="@id/guideline_hor_social"
+        />
 
     <View
         android:id="@+id/divider_left"
@@ -129,8 +130,8 @@
         android:layout_height="2dp"
         android:layout_marginBottom="272dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor_social"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver" />
 
@@ -138,10 +139,11 @@
         android:id="@+id/divider_right"
         android:layout_width="120dp"
         android:layout_height="2dp"
+        android:layout_marginTop="2dp"
         android:layout_marginBottom="272dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor_social"
         app:layout_constraintHorizontal_bias="0.0"
         />
 
@@ -150,10 +152,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
         android:text="회원가입"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_hor_social"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
@@ -161,13 +163,14 @@
         android:id="@+id/tv_find_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
         android:layout_marginEnd="4dp"
         android:text="비밀번호 찾기"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_login"
+        app:layout_constraintBottom_toTopOf="@id/guideline_hor_social"
+        />
 
     <TextView
         android:id="@+id/tv_or"
@@ -178,10 +181,11 @@
         android:textColor="@color/MainColor"
         android:textSize="20sp"
         android:gravity="center"
-        android:layout_marginTop="-5dp"
         app:layout_constraintStart_toEndOf="@id/divider_left"
         app:layout_constraintEnd_toStartOf="@id/divider_right"
-        app:layout_constraintTop_toBottomOf="@id/guideline_hor_social"/>
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor_social"
+        app:layout_constraintBottom_toTopOf="@id/guideline_hor_social"
+        />
 
     <ImageView
         android:id="@+id/iv_google_login"
