@@ -45,6 +45,10 @@ class FindUserIdActivity : AppCompatActivity() {
                 findUser()
             }
         })
+        // 뒤로가기 아이콘 클릭
+        binding.ivGoback.setOnClickListener {
+            finish()
+        }
     }
 
     private fun findUser(){

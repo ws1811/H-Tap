@@ -60,6 +60,13 @@ class RegisterActivity: AppCompatActivity(){
                 register()
             }
         })
+
+        // 뒤로가기 아이콘 클릭
+        binding.ivGoback.setOnClickListener(object : OnSingleClickListener() {
+            override fun onSingleClick(v: View?) {
+                finish()
+            }
+        })
     }
 
     // 회원 가입
