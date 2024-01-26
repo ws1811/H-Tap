@@ -177,6 +177,12 @@ class ReservationFragment : Fragment() {
                         document.id))
                 }
 
+                if (documentSnapshots.size() == 0) {
+                    Toast.makeText(navigationActivity, "가게를 모두 불러왔습니다.", Toast.LENGTH_SHORT).show()
+                    binding.progressBar.visibility = View.GONE
+                    return@addOnSuccessListener
+                }
+
                 val lastVisible = documentSnapshots.documents[documentSnapshots.size() - 1]
 
                 if (type == "restaurant") {
