@@ -43,7 +43,9 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCheckLocationBinding.inflate(inflater, container, false)
-        configureInitData()
+        if(branchList.isEmpty()){
+            configureInitData()
+        } else setBranchList()
 
         binding.btnRefreshLocation.setOnClickListener {
             setBranchList()
@@ -97,7 +99,6 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
 
         adapter.itemClickListener = object : LocationRecyclerViewAdapter.OnItemClickListener{
             override fun onItemClick(name : String) {
-                Log.d("test22", "${name}")
                 val result = name
                 setFragmentResult("requestKey", bundleOf("bundleKey" to result))
                 parentFragmentManager.beginTransaction().remove(this@CheckLocationFragment).commit()//현재 프레그먼트 닫기
