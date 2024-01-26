@@ -36,6 +36,6 @@ class UserInfoFragment(val setLayout: (View) -> Unit = {}) :
         super.onViewCreated(view, savedInstanceState)
         val username = auth.currentUser?.displayName ?: ""
         binding.tvUserName.text = String.format("%s님.", username.ifEmpty { "고객" })
-        setLayout(view)
+//        setLayout(view)
     }
 }

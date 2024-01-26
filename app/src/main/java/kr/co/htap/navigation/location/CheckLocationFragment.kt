@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.memoryCacheSettings
 import com.google.firebase.firestore.persistentCacheSettings
+import kr.co.htap.R
 import kr.co.htap.databinding.FragmentCheckLocationBinding
 
 /**
@@ -43,10 +45,17 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCheckLocationBinding.inflate(inflater, container, false)
-        configureInitData()
+        if(branchList.isEmpty()){
+            configureInitData()
+        } else setBranchList()
 
         binding.btnRefreshLocation.setOnClickListener {
-            setBranchList()
+            Log.d("test lp2","${locationProvider.requestLocation()}")
+            if(locationProvider.checkPermission()){
+                setBranchList()
+                Toast.makeText(context, "위치를 갱신하셨습니다.", Toast.LENGTH_LONG).show()
+            } else Toast.makeText(context, "GPS 권한이 없습니다.", Toast.LENGTH_LONG).show()
+
         }
         binding.btnBackMain.setOnClickListener{
             parentFragmentManager.beginTransaction().remove(this@CheckLocationFragment).commit()//현재 프레그먼트 닫기
@@ -59,12 +68,18 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         val windowManager = activity?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val size = windowManager.currentWindowMetricsPointCompat()
-//        var deviceWidth = size.x
+        var deviceWidth = size.x
         var deviceHeight = size.y
+        val lpWindow = WindowManager.LayoutParams()
+
+        lpWindow.windowAnimations = R.style.StyleExpansionDialog
+        lpWindow.height = (deviceHeight * 0.8).toInt()
+        lpWindow.width = (deviceWidth * 0.9).toInt()
 
 //        params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceHeight * 0.8).toInt()
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
+//        params?.height = (deviceHeight * 0.8).toInt()
+        dialog?.window?.attributes = lpWindow
+//        dialog?.window?.attributes = params as WindowManager.LayoutParams
 
     }
     fun WindowManager.currentWindowMetricsPointCompat() : Point {
@@ -97,7 +112,6 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
 
         adapter.itemClickListener = object : LocationRecyclerViewAdapter.OnItemClickListener{
             override fun onItemClick(name : String) {
-                Log.d("test22", "${name}")
                 val result = name
                 setFragmentResult("requestKey", bundleOf("bundleKey" to result))
                 parentFragmentManager.beginTransaction().remove(this@CheckLocationFragment).commit()//현재 프레그먼트 닫기

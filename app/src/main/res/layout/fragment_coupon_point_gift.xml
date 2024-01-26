@@ -86,11 +86,11 @@
                 app:srcCompat="@drawable/gift_2_svgrepo_com" />
 
             <TextView
-                android:id="@+id/tv_gift"
+                android:id="@+id/tv_reservation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="선물함" />
+                android:text="예약 내역" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

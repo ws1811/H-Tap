@@ -65,9 +65,6 @@
             android:name=".register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".nfc.view.MyCouponActivity"
-            android:exported="false" />
-        <activity
             android:name=".nfc.view.NfcIdentificationActivity"
             android:exported="true">
             <!-- NFC 스캔 시 발생하는 Intent를 이 액티비티에서 처리할 수 있도록 필터를 등록합니다. -->

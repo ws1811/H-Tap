@@ -27,6 +27,7 @@ class LocationProvider(private val context: Context) {
     private var locations: Location? = null
     private var fusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
+
     init {
         locations = getLocation()
     }
@@ -34,8 +35,7 @@ class LocationProvider(private val context: Context) {
     @RequiresApi(Build.VERSION_CODES.Q)
     private val permissionsLocationUpApi29Impl = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+        Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
     @TargetApi(Build.VERSION_CODES.P)
@@ -44,7 +44,7 @@ class LocationProvider(private val context: Context) {
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
-    fun requestLocation() : Boolean {
+    fun requestLocation() {
         if (Build.VERSION.SDK_INT >= 29) {
             if (ActivityCompat.checkSelfPermission(
                     context,
@@ -53,10 +53,6 @@ class LocationProvider(private val context: Context) {
                 || ActivityCompat.checkSelfPermission(
                     context,
                     permissionsLocationUpApi29Impl[1]
-                ) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(
-                    context,
-                    permissionsLocationUpApi29Impl[2]
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(
@@ -64,7 +60,7 @@ class LocationProvider(private val context: Context) {
                     permissionsLocationUpApi29Impl,
                     REQUEST_LOCATION
                 )
-            } else return true
+            }
         } else if (Build.VERSION.SDK_INT < 29) {
             if (ActivityCompat.checkSelfPermission(
                     context,
@@ -80,61 +76,78 @@ class LocationProvider(private val context: Context) {
                     permissionsLocationDownApi29Impl,
                     REQUEST_LOCATION
                 )
-                Log.d("test", "22번")
-            } else return true
+            }
+        }
+    }
+
+    fun checkPermission(): Boolean {
+        if (Build.VERSION.SDK_INT >= 29) {
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    permissionsLocationUpApi29Impl[1]
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                return true
+            }
+        } else {
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    permissionsLocationDownApi29Impl[1]
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                return true
+            }
         }
         return false
     }
-
-    @SuppressLint("MissingPermission")
-    public fun getLocation(): Location? {
-        fusedLocationProviderClient.lastLocation
-            .addOnSuccessListener { success: Location? ->
-                success?.let { location ->
-                    this.locations = location
+        @SuppressLint("MissingPermission")
+        public fun getLocation(): Location? {
+            fusedLocationProviderClient.lastLocation
+                .addOnSuccessListener { success: Location? ->
+                    success?.let { location ->
+                        this.locations = location
+                    }
                 }
-            }
-            .addOnFailureListener { fail ->
-                Log.d("testtest", "실패")
+                .addOnFailureListener { fail ->
+                    Log.d("getLocation", "실패")
 
-            }
-        return this.locations
-    }
-
-    fun getDistance(branch: BranchEntity) : Double{
-
-        val endPoint = Location("endPoint")
-        endPoint.apply {
-            latitude = branch.latitude
-            longitude = branch.longitude
-        }
-        try {
-            return locations!!.distanceTo(endPoint).toDouble()
-        } catch (e: Exception) {
-            return 0.0
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    fun updateLocation() {
-        try {
-            val locationRequest =
-                LocationRequest.Builder(1).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                    .build()
-            var locationCallback = object : LocationCallback() {
-                override fun onLocationResult(p0: LocationResult) {
-                    locations = p0.lastLocation
                 }
-            }
-            fusedLocationProviderClient.requestLocationUpdates(
-                locationRequest,
-                locationCallback,
-                Looper.getMainLooper()
-            )
-        } catch (e :Exception){
-            Log.d("test", "update 위치 실패")
+            return this.locations
         }
+
+        fun getDistance(branch: BranchEntity): Double {
+
+            val endPoint = Location("endPoint")
+            endPoint.apply {
+                latitude = branch.latitude
+                longitude = branch.longitude
+            }
+            try {
+                return locations!!.distanceTo(endPoint).toDouble()
+            } catch (e: Exception) {
+                return 0.0
+            }
+        }
+
+        @SuppressLint("MissingPermission")
+        fun updateLocation() {
+            try {
+                val locationRequest =
+                    LocationRequest.Builder(1).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                        .build()
+                var locationCallback = object : LocationCallback() {
+                    override fun onLocationResult(p0: LocationResult) {
+                        locations = p0.lastLocation
+                    }
+                }
+                fusedLocationProviderClient.requestLocationUpdates(
+                    locationRequest,
+                    locationCallback,
+                    Looper.getMainLooper()
+                )
+            } catch (e: Exception) {
+                Log.d("test", "update 위치 실패")
+            }
+        }
+
     }
-
-
-}
