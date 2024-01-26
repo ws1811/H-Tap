@@ -2,11 +2,13 @@ package kr.co.htap.navigation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.Query
 import kr.co.htap.R
 import kr.co.htap.databinding.ActivityNavigationBinding
 import kr.co.htap.navigation.home.HomeFragment
 import kr.co.htap.navigation.myPage.views.MyPageFragment
 import kr.co.htap.navigation.reservation.ReservationFragment
+import kr.co.htap.navigation.reservation.StoreEntity
 
 /**
  *
@@ -23,7 +25,15 @@ class NavigationActivity : AppCompatActivity() {
         ReservationFragment(),
         MyPageFragment()
     )
+
+    var restaurant: ArrayList<StoreEntity> = arrayListOf()
+    lateinit var restaurantQuery: Query
+    var isLastRestaurant: Boolean = false
+    var laundry: ArrayList<StoreEntity> = arrayListOf()
+    lateinit var laundryQuery: Query
+    var isLastLaundry: Boolean = false
     var belong = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNavigationBinding.inflate(layoutInflater)
