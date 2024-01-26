@@ -70,7 +70,7 @@ class ManageMemberFragment(val setLayout: (View) -> Unit = {}) :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setLayout(view)
+//        setLayout(view)
     }
 
     companion object {

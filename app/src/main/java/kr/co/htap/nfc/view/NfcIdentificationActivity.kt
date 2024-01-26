@@ -16,10 +16,12 @@ import kr.co.htap.databinding.ActivityNfcEventBinding
 import kr.co.htap.helper.ViewBindingActivity
 import kr.co.htap.helper.isNotLoggedIn
 import kr.co.htap.nfc.util.NFCUtil
+import kr.co.htap.register.LoginActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
+import kotlin.math.abs
 
 /**
  * 읽은 NFC 유형이 인증(/identification])인 경우 동작하는 액티비티
@@ -43,7 +45,7 @@ class NfcIdentificationActivity : ViewBindingActivity<ActivityNfcEventBinding>()
         if (firebaseAuth.isNotLoggedIn()) {
             val errorMsg = "파이어베이스 로그인이 필요합니다."
             Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show()
-            onSignInRequired(errorMsg)
+            onSignInRequired()
             return
         }
 
@@ -56,7 +58,10 @@ class NfcIdentificationActivity : ViewBindingActivity<ActivityNfcEventBinding>()
         }
 
         supportFragmentManager.beginTransaction().apply {
-            replace(binding.nfcFragment.id, NfcIdentificationFragment())
+            val requestFragment = NfcActionRequestedFragment.newInstance {
+                it.tvInfo.text = "예약 확인 중입니다."
+            }
+            replace(binding.nfcFragment.id, requestFragment)
             commit()
         }
 
@@ -132,10 +137,14 @@ class NfcIdentificationActivity : ViewBindingActivity<ActivityNfcEventBinding>()
                             Log.d(className, reservationTime)
                             result = compareTime(time, reservationTime)
                             if (result == TimeCompareResult.AVAILABLE) {
-                                val identificationFragment =
-                                    NfcIdentificationSuccessFragment.newInstance()
+                                val identificationSuccessFragment =
+                                    NfcActionSuccessFragment.newInstance(
+                                        NfcActions.onReservationCheckSuccess(
+                                            "${time} 예약을 확인했습니다."
+                                        ) { finish() }
+                                    )
                                 supportFragmentManager.beginTransaction().apply {
-                                    replace(binding.nfcFragment.id, identificationFragment)
+                                    replace(binding.nfcFragment.id, identificationSuccessFragment)
                                     commit()
                                 }
                                 return@addOnSuccessListener
@@ -164,7 +173,8 @@ class NfcIdentificationActivity : ViewBindingActivity<ActivityNfcEventBinding>()
         val currentTime = timeToInt(time)
         val reserve = timeToInt(reservationTime)
 
-        if (Math.abs(currentTime - reserve) <= 30) {
+        val timeThreshold = 30
+        if (abs(currentTime - reserve) <= timeThreshold) {
             return TimeCompareResult.AVAILABLE
         }
         return if (currentTime < reserve) TimeCompareResult.TOO_EARLY else TimeCompareResult.TOO_LATE
@@ -174,27 +184,29 @@ class NfcIdentificationActivity : ViewBindingActivity<ActivityNfcEventBinding>()
      * 시나리오 1: NFC를 태깅했지만 사용자가 로그인되어 있지 않은 경우
      * TODO: @원선님이 작성한 로그인페이지로 리다이렉션
      */
-    private fun onSignInRequired(errorMsg: String) {
-        val nfcIdentificationFailedFragment =
-            NfcIdentificationFailedFragment.newInstance(errorMsg, true)
-        supportFragmentManager.beginTransaction().apply {
-            replace(binding.nfcFragment.id, nfcIdentificationFailedFragment)
-            addToBackStack(null)
-            commit()
-        }
+    private fun onSignInRequired() {
+        startActivity(Intent(this, LoginActivity::class.java))
+//        val nfcActionFailedFragment =
+//            NfcActionFailedFragment.newInstance(errorMsg, true)
+//        supportFragmentManager.beginTransaction().apply {
+//            replace(binding.nfcFragment.id, nfcActionFailedFragment)
+//            addToBackStack(null)
+//            commit()
+//        }
     }
 
     private fun onFailure(errorMsg: String) {
-        val nfcIdentificationFailedFragment = NfcIdentificationFailedFragment.newInstance(errorMsg)
+        val nfcActionFailedFragment =
+            NfcActionFailedFragment.newInstance(NfcActions.onReservationCheckFailed(errorMsg) { finish() })
         supportFragmentManager.beginTransaction().apply {
-            replace(binding.nfcFragment.id, nfcIdentificationFailedFragment)
+            replace(binding.nfcFragment.id, nfcActionFailedFragment)
             addToBackStack(null)
             commit()
         }
     }
 
     private enum class TimeCompareResult(val resultMessage: String) {
-        AVAILABLE(""), TOO_LATE("예약시간 30분을 초과했습니다."), TOO_EARLY("예약까지 30분 이상남았습니다.")
+        AVAILABLE(""), TOO_LATE("예약시간 30분을 넘었습니다."), TOO_EARLY("예약까지 30분 이상남았습니다.")
     }
 }
 

@@ -28,7 +28,7 @@ class CouponPointGiftFragment(val setLayout: (View) -> Unit = {}) :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setLayout(view)
+//        setLayout(view)
         binding.btnCoupon.setOnClickListener {
             Log.d(CouponPointGiftFragment::class.java.toString(), "btnCoupon")
             with(requireActivity().supportFragmentManager.beginTransaction()) {
@@ -48,7 +48,7 @@ class CouponPointGiftFragment(val setLayout: (View) -> Unit = {}) :
         binding.btnGift.setOnClickListener {
             Log.d(CouponPointGiftFragment::class.java.toString(), "btnGift")
             with(requireActivity().supportFragmentManager.beginTransaction()) {
-                replace(R.id.mainFrameLayout, MyCouponFragment())
+                replace(R.id.mainFrameLayout, MyPageReservationHistoryFragment())
                 addToBackStack(null)
                 commit()
             }

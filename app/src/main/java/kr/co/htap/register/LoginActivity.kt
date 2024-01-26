@@ -168,11 +168,11 @@ class LoginActivity : AppCompatActivity() {
                         onSignInSuccess()
                     } else { //로그인 실패
                         Log.w("Login", "Login failed : ", task.exception)
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요",
-                            Toast.LENGTH_LONG
-                        ).show()
+//                        Toast.makeText(
+//                            this@LoginActivity,
+//                            "로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요",
+//                            Toast.LENGTH_LONG
+//                        ).show()
                     }
                 })
         }
