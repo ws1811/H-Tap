@@ -54,6 +54,7 @@ class ReservationListAdapter(private val storeList: ArrayList<StoreEntity>): Rec
                     val selectedDate = DateDTO(year, month + 1, dayOfMonth)
                     val intent = Intent(holder.itemView.context, TimePickerActivity::class.java)
                     intent.putExtra("name", storeData.name)
+                    intent.putExtra("belong", storeData.belong)
                     intent.putExtra("date", selectedDate)
                     intent.putExtra("documentId", storeData.documentId)
                     startActivity(holder.itemView.context, intent, null) },
