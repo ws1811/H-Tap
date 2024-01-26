@@ -52,6 +52,7 @@ class HomeFragment : Fragment() {
             val result = bundle.getString("bundleKey")
             branchName = result!!
             getViewByBranch(branchName)
+            navigationActivity.belong = branchName
         }
 
     }

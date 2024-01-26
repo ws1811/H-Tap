@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
@@ -42,6 +43,7 @@ class ReservationFragment : Fragment() {
     private var isLastLaundry: Boolean = false
 
     private var currentCategory: String = "restaurant"
+    private var belong: String = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -51,6 +53,7 @@ class ReservationFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         db = FirebaseFirestore.getInstance()
+        belong = navigationActivity.belong
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -60,25 +63,36 @@ class ReservationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         configureData()
         setUI()
     }
+
     private fun configureData() {
         restaurant = arrayListOf()
-        restaurantQuery = db
-            .collection("Reservation")
-            .document("store")
-            .collection("restaurant")
-            .orderBy("telephone")
-            .limit(10)
+        restaurantQuery = query("restaurant")
         isLastRestaurant = false
         laundry = arrayListOf()
-        laundryQuery = db.collection("Reservation")
-            .document("store")
-            .collection("laundry")
-            .orderBy("telephone")
-            .limit(10)
+        laundryQuery = query("laundry")
         isLastLaundry = false
+    }
+
+    private fun query(category: String): Query {
+        if (belong == "") {
+            return db
+                .collection("Reservation")
+                .document("store")
+                .collection(category)
+                .orderBy("telephone")
+                .limit(10)
+        } else {
+            return db
+                .collection("Reservation")
+                .document("store")
+                .collection(category)
+                .whereEqualTo("belong", belong)
+                .limit(10)
+        }
     }
 
     private fun setUI() {
@@ -178,6 +192,7 @@ class ReservationFragment : Fragment() {
                 binding.progressBar.visibility = View.GONE
             }
             .addOnFailureListener { exception ->
+                Log.e("FirestoreError", "Error fetching data: ", exception)
                 Toast.makeText(navigationActivity, "데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
             }
     }
