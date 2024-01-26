@@ -170,6 +170,7 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
         return "$countryPart ${remainingPart.substring(0, 2)}-${remainingPart.substring(2, 6)}-${remainingPart.substring(6)}"
     }
 
+    // 사용자가 입력한 인증번호로 인증
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
