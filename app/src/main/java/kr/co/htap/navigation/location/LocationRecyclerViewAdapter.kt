@@ -19,7 +19,6 @@ class LocationRecyclerViewAdapter(
     init {
         sortBranchByDistance()
     }
-
     interface OnItemClickListener {
         fun onItemClick(name: String) {}
     }
@@ -37,16 +36,15 @@ class LocationRecyclerViewAdapter(
     fun setCallback(callback: OnItemClickListener){
         this.itemClickListener= callback
     }
-
     inner class LocationViewHolder(private val binding: ItemFragmentCheckLocationBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
 
         fun bind(branchItem: BranchEntity) {
             val branch_name = binding.itemTvBranch
             val branch_distance = binding.itemTvDistance
             branch_name.text = branchItem.name
-            branch_distance.text = String.format("%.2fkm", branchItem.distance / 1000)
+            if(branchItem.distance != 0.0) branch_distance.text = String.format("%.2fkm", branchItem.distance / 1000)
+            else branch_distance.text =null
 
             branch_name.setOnClickListener {
                 Log.d("test", "클릭 이벤트")
@@ -54,13 +52,10 @@ class LocationRecyclerViewAdapter(
             }
         }
     }
-
     override fun getItemCount(): Int = branchList.size
     override fun onBindViewHolder(holder: LocationViewHolder, position: Int) {
 
         holder.bind(branchList[position])
-
-
     }
 
     fun sortBranchByDistance() {
@@ -69,5 +64,4 @@ class LocationRecyclerViewAdapter(
         }
         branchList.sortBy { it.distance }
     }
-
 }

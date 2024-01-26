@@ -17,6 +17,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 
+
 /**
  *
  * @author eunku
@@ -43,7 +44,7 @@ class LocationProvider(private val context: Context) {
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
-    fun requestLocation() {
+    fun requestLocation() : Boolean {
         if (Build.VERSION.SDK_INT >= 29) {
             if (ActivityCompat.checkSelfPermission(
                     context,
@@ -63,8 +64,7 @@ class LocationProvider(private val context: Context) {
                     permissionsLocationUpApi29Impl,
                     REQUEST_LOCATION
                 )
-                Log.d("test111", "1번")
-            } else Log.d("test", "null값인가")
+            } else return true
         } else if (Build.VERSION.SDK_INT < 29) {
             if (ActivityCompat.checkSelfPermission(
                     context,
@@ -81,8 +81,9 @@ class LocationProvider(private val context: Context) {
                     REQUEST_LOCATION
                 )
                 Log.d("test", "22번")
-            } else Log.d("test", "null값인가")
+            } else return true
         }
+        return false
     }
 
     @SuppressLint("MissingPermission")

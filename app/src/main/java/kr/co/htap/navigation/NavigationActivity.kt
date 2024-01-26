@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kr.co.htap.R
 import kr.co.htap.databinding.ActivityNavigationBinding
+import kr.co.htap.navigation.home.HomeFragment
 import kr.co.htap.navigation.myPage.views.MyPageFragment
 import kr.co.htap.navigation.reservation.ReservationFragment
 
@@ -18,7 +19,7 @@ class NavigationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNavigationBinding
     private var recentPosition = 0
     private val fragments = listOf(
-        MainFragment(),
+        HomeFragment(),
         ReservationFragment(),
         MyPageFragment()
     )
