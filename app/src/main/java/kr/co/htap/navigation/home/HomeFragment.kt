@@ -1,31 +1,26 @@
-package kr.co.htap.navigation
+package kr.co.htap.navigation.home
 
 import android.content.Context
-import android.graphics.Point
-import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.viewpager2.widget.ViewPager2
 import com.google.firebase.firestore.FirebaseFirestore
-import kr.co.htap.R
-import kr.co.htap.databinding.FragmentMainBinding
+import kr.co.htap.databinding.FragmentHomeBinding
+import kr.co.htap.navigation.NavigationActivity
 import kr.co.htap.navigation.location.CheckLocationFragment
-import kr.co.htap.navigation.location.HomeDTO
 import kr.co.htap.navigation.location.LocationProvider
-import kr.co.htap.navigation.location.LocationRecyclerViewAdapter
+
 /**
  *
  * @author eunku
  */
-class MainFragment : Fragment() {
-    private lateinit var binding: FragmentMainBinding
+class HomeFragment : Fragment() {
+    private lateinit var binding: FragmentHomeBinding
     private lateinit var navigationActivity: NavigationActivity
     private lateinit var adapter: HomeViewPagerAdapter
     private lateinit var db: FirebaseFirestore
@@ -41,9 +36,7 @@ class MainFragment : Fragment() {
         super.onCreate(savedInstanceState)
         db = FirebaseFirestore.getInstance()
 
-        setFragmentResultListener("requestKey"){
-                requestKey, bundle ->
-            this.onPause()
+        setFragmentResultListener("requestKey"){ requestKey, bundle ->
             val result = bundle.getString("bundleKey")
             Log.d("test123 ", "${result}")
             branchName = result!!
@@ -57,7 +50,7 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMainBinding.inflate(inflater)
+        binding = FragmentHomeBinding.inflate(inflater)
         return binding.root
     }
 
@@ -67,8 +60,8 @@ class MainFragment : Fragment() {
         var locationProvider = LocationProvider(navigationActivity)
         locationProvider.getLocation()
         binding.btFindBranch.setOnClickListener {
+            locationProvider.requestLocation() // 플로우 체크
             val dialog = CheckLocationFragment(locationProvider)
-
             dialog.show(requireActivity().supportFragmentManager, "CheckLocationFragment")
         }
     }
@@ -76,11 +69,11 @@ class MainFragment : Fragment() {
     private fun getInitView(): ArrayList<HomeDTO> {
         itemList.clear()
         var count = 10;
-        db.collection("Reservation2")
+        db.collection("Reservation")
             .document("store")
             .collection("restaurant")
             .get().addOnSuccessListener { documents ->
-
+                Log.d("test init","1234")
                 for (document in documents.shuffled()) {
                     itemList.add(
                         HomeDTO(
@@ -100,7 +93,7 @@ class MainFragment : Fragment() {
     fun getViewByBranch(name : String): ArrayList<HomeDTO> {
         itemList.clear()
         var count = 10;
-        db.collection("Reservation2")
+        db.collection("Reservation")
             .document("store")
             .collection("restaurant")
             .get().addOnSuccessListener { documents ->

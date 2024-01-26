@@ -1,14 +1,9 @@
 package kr.co.htap.navigation.location
 
-import android.app.Dialog
 import android.content.Context
 import android.graphics.Insets
 import android.graphics.Point
-import android.location.Geocoder
-import android.location.Location
-import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,15 +13,9 @@ import android.view.WindowManager
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import kr.co.htap.databinding.FragmentCheckLocationBinding
-import kr.co.htap.navigation.MainFragment
-import java.util.Locale
 
 /**
  *

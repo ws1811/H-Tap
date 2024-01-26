@@ -1,4 +1,4 @@
-package kr.co.htap.navigation.location
+package kr.co.htap.navigation.home
 
 import java.io.Serializable
 
