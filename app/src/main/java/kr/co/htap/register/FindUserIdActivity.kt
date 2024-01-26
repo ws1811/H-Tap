@@ -50,7 +50,7 @@ class FindUserIdActivity : AppCompatActivity() {
             finish()
         }
     }
-
+    // 아이디 찾기
     private fun findUser(){
         val name = binding.etName.text.toString()
         val phone = binding.etPhone.text.toString()

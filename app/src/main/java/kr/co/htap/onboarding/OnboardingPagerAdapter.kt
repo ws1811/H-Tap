@@ -10,15 +10,18 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
  *
  */
 class OnboardingPagerAdapter(activity: FragmentActivity):FragmentStateAdapter(activity) {
-    private val numPages = 3
+    private val numPages = 6
 
     override fun getItemCount(): Int = numPages
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> OnboardingPage1Fragment()
-            1 -> OnboardingPage2Fragment()
-            2 -> OnboardingPage3Fragment()
+            1 -> OnboardingPageResrvation1()
+            2 -> OnboardingPageResrvation2()
+            3 -> OnboardingPageResrvation3()
+            4 -> OnboardingPageResrvation4()
+            5 -> OnboardingPage3Fragment()
             else -> throw IllegalArgumentException("Invalid position: $position")
         }
     }

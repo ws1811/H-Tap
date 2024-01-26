@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".onboarding.OnboardingPage1Fragment">
+    tools:context=".onboarding.OnboardingPageResrvation4">
 
     <TextView
         android:id="@+id/title"
@@ -13,49 +13,50 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
         android:layout_marginTop="70dp"
-        android:text="H-Tap"
-        android:textSize="24sp"
-        android:textColor="@color/MainColor"
+        android:text="예약"
         android:textStyle="bold"
+        android:textColor="@color/MainColor"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/guideline_hor_title"/>
-
     <TextView
         android:id="@+id/content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
-        android:layout_marginTop="10dp"
-        android:text="H-Tap의 태깅 서비스는 \n현대백화점에서의 \n편리하고 즐거운 경험을 선물합니다!"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
         android:gravity="center"
+        android:textStyle="bold"
+        android:text="간편한 예약으로 \n편리한 쇼핑을 즐겨보세요!"
+        android:textSize="18sp"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/guideline_hor_title"
         app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
         app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
-        app:layout_constraintBottom_toTopOf="@id/iv_img"
         />
 
     <ImageView
         android:id="@+id/iv_img"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
+        android:layout_width="300dp"
+        android:layout_height="350dp"
+        android:src="@drawable/onboarding_reservation_4"
         android:layout_gravity="center"
-        android:src="@drawable/logo"
+        android:padding="8dp"
         android:background="@drawable/border_image"
         app:layout_constraintBottom_toTopOf="@+id/guideline_hor"
-        app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
-        app:layout_constraintTop_toBottomOf="@id/content" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/content"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
     <TextView
         android:id="@+id/tv_page"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
-        android:text="1 / 6"
+        android:layout_marginBottom="100dp"
+        android:text="5 / 6"
         android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +74,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.2" />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_ver_start"
         android:layout_width="wrap_content"
