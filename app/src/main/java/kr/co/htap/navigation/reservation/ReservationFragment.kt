@@ -62,13 +62,15 @@ class ReservationFragment : Fragment() {
     }
 
     private fun configureData() {
-        if (navigationActivity.restaurant.size == 0) {
+        if (navigationActivity.restaurant.size == 0 ||
+            navigationActivity.fetchBelong != navigationActivity.belong) {
             navigationActivity.restaurant = ArrayList()
             navigationActivity.restaurantQuery = query("restaurant")
             navigationActivity.isLastRestaurant = false
         }
 
-        if (navigationActivity.laundry.size == 0) {
+        if (navigationActivity.laundry.size == 0
+            || navigationActivity.fetchBelong != navigationActivity.belong) {
             navigationActivity.laundry = ArrayList()
             navigationActivity.laundryQuery = query("laundry")
             navigationActivity.isLastLaundry = false
@@ -194,6 +196,7 @@ class ReservationFragment : Fragment() {
                 val newSize = arrayList.size
                 adapter.notifyItemRangeInserted(oldSize, newSize - oldSize)
                 binding.progressBar.visibility = View.INVISIBLE
+                navigationActivity.fetchBelong = navigationActivity.belong
             }
             .addOnFailureListener { exception ->
                 Log.e("FirestoreError", "Error fetching data: ", exception)
