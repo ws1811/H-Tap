@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
@@ -49,7 +50,12 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
         } else setBranchList()
 
         binding.btnRefreshLocation.setOnClickListener {
-            setBranchList()
+            Log.d("test lp2","${locationProvider.requestLocation()}")
+            if(locationProvider.checkPermission()){
+                setBranchList()
+                Toast.makeText(context, "위치를 갱신하셨습니다.", Toast.LENGTH_LONG).show()
+            } else Toast.makeText(context, "GPS 권한이 없습니다.", Toast.LENGTH_LONG).show()
+
         }
         binding.btnBackMain.setOnClickListener{
             parentFragmentManager.beginTransaction().remove(this@CheckLocationFragment).commit()//현재 프레그먼트 닫기

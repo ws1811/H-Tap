@@ -31,10 +31,11 @@ class HomeFragment : Fragment() {
     private lateinit var branchName: String
     private lateinit var dbSetStart: Query
     private lateinit var dbSetRefresh: Query
-    private var countRes = 742
+    private lateinit var locationProvider : LocationProvider
     var itemList = ArrayList<HomeDTO>()
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        locationProvider = LocationProvider(context)
         navigationActivity = context as NavigationActivity
 
     }
@@ -71,10 +72,12 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getInitView()
-        var locationProvider = LocationProvider(navigationActivity)
-        locationProvider.getLocation()
+//        var locationProvider = LocationProvider(Context.)
+        if(locationProvider.checkPermission()){
+            locationProvider.getLocation()
+        } else locationProvider.requestLocation()
+
         binding.btFindBranch.setOnClickListener {
-            locationProvider.requestLocation() // 플로우 체크
             val dialog = CheckLocationFragment(locationProvider)
             Handler(Looper.getMainLooper()).postDelayed({
                 dialog.show(requireActivity().supportFragmentManager, "CheckLocationFragment")
