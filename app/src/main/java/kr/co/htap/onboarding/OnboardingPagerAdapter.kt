@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 /**
  *
  * @author 송원선
- *
+ * 온보딩 페이지 어댑터
  */
 class OnboardingPagerAdapter(activity: FragmentActivity):FragmentStateAdapter(activity) {
     private val numPages = 6

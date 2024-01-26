@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
@@ -97,7 +96,7 @@ class RegisterActivity: AppCompatActivity(){
             validation = false
         }
         // 이메일 패턴(유효성) 검사
-        var pattern = android.util.Patterns.EMAIL_ADDRESS
+        val pattern = android.util.Patterns.EMAIL_ADDRESS
         if(!pattern.matcher(email).matches()) {
             Toast.makeText(this, "이메일 형식이 올바르지 않습니다", Toast.LENGTH_SHORT).show()
             validation = false
