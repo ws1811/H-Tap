@@ -15,7 +15,7 @@ import kr.co.htap.databinding.FragmentMyPagePointBinding
 import kr.co.htap.helper.ViewBindingFragment
 import kr.co.htap.navigation.myPage.adapter.PointViewAdapter
 import kr.co.htap.navigation.myPage.model.PointHistory
-import java.lang.Exception
+import kotlin.Exception
 
 /**
  * @author 호연
@@ -39,6 +39,11 @@ class MyPointFragment : ViewBindingFragment<FragmentMyPagePointBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.btnBack.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
         val list: MutableList<PointHistory> = mutableListOf()
         var point: Long = 0
         firestore.document("points/${auth.currentUser?.uid}").get().addOnCompleteListener {
@@ -53,11 +58,17 @@ class MyPointFragment : ViewBindingFragment<FragmentMyPagePointBinding>() {
                         }
                     }
                 }
-                requireActivity().runOnUiThread {
-                    binding.pointHistory.adapter = PointViewAdapter(list)
-                    binding.pointHistory.layoutManager = LinearLayoutManager(context)
-                    binding.tvPoint.text = String.format("%d p", point)
+                try {
+                    requireActivity().runOnUiThread {
+                        binding.pointHistory.adapter = PointViewAdapter(list)
+                        binding.pointHistory.layoutManager = LinearLayoutManager(context)
+                        binding.tvPoint.text = String.format("%d p", point)
+                    }
+
+                } catch (e: Exception) {
+
                 }
+
             }
         }
 

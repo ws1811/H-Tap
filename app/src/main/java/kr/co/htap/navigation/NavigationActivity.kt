@@ -77,6 +77,7 @@ class NavigationActivity : AppCompatActivity() {
                         )
                     }
                     transaction.replace(binding.mainFrameLayout.id, fragments[1])
+                    transaction.addToBackStack(null)
                     transaction.commit()
                     recentPosition = 1
                     return@setOnItemSelectedListener true

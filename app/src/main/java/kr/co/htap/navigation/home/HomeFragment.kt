@@ -14,10 +14,14 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.delay
+import kr.co.htap.R
 import kr.co.htap.databinding.FragmentHomeBinding
 import kr.co.htap.navigation.NavigationActivity
 import kr.co.htap.navigation.location.CheckLocationFragment
 import kr.co.htap.navigation.location.LocationProvider
+import kr.co.htap.navigation.myPage.model.ReservationHistory
+import kr.co.htap.navigation.myPage.views.ModifyPersonalInfoFragment
+import kr.co.htap.navigation.myPage.views.MyPageReservationHistoryFragment
 
 /**
  *
@@ -31,7 +35,7 @@ class HomeFragment : Fragment() {
     private lateinit var branchName: String
     private lateinit var dbSetStart: Query
     private lateinit var dbSetRefresh: Query
-    private lateinit var locationProvider : LocationProvider
+    private lateinit var locationProvider: LocationProvider
     var itemList = ArrayList<HomeDTO>()
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -74,10 +78,17 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         getInitView()
 //        var locationProvider = LocationProvider(Context.)
-        if(locationProvider.checkPermission()){
+        if (locationProvider.checkPermission()) {
             locationProvider.getLocation()
         } else locationProvider.requestLocation()
 
+        binding.btCheckReservation.setOnClickListener {
+            with(requireActivity().supportFragmentManager.beginTransaction()) {
+                replace(R.id.mainFrameLayout, MyPageReservationHistoryFragment())
+                addToBackStack(null)
+                commit()
+            }
+        }
         binding.btFindBranch.setOnClickListener {
             val dialog = CheckLocationFragment(locationProvider)
             Handler(Looper.getMainLooper()).postDelayed({

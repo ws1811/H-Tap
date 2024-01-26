@@ -1,43 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout4"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".navigation.myPage.views.MyPageReservationHistoryFragment">
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/guideline30"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:srcCompat="@drawable/icon_arrow_back" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
+        app:layout_constraintGuide_percent="0.05"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        android:orientation="vertical" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
+        app:layout_constraintGuide_percent="0.95"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
+        android:orientation="vertical" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_begin="73dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"
+        app:layout_constraintGuide_percent="0.9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
+        android:orientation="horizontal" />
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintEnd_toEndOf="@id/guideline4"
         app:layout_constraintStart_toStartOf="@id/guideline3"
@@ -65,7 +74,7 @@
                 android:id="@+id/label_reservation_history_record_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:text="예약 내역"
                 android:textSize="18sp"
                 android:textStyle="bold"

@@ -36,6 +36,13 @@ class MyCouponFragment : ViewBindingFragment<FragmentMyPageCouponBinding>() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): FragmentMyPageCouponBinding = FragmentMyPageCouponBinding.inflate(inflater, container, false)
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.btnBack.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         val recyclerItems: MutableList<Coupon> = mutableListOf()
@@ -61,12 +68,16 @@ class MyCouponFragment : ViewBindingFragment<FragmentMyPageCouponBinding>() {
                 }
             }
         }.addOnSuccessListener {
-            requireActivity().runOnUiThread {
-                binding.tvAvailableCouponCount.text = String.format("보유쿠폰 %d장", recyclerItems.size)
-                with(binding.recyclerView) {
-                    adapter = CouponViewAdapter(recyclerItems)
-                    layoutManager = LinearLayoutManager(context)
+            try {
+                requireActivity().runOnUiThread {
+                    binding.tvAvailableCouponCount.text =
+                        String.format("보유쿠폰 %d장", recyclerItems.size)
+                    with(binding.recyclerView) {
+                        adapter = CouponViewAdapter(recyclerItems)
+                        layoutManager = LinearLayoutManager(context)
+                    }
                 }
+            } catch (e: Exception) {
             }
         }
     }

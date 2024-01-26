@@ -40,6 +40,10 @@ class MyPageReservationHistoryFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.btnBack.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
         historyAdapter = ReservationHistoryAdapter(mutableListOf())
         val userEmail = auth.currentUser?.email ?: ""
         if (userEmail.isNotEmpty()) {
@@ -81,8 +85,11 @@ class MyPageReservationHistoryFragment :
             }
             historyAdapter.apply {
                 history = histories
-                requireActivity().runOnUiThread {
-                    notifyDataSetChanged()
+                try {
+                    requireActivity().runOnUiThread {
+                        notifyDataSetChanged()
+                    }
+                } catch (e: Exception) {
                 }
             }
         }
