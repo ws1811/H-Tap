@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:gravity="center"
@@ -9,7 +10,7 @@
     android:layout_marginVertical="15dp"
     android:layout_marginHorizontal="20dp"
     android:clipToOutline="true"
-    >
+    tools:targetApi="s">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -27,18 +28,20 @@
                 android:textSize="25sp"
                 android:textStyle="bold"
                 android:text="가게 이름"
+                android:fontFamily="@font/happiness_sans_regular"
                 android:maxLines="1"
-                android:textColor="@color/lilac"
+                android:textColor="@color/black"
                 android:id="@+id/store_name"
                 />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="가게 소속"
+                android:fontFamily="@font/happiness_sans_regular"
                 android:ellipsize="end"
                 android:textSize="15sp"
                 android:maxLines="1"
-                android:textColor="@color/lilac"
+                android:textColor="@color/black"
                 android:id="@+id/store_belong"
                 />
         </LinearLayout>

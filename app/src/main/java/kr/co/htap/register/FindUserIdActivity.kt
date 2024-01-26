@@ -50,7 +50,7 @@ class FindUserIdActivity : AppCompatActivity() {
             finish()
         }
     }
-
+    // 아이디 찾기
     private fun findUser(){
         val name = binding.etName.text.toString()
         val phone = binding.etPhone.text.toString()
@@ -81,17 +81,10 @@ class FindUserIdActivity : AppCompatActivity() {
 
                             // invsibile 버튼 사용자에게 보여주기 (홈으로, 로그인)
                             binding.btnHiddenTofindpassword.visibility = View.VISIBLE
-                            binding.btnHiddenLogin.visibility = View.VISIBLE
                             binding.btnHiddenTofindpassword.setOnClickListener(object : OnSingleClickListener() {
                                 override fun onSingleClick(v: View?) {
-                                    val intent = Intent(v?.context, FindUserPasswordActivity::class.java)
-                                    startActivity(intent)
-                                }
-                            })
-                            binding.btnHiddenLogin.setOnClickListener (object : OnSingleClickListener() {
-                                override fun onSingleClick(v: View?) {
-                                    auth.signOut()
-                                    val intent = Intent(v?.context, LoginActivity::class.java)
+                                    val intent = Intent(v?.context, FindUserPasswordAuthActivity::class.java)
+                                    intent.putExtra("email", userEmail)
                                     startActivity(intent)
                                 }
                             })

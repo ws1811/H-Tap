@@ -9,7 +9,7 @@
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <!-- Splash 화면의 배경색 지정 -->
-        <item name="windowSplashScreenBackground">@color/LightPurple</item>
+        <item name="windowSplashScreenBackground">@color/white</item>
         <!-- Splash 화면의 중앙에 위치할 아이콘 Drawable 지정 -->
         <item name="windowSplashScreenAnimatedIcon">@drawable/icon_main</item>
         <!-- Splash 화면이 나타나는 시간 지정 -->

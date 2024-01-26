@@ -14,22 +14,22 @@
         android:text="메인으로"
         android:textSize="20sp"
         android:textColor="@color/white"
-        android:backgroundTint="@color/MainColor"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:backgroundTint="@color/deepPurple"
+        app:layout_constraintBottom_toTopOf="@id/guideline_hor_bottom"
         app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
         app:layout_constraintTop_toBottomOf="@+id/tv_register_success" />
 
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/iv_success"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="300dp"
+        android:layout_height="350dp"
+        android:layout_marginBottom="148dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.371"
-        app:srcCompat="@drawable/icon_success" />
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/mail_animation" />
 
     <TextView
         android:id="@+id/tv_register_success"
@@ -38,12 +38,11 @@
         android:text="회원 가입이 완료되었습니다 !"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/btn_toMain"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_success"
-        app:layout_constraintVertical_bias="0.135" />
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_ver_start"
@@ -58,5 +57,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.85" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hor_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

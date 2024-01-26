@@ -23,6 +23,7 @@ class NavigationActivity : AppCompatActivity() {
         ReservationFragment(),
         MyPageFragment()
     )
+    var belong = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNavigationBinding.inflate(layoutInflater)
