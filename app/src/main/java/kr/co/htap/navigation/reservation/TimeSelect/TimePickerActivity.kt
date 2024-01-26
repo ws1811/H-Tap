@@ -22,6 +22,7 @@ class TimePickerActivity : AppCompatActivity() {
     private lateinit var adapter: TimeListAdapter
 
     private lateinit var storeName: String
+    private lateinit var storeBelong: String
     private lateinit var documentId: String
     private lateinit var date: DateDTO
     private var timeData: ArrayList<TimeDTO> = arrayListOf()
@@ -40,6 +41,7 @@ class TimePickerActivity : AppCompatActivity() {
 
     private fun configureData() {
         storeName = intent.getStringExtra("name") ?: ""
+        storeBelong = intent.getStringExtra("belong") ?: ""
         documentId = intent.getStringExtra("documentId") ?: ""
 
         date = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -90,6 +92,7 @@ class TimePickerActivity : AppCompatActivity() {
 
     private fun setUI() {
         binding.title.text = storeName
+        binding.belong.text = storeBelong
 
         binding.cancelButton.setOnClickListener {
             finish()
