@@ -7,6 +7,7 @@
     <color name="datePickerBg">#2B2930</color>
     <color name="navigationClicked">#FFFFFF</color>
     <color name="navigationNotClicked">#000000</color>
+
     <color name="MainColor">#33583FE7</color>
     <color name="LightPurple">#D0BCFF</color>
     <color name="ReservationCardViewBg">#334D2BF4</color>

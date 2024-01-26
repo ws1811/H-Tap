@@ -10,4 +10,9 @@
         <item name="android:background">@drawable/border_background</item>
         <item name="android:padding">10dp</item>
     </style>
+
+    <style name="StyleExpansionDialog">
+        <item name="android:windowEnterAnimation">@anim/expansion_dialog</item>
+        <item name="android:windowExitAnimation">@anim/reduction_dialog</item>
+    </style>
 </resources>

@@ -10,9 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        tools:ignore="MissingConstraints">
 
         <ImageView
             android:id="@+id/blur_image"
@@ -78,10 +76,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/happiness_sans_bold"
         android:gravity="center"
         android:text="맛있는 식당"
+        android:textColor="@color/black"
         android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/branch_name"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="@font/happiness_sans_regular"
         android:gravity="center"
         android:text="더현대서울"

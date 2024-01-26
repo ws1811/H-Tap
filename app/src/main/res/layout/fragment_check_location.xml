@@ -20,11 +20,13 @@
         android:layout_weight="9"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:scrollbars="vertical"
+        android:scrollbarFadeDuration="0"
         tools:listitem="@layout/item_fragment_check_location" />
 
     <LinearLayout
         android:id="@+id/buttonLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
@@ -33,27 +35,28 @@
         app:layout_constraintTop_toBottomOf="@id/location_recycler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <Button
+        <TextView
             android:id="@+id/btn_refresh_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/LightPurple"
+            android:layout_width="80dp"
+            android:layout_height="35dp"
+            android:elevation="3dp"
+            android:gravity="center"
+            android:background="@drawable/button_check_reserv"
             android:fontFamily="@font/happiness_sans_regular"
+            android:textSize="18dp"
             android:text="위치갱신" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <Button
+        <TextView
             android:id="@+id/btn_back_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/grey"
+            android:layout_width="80dp"
+            android:layout_height="35dp"
+            android:background="@drawable/button_back"
+            android:gravity="center"
+            android:elevation="3dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/happiness_sans_regular"
+            android:textSize="18dp"
             android:text="뒤로가기" />
     </LinearLayout>
 
@@ -67,5 +70,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="15dp"
         android:text="지점명 클릭시 해당 지점이 선택됩니다" />
-
 </LinearLayout>
