@@ -60,7 +60,7 @@
         android:id="@+id/btn_start"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/MainColor"
+        android:background="@color/deepPurple"
         android:text="시작하기"
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
