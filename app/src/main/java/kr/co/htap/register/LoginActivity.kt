@@ -48,7 +48,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var registserView: TextView
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var firestore:FirebaseFirestore
-    private var GOOGLE_LOGIN_CODE = 9001
     private lateinit var splashScreen: SplashScreen
     private var isSplashEnd = false
 
@@ -101,6 +100,7 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+        /* 구글 로그인 */
         googleLoginLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == -1) {
@@ -111,7 +111,6 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
 
-        /* 구글 로그인 */
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -124,7 +123,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onSingleClick(v: View?) {
                 googleLogin()
             }
-        })
+        }) /* END Google Login */
 
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 
@@ -212,7 +211,7 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun googleLogin() {
         Log.d("GoogleLogin", "googleLogin()")
-        val signInIntent = googleSignInClient!!.signInIntent
+        val signInIntent = googleSignInClient.signInIntent
 //        googleLoginLauncher.launch(signInIntent)
         startActivityForResult(signInIntent, RC_SIGN_IN)
         // startActivityForResult() -> onActivityResult 콜백 호출
@@ -222,17 +221,17 @@ class LoginActivity : AppCompatActivity() {
     private fun firebaseAuthWithGoogle(idToken: String, data:Intent?) {
         Log.d("GoogleLogin", "firebasAuthWithGoogle(idToken : $idToken ) ")
         val credential = GoogleAuthProvider.getCredential(idToken, null)
-        var user = auth.currentUser
+        val user = auth.currentUser
         val task = GoogleSignIn.getSignedInAccountFromIntent(data)
         val account = task.getResult(ApiException::class.java)!!
         Log.d("GoogleLogin", "firebaseAuthWithGoogle() | account email : ${account.email}")
         auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                Log.d("GoogleLogin", "signInWithCredentail | task : $task")
-                if (task.isSuccessful) {
+            .addOnCompleteListener(this) { resultTask ->
+                Log.d("GoogleLogin", "signInWithCredentail | task : $resultTask")
+                if (resultTask.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("GoogleLogin", "signInWithCredential:success")
-                    checkIfUserExistsInFirestore(account)
+                    checkIfUserExistsInFirestore(account) // 구글 로그인 유저가 Firestore에 있는지 체크 -> 없으면 등록
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -256,8 +255,6 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("GoogleLogin", "onActivityResult() | account = $account")
                 Log.d("GoogleLogin", "onActivityResult() | account.id :" + account.id)
                 firebaseAuthWithGoogle(account.idToken!!, data)
-
-                //startActivity(navigationIntent)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("GoogleLogin", "Google sign in failed", e)
@@ -294,7 +291,6 @@ class LoginActivity : AppCompatActivity() {
     private fun checkIfUserExistsInFirestore(account: GoogleSignInAccount) {
         Log.d("GoogleLogin", "checkIfUserExistsInFirestore($account)")
         if (account != null) {
-            val userId = account.id
             val usersCollection = firestore.collection("users")
             val userEamil = account.email
             // Check if the user already exists in Firestore
