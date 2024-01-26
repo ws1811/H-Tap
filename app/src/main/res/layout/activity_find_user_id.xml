@@ -6,34 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".register.FindUserIdActivity">
 
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이름"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor"
+        app:layout_constraintBottom_toTopOf="@id/et_name"
+        />
     <EditText
         android:id="@+id/et_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:textSize="24sp"
         android:inputType="text|textNoSuggestions"
-        android:hint="이름"
         android:padding="12dp"
         android:background="@drawable/custom_edit_text"
         app:layout_constraintEnd_toStartOf="@id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
-        app:layout_constraintTop_toBottomOf="@id/tv_find_userid" />
-
+        app:layout_constraintTop_toBottomOf="@id/tv_name" />
+    <TextView
+        android:id="@+id/tv_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="전화번호"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@id/et_name"
+        app:layout_constraintBottom_toTopOf="@id/et_phone"
+        />
     <EditText
         android:id="@+id/et_phone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_edit_text"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:padding="12dp"
         android:textSize="24sp"
         android:inputType="phone"
-        android:hint="전화번호 [숫자만 입력]"
         android:maxLength="13"
         app:layout_constraintEnd_toStartOf="@id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
-        app:layout_constraintTop_toBottomOf="@id/et_name" />
+        app:layout_constraintTop_toBottomOf="@id/tv_phone" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_hor"
@@ -56,35 +76,28 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.1" />
 
-    <TextView
-        android:id="@+id/tv_find_userid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="아이디 찾기"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
-        app:layout_constraintTop_toTopOf="@+id/guideline_hor" />
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_ver_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.9" />
 
     <TextView
         android:id="@+id/btn_find_id"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="20dp"
         android:padding="10dp"
         android:text="아이디 찾기"
-        android:textSize="28sp"
+        android:textSize="18sp"
+        android:textStyle="bold"
         android:textColor="@color/white"
         android:gravity="center"
-        android:background="@color/MainColor"
-
+        android:background="@drawable/border_image"
+        android:backgroundTint="@color/MainColor"
         app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
@@ -109,12 +122,11 @@
 
     <TextView
         android:id="@+id/tv_result"
-        style="@style/TextViewWithBorder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
         android:textColor="@color/LightGreen"
-        android:textSize="22sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -131,32 +143,18 @@
         android:layout_marginBottom="144dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:background="@color/mint"
+        android:background="@drawable/border_image"
+        android:backgroundTint="@color/mint"
         android:textColor="@color/black"
         android:text="비밀번호 찾기"
-        android:textSize="24sp"
+        android:textSize="18sp"
+        android:textStyle="bold"
         android:visibility="invisible"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver_start" />
 
-    <TextView
-        android:id="@+id/btn_hidden_login"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="56dp"
-        android:background="@color/mint"
-        android:textColor="@color/black"
-        android:text="로그인"
-        android:textSize="24sp"
-        android:visibility="invisible"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
-        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start" />
 
     <ImageView
         android:id="@+id/iv_goback"
@@ -167,6 +165,7 @@
         app:srcCompat="@drawable/icon_arrow_back"
         app:layout_constraintStart_toEndOf="@id/guideline_ver_icon"
         app:layout_constraintBottom_toTopOf="@id/guideline_hor"
+
         />
 
 

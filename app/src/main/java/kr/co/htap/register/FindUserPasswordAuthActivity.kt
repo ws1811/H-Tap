@@ -8,6 +8,7 @@ import android.os.CountDownTimer
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.FirebaseException
@@ -66,6 +67,8 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
         binding.tvAuthRequest.setOnClickListener (object :OnSingleClickListener(){
             override fun onSingleClick(v: View?) {
                 authByPhone()
+                // 키보드 숨기기
+                hideKeyboard(binding.tvAuthRequest)
             }
         })
         // 인증번호 입력 후 [인증하기] 클릭 -> 인증 진행
@@ -198,5 +201,10 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
                     Toast.makeText(this, "인증에 실패했습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+    // 키보드 숨기는 함수
+    private fun hideKeyboard(view: View) {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
