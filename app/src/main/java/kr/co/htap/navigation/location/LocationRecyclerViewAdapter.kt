@@ -44,6 +44,7 @@ class LocationRecyclerViewAdapter(
             val branch_distance = binding.itemTvDistance
             branch_name.text = branchItem.name
             if(branchItem.distance != 0.0) branch_distance.text = String.format("%.2fkm", branchItem.distance / 1000)
+            else branch_distance.text =null
 
             branch_name.setOnClickListener {
                 Log.d("test", "클릭 이벤트")

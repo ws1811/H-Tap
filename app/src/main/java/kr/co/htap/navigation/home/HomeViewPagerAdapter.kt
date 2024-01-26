@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kr.co.htap.databinding.ItemFragmentMainBinding
 
@@ -34,11 +35,13 @@ class HomeViewPagerAdapter(private val itemList: ArrayList<HomeDTO>) :
         fun bind(item: HomeDTO, num :Int) {
             Glide.with(itemView.context)
                 .load(item.imgURL)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(binding.slideImage)
 
             // 블러 효과 적용
             Glide.with(itemView.context)
                 .load(item.imgURL)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .transform(BlurTransformation(16, 4))
                 .into(binding.blurImage)
 

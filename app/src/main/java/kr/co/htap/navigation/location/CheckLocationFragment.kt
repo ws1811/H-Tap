@@ -15,6 +15,10 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.firestoreSettings
+import com.google.firebase.firestore.memoryCacheSettings
+import com.google.firebase.firestore.persistentCacheSettings
 import kr.co.htap.databinding.FragmentCheckLocationBinding
 
 /**
@@ -31,7 +35,6 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
         super.onCreate(savedInstanceState)
         isCancelable = true
         db = FirebaseFirestore.getInstance()
-
 
     }
     override fun onCreateView(
@@ -56,7 +59,7 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         val windowManager = activity?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val size = windowManager.currentWindowMetricsPointCompat()
-        var deviceWidth = size.x
+//        var deviceWidth = size.x
         var deviceHeight = size.y
 
 //        params?.width = (deviceWidth * 0.9).toInt()
