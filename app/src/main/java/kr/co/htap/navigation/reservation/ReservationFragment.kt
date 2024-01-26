@@ -35,13 +35,6 @@ class ReservationFragment : Fragment() {
     private lateinit var adapter: ReservationListAdapter
     private lateinit var db: FirebaseFirestore
 
-    private lateinit var restaurant: ArrayList<StoreEntity>
-    private lateinit var restaurantQuery: Query
-    private var isLastRestaurant: Boolean = false
-    private lateinit var laundry: ArrayList<StoreEntity>
-    private lateinit var laundryQuery: Query
-    private var isLastLaundry: Boolean = false
-
     private var currentCategory: String = "restaurant"
     private var belong: String = ""
 
@@ -69,12 +62,17 @@ class ReservationFragment : Fragment() {
     }
 
     private fun configureData() {
-        restaurant = arrayListOf()
-        restaurantQuery = query("restaurant")
-        isLastRestaurant = false
-        laundry = arrayListOf()
-        laundryQuery = query("laundry")
-        isLastLaundry = false
+        if (navigationActivity.restaurant.size == 0) {
+            navigationActivity.restaurant = ArrayList()
+            navigationActivity.restaurantQuery = query("restaurant")
+            navigationActivity.isLastRestaurant = false
+        }
+
+        if (navigationActivity.laundry.size == 0) {
+            navigationActivity.laundry = ArrayList()
+            navigationActivity.laundryQuery = query("laundry")
+            navigationActivity.isLastLaundry = false
+        }
     }
 
     private fun query(category: String): Query {
@@ -97,11 +95,11 @@ class ReservationFragment : Fragment() {
 
     private fun setUI() {
         binding.restaurentButton.setOnClickListener {
-            changeCategory("restaurant", restaurant, restaurantQuery)
+            changeCategory("restaurant", navigationActivity.restaurant, navigationActivity.restaurantQuery)
         }
 
         binding.laundryButton.setOnClickListener {
-            changeCategory("laundry", laundry, laundryQuery)
+            changeCategory("laundry", navigationActivity.laundry, navigationActivity.laundryQuery)
         }
 
         binding.reservationRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
@@ -110,9 +108,9 @@ class ReservationFragment : Fragment() {
                     binding.progressBar.visibility = View.VISIBLE
 
                     if (currentCategory == "restaurant") {
-                        fetchStoreData(currentCategory, restaurant, isLastRestaurant, restaurantQuery)
+                        fetchStoreData(currentCategory, navigationActivity.restaurant, navigationActivity.isLastRestaurant, navigationActivity.restaurantQuery)
                     } else {
-                        fetchStoreData(currentCategory, laundry, isLastLaundry, laundryQuery)
+                        fetchStoreData(currentCategory, navigationActivity.laundry, navigationActivity.isLastLaundry, navigationActivity.laundryQuery)
                     }
                 }
             }
@@ -186,16 +184,16 @@ class ReservationFragment : Fragment() {
                 val lastVisible = documentSnapshots.documents[documentSnapshots.size() - 1]
 
                 if (type == "restaurant") {
-                    restaurantQuery = query.startAfter(lastVisible).limit(10)
-                    isLastRestaurant = documentSnapshots.size() < 10
+                    navigationActivity.restaurantQuery = query.startAfter(lastVisible).limit(10)
+                    navigationActivity.isLastRestaurant = documentSnapshots.size() < 10
                 } else {
-                    laundryQuery = query.startAfter(lastVisible).limit(10)
-                    isLastLaundry = documentSnapshots.size() < 10
+                    navigationActivity.laundryQuery = query.startAfter(lastVisible).limit(10)
+                    navigationActivity.isLastLaundry = documentSnapshots.size() < 10
                 }
 
                 val newSize = arrayList.size
                 adapter.notifyItemRangeInserted(oldSize, newSize - oldSize)
-                binding.progressBar.visibility = View.GONE
+                binding.progressBar.visibility = View.INVISIBLE
             }
             .addOnFailureListener { exception ->
                 Log.e("FirestoreError", "Error fetching data: ", exception)
