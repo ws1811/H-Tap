@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".onboarding.OnboardingPageResrvation1">
+    tools:context=".onboarding.OnboardingPageResrvation">
 
     <TextView
         android:id="@+id/title"
@@ -15,7 +15,7 @@
         android:layout_marginTop="70dp"
         android:text="예약"
         android:textStyle="bold"
-        android:textColor="@color/MainColor"
+        android:textColor="@color/deepPurple"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
         android:layout_marginBottom="100dp"
-        android:text="3 / 6"
+        android:text="3 / 4"
         android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
