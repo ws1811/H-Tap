@@ -15,7 +15,7 @@
         android:layout_marginTop="70dp"
         android:text="예약"
         android:textStyle="bold"
-        android:textColor="@color/MainColor"
+        android:textColor="@color/deepPurple"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
