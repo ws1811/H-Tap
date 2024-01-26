@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.memoryCacheSettings
 import com.google.firebase.firestore.persistentCacheSettings
+import kr.co.htap.R
 import kr.co.htap.databinding.FragmentCheckLocationBinding
 
 /**
@@ -61,12 +62,18 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         val windowManager = activity?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val size = windowManager.currentWindowMetricsPointCompat()
-//        var deviceWidth = size.x
+        var deviceWidth = size.x
         var deviceHeight = size.y
+        val lpWindow = WindowManager.LayoutParams()
+
+        lpWindow.windowAnimations = R.style.StyleExpansionDialog
+        lpWindow.height = (deviceHeight * 0.8).toInt()
+        lpWindow.width = (deviceWidth * 0.9).toInt()
 
 //        params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceHeight * 0.8).toInt()
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
+//        params?.height = (deviceHeight * 0.8).toInt()
+        dialog?.window?.attributes = lpWindow
+//        dialog?.window?.attributes = params as WindowManager.LayoutParams
 
     }
     fun WindowManager.currentWindowMetricsPointCompat() : Point {

@@ -2,6 +2,8 @@ package kr.co.htap.navigation.home
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.viewpager2.widget.ViewPager2
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import kotlinx.coroutines.delay
 import kr.co.htap.databinding.FragmentHomeBinding
 import kr.co.htap.navigation.NavigationActivity
 import kr.co.htap.navigation.location.CheckLocationFragment
@@ -73,7 +76,9 @@ class HomeFragment : Fragment() {
         binding.btFindBranch.setOnClickListener {
             locationProvider.requestLocation() // 플로우 체크
             val dialog = CheckLocationFragment(locationProvider)
-            dialog.show(requireActivity().supportFragmentManager, "CheckLocationFragment")
+            Handler(Looper.getMainLooper()).postDelayed({
+                dialog.show(requireActivity().supportFragmentManager, "CheckLocationFragment")
+            }, 500)
         }
     }
 
