@@ -30,7 +30,7 @@
                 android:id="@+id/imv_point"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                app:srcCompat="@drawable/point_svgrepo_com" />
+                app:srcCompat="@drawable/coin_svgrepo_com__1_" />
 
             <TextView
                 android:id="@+id/tv_point"
@@ -83,7 +83,7 @@
                 android:id="@+id/imv_gift"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                app:srcCompat="@drawable/gift_2_svgrepo_com" />
+                app:srcCompat="@drawable/calendar_date_schedule_2_svgrepo_com" />
 
             <TextView
                 android:id="@+id/tv_reservation"
