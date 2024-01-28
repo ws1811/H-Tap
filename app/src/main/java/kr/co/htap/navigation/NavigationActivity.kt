@@ -33,7 +33,7 @@ class NavigationActivity : AppCompatActivity() {
     lateinit var laundryQuery: Query
     var isLastLaundry: Boolean = false
     var belong = ""
-    var fetchBelong = ""
+    var isBelongData = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
