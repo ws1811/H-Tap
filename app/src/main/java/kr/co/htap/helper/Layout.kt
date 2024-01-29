@@ -11,7 +11,6 @@ import androidx.core.content.ContentProviderCompat.requireContext
  */
 class Layout {
     companion object {
-
         fun setMarginTop(marginInDP: Int): (View) -> Unit {
             return { view ->
                 val layoutParams = view.layoutParams as LinearLayout.LayoutParams

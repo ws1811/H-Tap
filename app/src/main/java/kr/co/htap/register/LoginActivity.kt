@@ -47,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var registserView: TextView
     private lateinit var googleSignInClient: GoogleSignInClient
-    private lateinit var firestore:FirebaseFirestore
+    private lateinit var firestore: FirebaseFirestore
     private lateinit var splashScreen: SplashScreen
     private var isSplashEnd = false
 
@@ -77,7 +77,7 @@ class LoginActivity : AppCompatActivity() {
         })
 
         // 로그인 버튼 클릭 (일반로그인)
-        loginButton.setOnClickListener (object : OnSingleClickListener(){
+        loginButton.setOnClickListener(object : OnSingleClickListener() {
             override fun onSingleClick(v: View?) {
                 // 키보드 숨기기
                 hideKeyBoard(v!!)
@@ -87,14 +87,14 @@ class LoginActivity : AppCompatActivity() {
         })
 
         // [아이디 찾기] 클릭
-        binding.tvFindId.setOnClickListener(object : OnSingleClickListener(){
+        binding.tvFindId.setOnClickListener(object : OnSingleClickListener() {
             override fun onSingleClick(v: View?) {
                 val intent = Intent(v?.context, FindUserIdActivity::class.java)
                 startActivity(intent)
             }
         })
         // [비밀번호 찾기] 클릭
-        binding.tvFindPassword.setOnClickListener(object : OnSingleClickListener(){
+        binding.tvFindPassword.setOnClickListener(object : OnSingleClickListener() {
             override fun onSingleClick(v: View?) {
                 val intent = Intent(v?.context, FindUserPasswordActivity::class.java)
                 startActivity(intent)
@@ -119,7 +119,7 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
         // 구글 로그인 버튼 클릭
-        googleLoginButton.setOnClickListener (object : OnSingleClickListener(){
+        googleLoginButton.setOnClickListener(object : OnSingleClickListener() {
             override fun onSingleClick(v: View?) {
                 googleLogin()
             }
@@ -156,10 +156,10 @@ class LoginActivity : AppCompatActivity() {
         if (email.isEmpty()) {
             Toast.makeText(this@LoginActivity, "이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
             return
-        }else if (password.isEmpty()) {
+        } else if (password.isEmpty()) {
             Toast.makeText(this@LoginActivity, "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
             return
-        }else {
+        } else {
             Log.d("Login", "Login Try -> email : $email")
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this@LoginActivity, OnCompleteListener<AuthResult> { task ->
@@ -190,13 +190,20 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
 
+    private var isBackPressed: Boolean = false
+
     /**
      * 로그인을 취소한 경우 원래 액티비티로 이동하는 콜백
      * @author hoyeon
      */
     private fun onSignInCanceled() {
         setResult(Activity.RESULT_CANCELED)
-        Toast.makeText(this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show()
+        if (!isBackPressed) {
+            isBackPressed = true
+            Toast.makeText(this, "한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+        } else {
+            finish()
+        }
     }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
@@ -212,13 +219,14 @@ class LoginActivity : AppCompatActivity() {
     private fun googleLogin() {
         Log.d("GoogleLogin", "googleLogin()")
         val signInIntent = googleSignInClient.signInIntent
+        signInIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
 //        googleLoginLauncher.launch(signInIntent)
         startActivityForResult(signInIntent, RC_SIGN_IN)
         // startActivityForResult() -> onActivityResult 콜백 호출
     }
 
     // [START auth_with_google]
-    private fun firebaseAuthWithGoogle(idToken: String, data:Intent?) {
+    private fun firebaseAuthWithGoogle(idToken: String, data: Intent?) {
         Log.d("GoogleLogin", "firebasAuthWithGoogle(idToken : $idToken ) ")
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         val user = auth.currentUser
@@ -240,10 +248,14 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
     }
+
     // [END auth_with_google]
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.d("GoogleLogin", "onActivityResult() 호출 | requestCode : $requestCode, resultCode : $resultCode, data : $data")
+        Log.d(
+            "GoogleLogin",
+            "onActivityResult() 호출 | requestCode : $requestCode, resultCode : $resultCode, data : $data"
+        )
         auth = FirebaseAuth.getInstance()
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
@@ -261,6 +273,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             val displayName = user.displayName
@@ -274,6 +287,7 @@ class LoginActivity : AppCompatActivity() {
             onSignInSuccess()
         }
     }
+
     fun getGoogleInfo(completedTask: Task<GoogleSignInAccount>) {
         try {
             val TAG = "구글 로그인 결과"
@@ -314,11 +328,12 @@ class LoginActivity : AppCompatActivity() {
                         Log.e("GoogleLogin", "Error checking user in Firestore", task.exception)
                     }
                 }
-                .addOnFailureListener { e->
+                .addOnFailureListener { e ->
                     Log.w("GoogleLogin", "Failed to check existence of user : $e")
                 }
         }
     }
+
     // 구글 로그인 유저 FireStore 에 추가
     private fun addUserToFirestore(account: GoogleSignInAccount) {
         val userId = account.id
@@ -344,11 +359,12 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
     }
+
     companion object {
         private const val RC_SIGN_IN = 9001
     }
 
-   /* 키보드 숨기는 함수 */
+    /* 키보드 숨기는 함수 */
     private fun hideKeyBoard(view: View) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
