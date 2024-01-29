@@ -46,6 +46,7 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         email = intent.getStringExtra("email") ?: ""
+        binding.etPhone.setText(intent.getStringExtra("phone"))
         binding.etEmail.setText(email)
         binding.etEmail.isEnabled = false
         setContentView(binding.root)

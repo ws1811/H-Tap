@@ -52,7 +52,7 @@ class FindUserIdActivity : AppCompatActivity() {
     }
     // 아이디 찾기
     private fun findUser(){
-        val name = binding.etName.text.toString()
+        val name = binding.etName.text.toString().trim()
         val phone = binding.etPhone.text.toString()
 
         if(name.isEmpty()){
@@ -85,6 +85,7 @@ class FindUserIdActivity : AppCompatActivity() {
                                 override fun onSingleClick(v: View?) {
                                     val intent = Intent(v?.context, FindUserPasswordAuthActivity::class.java)
                                     intent.putExtra("email", userEmail)
+                                    intent.putExtra("phone", phone)
                                     startActivity(intent)
                                 }
                             })
