@@ -61,6 +61,7 @@ class HomeFragment : Fragment() {
             branchName = result!!
             getViewByBranch(branchName)
             navigationActivity.belong = branchName
+            navigationActivity.isBelongData = false
         }
 
     }
