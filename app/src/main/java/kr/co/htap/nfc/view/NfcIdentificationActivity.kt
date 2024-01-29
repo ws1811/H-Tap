@@ -33,6 +33,9 @@ class NfcIdentificationActivity : ViewBindingActivity<ActivityNfcEventBinding>()
     private var pendingIntent: PendingIntent? = null
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+
+    private val timeThreshold = 30
+
     override fun initViewBinding(): ActivityNfcEventBinding =
         ActivityNfcEventBinding.inflate(layoutInflater)
 
@@ -173,7 +176,6 @@ class NfcIdentificationActivity : ViewBindingActivity<ActivityNfcEventBinding>()
         val currentTime = timeToInt(time)
         val reserve = timeToInt(reservationTime)
 
-        val timeThreshold = 30
         if (abs(currentTime - reserve) <= timeThreshold) {
             return TimeCompareResult.AVAILABLE
         }
@@ -186,13 +188,6 @@ class NfcIdentificationActivity : ViewBindingActivity<ActivityNfcEventBinding>()
      */
     private fun onSignInRequired() {
         startActivity(Intent(this, LoginActivity::class.java))
-//        val nfcActionFailedFragment =
-//            NfcActionFailedFragment.newInstance(errorMsg, true)
-//        supportFragmentManager.beginTransaction().apply {
-//            replace(binding.nfcFragment.id, nfcActionFailedFragment)
-//            addToBackStack(null)
-//            commit()
-//        }
     }
 
     private fun onFailure(errorMsg: String) {

@@ -134,6 +134,7 @@ class NfcCouponActivity : ViewBindingActivity<ActivityNfcEventBinding>() {
                 val defaultTimezone = "Asia/Seoul"
                 val timeZone = TimeZone.getTimeZone(defaultTimezone)
                 val calendar = Calendar.getInstance(timeZone)
+                calendar.add(Calendar.DAY_OF_MONTH, 10)
                 val expires =
                     SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
 
@@ -157,7 +158,7 @@ class NfcCouponActivity : ViewBindingActivity<ActivityNfcEventBinding>() {
                     couponData = listOf(
                         coupon.getString("name") ?: "",
                         coupon.getString("percent") ?: "",
-                        coupon.getString("expires") ?: ""
+                        expires
                     )
                 } else { //쿠폰을 이미 갖고 있는 경우
                     throw CouponException.COUPON_ALREADY_EXIST
@@ -180,66 +181,83 @@ class NfcCouponActivity : ViewBindingActivity<ActivityNfcEventBinding>() {
         }
     }
 
+    /**
+     * @author 호연
+     */
     class CouponException(val code: Int) : Exception() {
         companion object {
             val COUPON_ALREADY_USED = CouponException(0)
             val COUPON_ALREADY_EXIST = CouponException(1)
             val INVALID_NFC_TAG = CouponException(2)
-
         }
     }
 
     private fun onCouponSuccessfullyAdded(couponData: List<String>?) {
-        supportFragmentManager.beginTransaction().apply {
-            val successFragment = NfcActionSuccessFragment.newInstance(NfcActions.onCouponAdded(
-                String.format(
-                    "쿠폰이 발급되었습니다.\n%s\n%s까지",
-                    couponData?.get(0),
-                    couponData?.get(2)
-                )
-            ) { finish() })
-            replace(binding.nfcFragment.id, successFragment)
-            commit()
+        try {
+            supportFragmentManager.beginTransaction().apply {
+                val successFragment = NfcActionSuccessFragment.newInstance(NfcActions.onCouponAdded(
+                    String.format(
+                        "쿠폰이 발급되었습니다.\n%s\n%s까지",
+                        couponData?.get(0),
+                        couponData?.get(2)
+                    )
+                ) { finish() })
+                replace(binding.nfcFragment.id, successFragment)
+                commit()
+            }
+        } catch (e: Exception) {
         }
     }
 
     private fun onOtherException(e: Exception) {
-        supportFragmentManager.beginTransaction().apply {
-            val failedFragment = NfcActionFailedFragment.newInstance(NfcActions.onCouponError(
-                "알 수 없는 오류가 발생했습니다. ${e.message}"
-            ) { finish() })
-            replace(binding.nfcFragment.id, failedFragment)
-            commit()
+        try {
+            supportFragmentManager.beginTransaction().apply {
+                val failedFragment = NfcActionFailedFragment.newInstance(NfcActions.onCouponError(
+                    "알 수 없는 오류가 발생했습니다. ${e.message}"
+                ) { finish() })
+                replace(binding.nfcFragment.id, failedFragment)
+                commit()
+            }
+        } catch (e: Exception) {
         }
     }
 
     private fun onCouponAlreadyExists() {
-        supportFragmentManager.beginTransaction().apply {
-            val failedFragment = NfcActionFailedFragment.newInstance(NfcActions.onCouponError(
-                "쿠폰을 이미 갖고 있습니다."
-            ) { finish() })
-            replace(binding.nfcFragment.id, failedFragment)
-            commit()
+        try {
+            supportFragmentManager.beginTransaction().apply {
+                val failedFragment = NfcActionFailedFragment.newInstance(NfcActions.onCouponError(
+                    "쿠폰을 이미 갖고 있습니다."
+                ) { finish() })
+                replace(binding.nfcFragment.id, failedFragment)
+                commit()
+            }
+        } catch (e: Exception) {
         }
     }
 
     private fun onCouponAlreadyUsed() {
-        supportFragmentManager.beginTransaction().apply {
-            val failedFragment = NfcActionFailedFragment.newInstance(NfcActions.onCouponError(
-                "쿠폰을 이미 사용하셨습니다."
-            ) { finish() })
-            replace(binding.nfcFragment.id, failedFragment)
-            commit()
+        try {
+            supportFragmentManager.beginTransaction().apply {
+                val failedFragment = NfcActionFailedFragment.newInstance(NfcActions.onCouponError(
+                    "쿠폰을 이미 사용하셨습니다."
+                ) { finish() })
+                replace(binding.nfcFragment.id, failedFragment)
+                commit()
+            }
+        } catch (e: Exception) {
         }
     }
 
     private fun onInvalidNfc() {
-        supportFragmentManager.beginTransaction().apply {
-            val failedFragment = NfcActionFailedFragment.newInstance(NfcActions.onCouponError(
-                "쿠폰이 존재하지 않습니다."
-            ) { finish() })
-            replace(binding.nfcFragment.id, failedFragment)
-            commit()
+        try {
+            supportFragmentManager.beginTransaction().apply {
+                val failedFragment = NfcActionFailedFragment.newInstance(NfcActions.onCouponError(
+                    "쿠폰이 존재하지 않습니다."
+                ) { finish() })
+                replace(binding.nfcFragment.id, failedFragment)
+                commit()
+            }
+        } catch (e: Exception) {
         }
     }
 

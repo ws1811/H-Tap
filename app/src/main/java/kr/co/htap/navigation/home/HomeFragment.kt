@@ -85,6 +85,12 @@ class HomeFragment : Fragment() {
 
         binding.btCheckReservation.setOnClickListener {
             with(requireActivity().supportFragmentManager.beginTransaction()) {
+                setCustomAnimations(
+                    R.anim.anim_slide_in_from_right_fade_in,
+                    R.anim.anim_fade_out,
+                    R.anim.anim_slide_in_from_left_fade_in,
+                    R.anim.anim_fade_out
+                )
                 replace(R.id.mainFrameLayout, MyPageReservationHistoryFragment())
                 addToBackStack(null)
                 commit()

@@ -11,7 +11,7 @@ import kr.co.htap.navigation.myPage.model.ReservationHistory
 
 /**
  *
- * @author 이호연
+ * @author 호연
  */
 class ReservationHistoryAdapter(var history: List<ReservationHistory>) :
     RecyclerView.Adapter<ReservationHistoryAdapter.ReservationHistoryViewHolder>() {

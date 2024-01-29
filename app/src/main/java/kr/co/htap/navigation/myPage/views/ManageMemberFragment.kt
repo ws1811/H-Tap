@@ -44,8 +44,14 @@ class ManageMemberFragment(val setLayout: (View) -> Unit = {}) :
 
         val list = listOf(
             MenuItemContent("개인정보 수정") {
-                Log.d(Companion.toString(), "FAQ")
+                Log.d(Companion.toString(), "개인정보 수정")
                 with(requireActivity().supportFragmentManager.beginTransaction()) {
+                    setCustomAnimations(
+                        R.anim.anim_slide_in_from_right_fade_in,
+                        R.anim.anim_fade_out,
+                        R.anim.anim_slide_in_from_left_fade_in,
+                        R.anim.anim_fade_out
+                    )
                     replace(R.id.mainFrameLayout, ModifyPersonalInfoFragment())
                     addToBackStack(null)
                     commit()
