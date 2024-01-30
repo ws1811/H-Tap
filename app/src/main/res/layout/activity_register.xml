@@ -95,7 +95,7 @@
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/guideline_ver"
-        app:layout_constraintTop_toTopOf="@id/guideline_hor"/>
+        app:layout_constraintTop_toTopOf="@id/guideline_hor" />
 
     <TextView
         android:id="@+id/tv_id"
@@ -190,20 +190,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.9" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_ver_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.05" />
+
     <ImageView
         android:id="@+id/iv_goback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/icon_arrow_back"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
-        app:layout_constraintStart_toEndOf="@id/guideline_ver_icon"
         app:layout_constraintBottom_toTopOf="@id/guideline_hor"
-        />
+        app:layout_constraintStart_toEndOf="@id/guideline_ver_icon"
+        app:srcCompat="@drawable/icon_arrow_back" />
 </androidx.constraintlayout.widget.ConstraintLayout>

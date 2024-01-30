@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,12 +13,12 @@
         android:layout_gravity="center|top"
         android:layout_marginTop="70dp"
         android:text="H-Tap"
-        android:textSize="24sp"
         android:textColor="@color/deepPurple"
+        android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline_hor_title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/guideline_hor_title"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/content"
@@ -27,24 +26,23 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
         android:layout_marginTop="10dp"
+        android:gravity="center"
         android:text="H-Tap의 태깅 서비스는 \n현대백화점에서의 \n편리하고 즐거운 경험을 선물합니다!"
+        android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/guideline_hor_title"
-        app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
-        app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
         app:layout_constraintBottom_toTopOf="@id/iv_img"
-        />
+        app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor_title" />
 
     <ImageView
         android:id="@+id/iv_img"
         android:layout_width="0dp"
         android:layout_height="300dp"
         android:layout_gravity="center"
-        android:src="@drawable/logo"
         android:background="@drawable/border_image"
+        android:src="@drawable/logo"
         app:layout_constraintBottom_toTopOf="@+id/guideline_hor"
         app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
@@ -59,7 +57,7 @@
         android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline_hor"/>
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_hor"
@@ -67,6 +65,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.8" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_hor_title"
         android:layout_width="wrap_content"
@@ -80,6 +79,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.15" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_ver_end"
         android:layout_width="wrap_content"

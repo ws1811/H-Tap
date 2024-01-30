@@ -5,23 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginVertical="50dp"
     android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toStartOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    android:layout_marginVertical="50dp"
-    >
+    app:layout_constraintTop_toTopOf="parent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/location_recycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:scrollbars="vertical"
         android:scrollbarFadeDuration="0"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_fragment_check_location" />
 
     <LinearLayout
@@ -32,42 +31,43 @@
         android:layout_marginEnd="50dp"
         android:layout_weight="1"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/location_recycler"
-        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        android:orientation="vertical">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/location_recycler">
 
         <TextView
             android:id="@+id/btn_refresh_location"
             android:layout_width="80dp"
             android:layout_height="35dp"
-            android:elevation="3dp"
-            android:gravity="center"
             android:background="@drawable/button_check_reserv"
+            android:elevation="3dp"
             android:fontFamily="@font/happiness_sans_regular"
-            android:textSize="18dp"
-            android:text="위치갱신" />
+            android:gravity="center"
+            android:text="위치갱신"
+            android:textSize="18dp" />
+
         <TextView
             android:id="@+id/btn_back_main"
             android:layout_width="80dp"
             android:layout_height="35dp"
-            android:background="@drawable/button_back"
-            android:gravity="center"
-            android:elevation="3dp"
             android:layout_marginTop="10dp"
+            android:background="@drawable/button_back"
+            android:elevation="3dp"
             android:fontFamily="@font/happiness_sans_regular"
-            android:textSize="18dp"
-            android:text="뒤로가기" />
+            android:gravity="center"
+            android:text="뒤로가기"
+            android:textSize="18dp" />
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/buttonLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="15dp"
-        android:text="지점명 클릭시 해당 지점이 선택됩니다" />
+        android:gravity="center"
+        android:text="지점명 클릭시 해당 지점이 선택됩니다"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonLayout" />
 </LinearLayout>

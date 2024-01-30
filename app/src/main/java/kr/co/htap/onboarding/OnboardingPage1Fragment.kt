@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import kr.co.htap.R
 
@@ -14,7 +13,7 @@ import kr.co.htap.R
  * 온보딩 화면 - 1번 페이지
  * H-Tap 소개
  */
-class OnboardingPage1Fragment:Fragment() {
+class OnboardingPage1Fragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

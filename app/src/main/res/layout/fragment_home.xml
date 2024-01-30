@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:weightSum="10"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="10">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="7">
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/sliderViewPager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/item_fragment_main">
-        </androidx.viewpager2.widget.ViewPager2>
+            tools:listitem="@layout/item_fragment_main"></androidx.viewpager2.widget.ViewPager2>
     </LinearLayout>
 
     <LinearLayout
@@ -34,9 +35,9 @@
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
             android:background="@drawable/button_check_reserv"
+            android:elevation="4dp"
             android:fontFamily="@font/happiness_sans_regular"
             android:gravity="center"
-            android:elevation="4dp"
             android:text="예약확인"
             android:textColor="@color/black"
             android:textSize="26dp" />
@@ -50,9 +51,9 @@
             android:layout_marginEnd="20dp"
             android:layout_weight="1"
             android:background="@drawable/button_check_locate"
+            android:elevation="4dp"
             android:fontFamily="@font/happiness_sans_regular"
             android:gravity="center"
-            android:elevation="4dp"
             android:text="지점찾기"
             android:textColor="@color/black"
             android:textSize="26dp" />

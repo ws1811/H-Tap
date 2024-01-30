@@ -16,5 +16,5 @@ data class StoreEntity(
     val belong: String,
     val operationTime: ArrayList<String>,
     val documentId: String
-    ) {
+) {
 }

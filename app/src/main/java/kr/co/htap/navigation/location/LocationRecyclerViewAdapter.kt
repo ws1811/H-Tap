@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.co.htap.databinding.ItemFragmentCheckLocationBinding
-import javax.security.auth.callback.Callback
 
 /**
  *
@@ -19,6 +18,7 @@ class LocationRecyclerViewAdapter(
     init {
         sortBranchByDistance()
     }
+
     interface OnItemClickListener {
         fun onItemClick(name: String) {}
     }
@@ -33,9 +33,11 @@ class LocationRecyclerViewAdapter(
 
         return LocationViewHolder(binding)
     }
-    fun setCallback(callback: OnItemClickListener){
-        this.itemClickListener= callback
+
+    fun setCallback(callback: OnItemClickListener) {
+        this.itemClickListener = callback
     }
+
     inner class LocationViewHolder(private val binding: ItemFragmentCheckLocationBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -43,8 +45,9 @@ class LocationRecyclerViewAdapter(
             val branch_name = binding.itemTvBranch
             val branch_distance = binding.itemTvDistance
             branch_name.text = branchItem.name
-            if(branchItem.distance != 0.0) branch_distance.text = String.format("%.2fkm", branchItem.distance / 1000)
-            else branch_distance.text =null
+            if (branchItem.distance != 0.0) branch_distance.text =
+                String.format("%.2fkm", branchItem.distance / 1000)
+            else branch_distance.text = null
 
             branch_name.setOnClickListener {
                 Log.d("test", "클릭 이벤트")
@@ -52,6 +55,7 @@ class LocationRecyclerViewAdapter(
             }
         }
     }
+
     override fun getItemCount(): Int = branchList.size
     override fun onBindViewHolder(holder: LocationViewHolder, position: Int) {
 

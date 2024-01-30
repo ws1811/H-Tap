@@ -2,17 +2,17 @@ package kr.co.htap.navigation.myPage.views
 
 import android.os.Bundle
 import android.util.Log
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OVER_SCROLL_NEVER
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import kr.co.htap.databinding.FragmentItemListBinding
 import kr.co.htap.helper.ViewBindingFragment
 import kr.co.htap.navigation.myPage.adapter.RecyclerViewAdapter
-import kr.co.htap.navigation.myPage.model.MenuItemContent
 import kr.co.htap.navigation.myPage.model.MenuItem
+import kr.co.htap.navigation.myPage.model.MenuItemContent
 
 /**
  * @author 호연

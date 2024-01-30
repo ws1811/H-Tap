@@ -17,17 +17,17 @@
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
-        app:layout_constraintGuide_percent="0.05"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
-        app:layout_constraintGuide_percent="0.95"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline30"
@@ -38,10 +38,10 @@
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"
-        app:layout_constraintGuide_percent="0.9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"

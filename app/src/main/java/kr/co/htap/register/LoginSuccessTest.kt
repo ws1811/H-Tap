@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import kr.co.htap.databinding.ActivityLoginSuccessTestBinding
+
 /**
  *
  * @author 송원선
@@ -15,7 +16,7 @@ import kr.co.htap.databinding.ActivityLoginSuccessTestBinding
  */
 class LoginSuccessTest : AppCompatActivity() {
     private lateinit var binding: ActivityLoginSuccessTestBinding
-    private lateinit var auth:FirebaseAuth
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +31,10 @@ class LoginSuccessTest : AppCompatActivity() {
         if (user != null) {
             user.getIdToken(true)
                 .addOnCompleteListener(OnCompleteListener { task ->
-                    if(task.isSuccessful) {
+                    if (task.isSuccessful) {
                         val idToken = task.getResult().token
                         tvUesrInfo.setText("토큰 : $idToken")
-                    }else{
+                    } else {
                         Log.w("Login", "failed get Token : ${task.exception}")
                     }
                 })

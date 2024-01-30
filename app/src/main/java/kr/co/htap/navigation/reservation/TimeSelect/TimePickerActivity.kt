@@ -45,7 +45,7 @@ class TimePickerActivity : AppCompatActivity() {
         documentId = intent.getStringExtra("documentId") ?: ""
 
         date = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getSerializableExtra("date", DateDTO::class.java)?: DateDTO(0, 0, 0)
+            intent.getSerializableExtra("date", DateDTO::class.java) ?: DateDTO(0, 0, 0)
         } else {
             intent.getSerializableExtra("date") as DateDTO
         }
@@ -69,13 +69,14 @@ class TimePickerActivity : AppCompatActivity() {
                     "16:30" to true, "17:00" to true,
                     "17:30" to true, "18:00" to true,
                     "18:30" to true, "19:00" to true,
-                    "19:30" to true, "20:00" to true)
+                    "19:30" to true, "20:00" to true
+                )
 
                 for (document in documents) {
                     map[document.id] = false
                 }
 
-                map.forEach {data ->
+                map.forEach { data ->
                     val t = data.key.split(":")
                     val hour = t[0].toInt()
                     val minute = t[1].toInt()
@@ -106,7 +107,8 @@ class TimePickerActivity : AppCompatActivity() {
     private fun isAfterTime(time: String): Boolean {
         val currentTime = System.currentTimeMillis()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        val selectedTimeString = date.year.toString() + "-" + date.month.toString() + "-" + date.day.toString() + " $time" + ":00"
+        val selectedTimeString =
+            date.year.toString() + "-" + date.month.toString() + "-" + date.day.toString() + " $time" + ":00"
         val selectedTimeMillis = dateFormat.parse(selectedTimeString)?.time ?: 0
 
         return currentTime < selectedTimeMillis

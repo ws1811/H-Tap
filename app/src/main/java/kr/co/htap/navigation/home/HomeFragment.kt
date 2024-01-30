@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +12,11 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.viewpager2.widget.ViewPager2
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import kotlinx.coroutines.delay
 import kr.co.htap.R
 import kr.co.htap.databinding.FragmentHomeBinding
 import kr.co.htap.navigation.NavigationActivity
 import kr.co.htap.navigation.location.CheckLocationFragment
 import kr.co.htap.navigation.location.LocationProvider
-import kr.co.htap.navigation.myPage.model.ReservationHistory
-import kr.co.htap.navigation.myPage.views.ModifyPersonalInfoFragment
 import kr.co.htap.navigation.myPage.views.MyPageReservationHistoryFragment
 
 /**

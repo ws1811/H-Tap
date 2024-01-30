@@ -100,54 +100,55 @@ class LocationProvider(private val context: Context) {
         }
         return false
     }
-        @SuppressLint("MissingPermission")
-        public fun getLocation(): Location? {
-            fusedLocationProviderClient.lastLocation
-                .addOnSuccessListener { success: Location? ->
-                    success?.let { location ->
-                        this.locations = location
-                    }
+
+    @SuppressLint("MissingPermission")
+    public fun getLocation(): Location? {
+        fusedLocationProviderClient.lastLocation
+            .addOnSuccessListener { success: Location? ->
+                success?.let { location ->
+                    this.locations = location
                 }
-                .addOnFailureListener { fail ->
-                    Log.d("getLocation", "실패")
-
-                }
-            return this.locations
-        }
-
-        fun getDistance(branch: BranchEntity): Double {
-
-            val endPoint = Location("endPoint")
-            endPoint.apply {
-                latitude = branch.latitude
-                longitude = branch.longitude
             }
-            try {
-                return locations!!.distanceTo(endPoint).toDouble()
-            } catch (e: Exception) {
-                return 0.0
-            }
-        }
+            .addOnFailureListener { fail ->
+                Log.d("getLocation", "실패")
 
-        @SuppressLint("MissingPermission")
-        fun updateLocation() {
-            try {
-                val locationRequest =
-                    LocationRequest.Builder(1).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                        .build()
-                var locationCallback = object : LocationCallback() {
-                    override fun onLocationResult(p0: LocationResult) {
-                        locations = p0.lastLocation
-                    }
-                }
-                fusedLocationProviderClient.requestLocationUpdates(
-                    locationRequest,
-                    locationCallback,
-                    Looper.getMainLooper()
-                )
-            } catch (e: Exception) {
-                Log.d("test", "update 위치 실패")
             }
-        }
-
+        return this.locations
     }
+
+    fun getDistance(branch: BranchEntity): Double {
+
+        val endPoint = Location("endPoint")
+        endPoint.apply {
+            latitude = branch.latitude
+            longitude = branch.longitude
+        }
+        try {
+            return locations!!.distanceTo(endPoint).toDouble()
+        } catch (e: Exception) {
+            return 0.0
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun updateLocation() {
+        try {
+            val locationRequest =
+                LocationRequest.Builder(1).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                    .build()
+            var locationCallback = object : LocationCallback() {
+                override fun onLocationResult(p0: LocationResult) {
+                    locations = p0.lastLocation
+                }
+            }
+            fusedLocationProviderClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+        } catch (e: Exception) {
+            Log.d("test", "update 위치 실패")
+        }
+    }
+
+}

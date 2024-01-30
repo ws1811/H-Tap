@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,40 +10,40 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
         android:text="NFC"
-        android:textStyle="bold"
         android:textColor="@color/deepPurple"
         android:textSize="24sp"
-        android:layout_marginTop="70dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/guideline_hor_title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/guideline_hor_title"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="NFC 태깅을 통한 간편 인증, \n쿠폰 발급 등의 서비스를 이용하세요"
+        android:layout_marginTop="20dp"
         android:gravity="center"
+        android:text="NFC 태깅을 통한 간편 인증, \n쿠폰 발급 등의 서비스를 이용하세요"
+        android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/guideline_hor_title"
-        app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
         app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
-        android:layout_marginTop="20dp" />
+        app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor_title" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/iv_img"
         android:layout_width="300dp"
         android:layout_height="0dp"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/nfc_animation"
         app:layout_constraintBottom_toTopOf="@+id/guideline_hor"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/content"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/nfc_animation" />
 
     <TextView
         android:id="@+id/textViewPageNumber"
@@ -61,6 +60,8 @@
         android:id="@+id/btn_start"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/shape_round"
         android:text="시작하기"
         android:textSize="28sp"
@@ -68,9 +69,7 @@
         app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
         app:layout_constraintTop_toBottomOf="@id/textViewPageNumber"
-        app:layout_constraintVertical_bias="1.0"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_hor"
@@ -78,18 +77,21 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.8" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_hor_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.2" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_ver_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.15" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_ver_end"
         android:layout_width="wrap_content"

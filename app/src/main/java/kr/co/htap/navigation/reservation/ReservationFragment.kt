@@ -12,11 +12,9 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kr.co.htap.R
@@ -48,7 +46,11 @@ class ReservationFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentReservationBinding.inflate(inflater)
         return binding.root
     }
@@ -106,22 +108,37 @@ class ReservationFragment : Fragment() {
 
     private fun setUI() {
         binding.restaurentButton.setOnClickListener {
-            changeCategory("restaurant", navigationActivity.restaurant, navigationActivity.restaurantQuery)
+            changeCategory(
+                "restaurant",
+                navigationActivity.restaurant,
+                navigationActivity.restaurantQuery
+            )
         }
 
         binding.laundryButton.setOnClickListener {
             changeCategory("laundry", navigationActivity.laundry, navigationActivity.laundryQuery)
         }
 
-        binding.reservationRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        binding.reservationRecyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!binding.reservationRecyclerView.canScrollVertically(1) && newState == SCROLL_STATE_IDLE) {
                     binding.progressBar.visibility = View.VISIBLE
 
                     if (currentCategory == "restaurant") {
-                        fetchStoreData(currentCategory, navigationActivity.restaurant, navigationActivity.isLastRestaurant, navigationActivity.restaurantQuery)
+                        fetchStoreData(
+                            currentCategory,
+                            navigationActivity.restaurant,
+                            navigationActivity.isLastRestaurant,
+                            navigationActivity.restaurantQuery
+                        )
                     } else {
-                        fetchStoreData(currentCategory, navigationActivity.laundry, navigationActivity.isLastLaundry, navigationActivity.laundryQuery)
+                        fetchStoreData(
+                            currentCategory,
+                            navigationActivity.laundry,
+                            navigationActivity.isLastLaundry,
+                            navigationActivity.laundryQuery
+                        )
                     }
                 }
             }
@@ -154,14 +171,21 @@ class ReservationFragment : Fragment() {
     }
 
     private fun changeCategory(type: String, arrayList: ArrayList<StoreEntity>, query: Query) {
-        if (arrayList.size == 0) { fetchStoreData(type, arrayList, false, query) }
+        if (arrayList.size == 0) {
+            fetchStoreData(type, arrayList, false, query)
+        }
         setRecyclerView(arrayList)
         underlineButtonText(if (type.equals("restaurant")) binding.restaurentButton else binding.laundryButton)
         removeUnderlineFromButtonText(if (type.equals("restaurant")) binding.laundryButton else binding.restaurentButton)
         currentCategory = type
     }
 
-    private fun fetchStoreData(type: String, arrayList: ArrayList<StoreEntity>, isLast: Boolean, query: Query) {
+    private fun fetchStoreData(
+        type: String,
+        arrayList: ArrayList<StoreEntity>,
+        isLast: Boolean,
+        query: Query
+    ) {
         if (isLast) {
             Toast.makeText(navigationActivity, "가게를 모두 불러왔습니다.", Toast.LENGTH_SHORT).show()
             binding.progressBar.visibility = View.GONE
@@ -174,16 +198,19 @@ class ReservationFragment : Fragment() {
                 val oldSize = arrayList.size
 
                 for (document in documentSnapshots) {
-                    arrayList.add(StoreEntity(
-                        document.get("name").toString(),
-                        document.get("category").toString(),
-                        document.get("description").toString(),
-                        document.get("image").toString(),
-                        document.get("telephone").toString(),
-                        document.get("address").toString(),
-                        document.get("belong").toString(),
-                        document.get("operationTime") as ArrayList<String>,
-                        document.id))
+                    arrayList.add(
+                        StoreEntity(
+                            document.get("name").toString(),
+                            document.get("category").toString(),
+                            document.get("description").toString(),
+                            document.get("image").toString(),
+                            document.get("telephone").toString(),
+                            document.get("address").toString(),
+                            document.get("belong").toString(),
+                            document.get("operationTime") as ArrayList<String>,
+                            document.id
+                        )
+                    )
                 }
 
                 if (documentSnapshots.size() == 0) {

@@ -2,7 +2,6 @@ package kr.co.htap.register
 
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.telephony.PhoneNumberFormattingTextWatcher
@@ -11,18 +10,14 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseException
-import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
-import com.google.firebase.auth.auth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kr.co.htap.R
 import kr.co.htap.databinding.ActivityFindUserPasswordAuthBinding
 import java.util.Locale
 import java.util.concurrent.TimeUnit
@@ -34,10 +29,10 @@ import java.util.concurrent.TimeUnit
  *
  */
 class FindUserPasswordAuthActivity : AppCompatActivity() {
-    private lateinit var binding:ActivityFindUserPasswordAuthBinding
-    private lateinit var email:String
-    private lateinit var auth:FirebaseAuth
-    private lateinit var countdownTimer:CountDownTimer
+    private lateinit var binding: ActivityFindUserPasswordAuthBinding
+    private lateinit var email: String
+    private lateinit var auth: FirebaseAuth
+    private lateinit var countdownTimer: CountDownTimer
     private var verificationId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,8 +51,10 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 val minutes = millisUntilFinished / 60000
                 val seconds = (millisUntilFinished % 60000) / 1000
-                timerTextView.text = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
+                timerTextView.text =
+                    String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
             }
+
             override fun onFinish() {
                 timerTextView.text = "00:00" // 타이머 종료 시간
             }
@@ -65,7 +62,7 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
         // 전화번호 입력시 자동 하이픈(-) 처리
         binding.etPhone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         // [인증 요청] 클릭 -> 인증 번호 발송
-        binding.tvAuthRequest.setOnClickListener (object :OnSingleClickListener(){
+        binding.tvAuthRequest.setOnClickListener(object : OnSingleClickListener() {
             override fun onSingleClick(v: View?) {
                 authByPhone()
                 // 키보드 숨기기
@@ -73,24 +70,24 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
             }
         })
         // 인증번호 입력 후 [인증하기] 클릭 -> 인증 진행
-        binding.btnAuthCheck.setOnClickListener (object : OnSingleClickListener() {
+        binding.btnAuthCheck.setOnClickListener(object : OnSingleClickListener() {
             override fun onSingleClick(v: View?) {
                 Log.d("FindPassword", "btnAuthCheck Clicked")
                 val enterCode = binding.etEnterCode.text.toString()
-                if(enterCode.isNotEmpty()){
+                if (enterCode.isNotEmpty()) {
                     val credential = PhoneAuthProvider.getCredential(verificationId, enterCode)
                     signInWithPhoneAuthCredential(credential)
                 }
             }
         })
         // [인증번호 재발송] 클릭
-        binding.tvRetryAuth.setOnClickListener(object :OnSingleClickListener() {
+        binding.tvRetryAuth.setOnClickListener(object : OnSingleClickListener() {
             override fun onSingleClick(v: View?) {
                 authByPhone()
             }
         })
         // 뒤로가기 아이콘 클릭
-        binding.ivGoback.setOnClickListener(object : OnSingleClickListener(){
+        binding.ivGoback.setOnClickListener(object : OnSingleClickListener() {
             override fun onSingleClick(v: View?) {
                 finish()
             }
@@ -101,11 +98,11 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
     private fun authByPhone() {
         var phone = binding.etPhone.text.toString()
         Log.d("FindPassword", "전화번호 : $phone")
-        if(phone.isEmpty()){
+        if (phone.isEmpty()) {
             Toast.makeText(this, "전화번호를 입력해주세요", Toast.LENGTH_SHORT).show()
             return
         }
-        if(phone != null){
+        if (phone != null) {
             binding.tvAuthRequest.isEnabled = false // [인증 요청] 비활성화 & 회색으로 변경
             binding.tvAuthRequest.setTextColor(Color.rgb(128, 128, 128))
             Toast.makeText(this, "인증번호가 발송되었습니다.", Toast.LENGTH_SHORT).show()
@@ -123,10 +120,15 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
                 override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                     Log.d("FindPassword", "onVerificationCompleted:$credential")
                 }
+
                 override fun onVerificationFailed(e: FirebaseException) {
                     Log.w("FindPassword", "onVerificationFailed", e)
                 }
-                override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken,) {
+
+                override fun onCodeSent(
+                    verificationId: String,
+                    token: PhoneAuthProvider.ForceResendingToken,
+                ) {
                     Log.d("FindPassword", "onCodeSent:$verificationId")
                     this@FindUserPasswordAuthActivity.verificationId = verificationId
                 }
@@ -136,18 +138,24 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
             sendVerifyNumber(this@FindUserPasswordAuthActivity, phone)
         }
     }
+
     /* 사용자 휴대전화로 인증 코드 전송 */
-    private fun sendVerifyNumber(context: FindUserPasswordAuthActivity, phoneNumber: String){
+    private fun sendVerifyNumber(context: FindUserPasswordAuthActivity, phoneNumber: String) {
         auth.setLanguageCode("kr") // 한국어 설정
         val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                 Log.d("FindPassword", "onVerificationCompleted:$credential")
 
             }
+
             override fun onVerificationFailed(e: FirebaseException) {
                 Log.w("FindPassword", "onVerificationFailed", e)
             }
-            override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken,) {
+
+            override fun onCodeSent(
+                verificationId: String,
+                token: PhoneAuthProvider.ForceResendingToken,
+            ) {
                 Log.d("FindPassword", "onCodeSent:$verificationId ")
                 this@FindUserPasswordAuthActivity.verificationId = verificationId
             }
@@ -161,8 +169,9 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
         Log.d("FindPassword", "phoneNumber : $phoneNumber")
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
+
     // 전화번호 포매팅
-    private fun formatPhoneNumber(phoneNumber:String) : String {
+    private fun formatPhoneNumber(phoneNumber: String): String {
         // 전화번호에서 숫자만 추출
         val digitsOnly = phoneNumber.replace("[^0-9]".toRegex(), "")
 
@@ -171,7 +180,12 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
         val remainingPart = digitsOnly.substring(1)
 
         // 형식에 맞게 조합
-        return "$countryPart ${remainingPart.substring(0, 2)}-${remainingPart.substring(2, 6)}-${remainingPart.substring(6)}"
+        return "$countryPart ${remainingPart.substring(0, 2)}-${
+            remainingPart.substring(
+                2,
+                6
+            )
+        }-${remainingPart.substring(6)}"
     }
 
     // 사용자가 입력한 인증번호로 인증
@@ -184,12 +198,13 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
                     Toast.makeText(this, "인증에 성공했습니다.", Toast.LENGTH_SHORT).show()
                     // 비밀번호 재설정 메일 전송
                     Firebase.auth.sendPasswordResetEmail(email)
-                        .addOnCompleteListener { task->
-                            if(task.isSuccessful){ // 이메일 전송 성공
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) { // 이메일 전송 성공
                                 Log.d("FindPassword", "success send passwordResetEmail")
-                                val onSuccessIntent = Intent(this, FindUserPasswordSuccessActivity::class.java)
+                                val onSuccessIntent =
+                                    Intent(this, FindUserPasswordSuccessActivity::class.java)
                                 startActivity(onSuccessIntent)
-                            }else{
+                            } else {
                                 Log.w("FindPassword", "Error sending reset email", task.exception)
                             }
                         }
@@ -203,6 +218,7 @@ class FindUserPasswordAuthActivity : AppCompatActivity() {
                 }
             }
     }
+
     // 키보드 숨기는 함수
     private fun hideKeyboard(view: View) {
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager

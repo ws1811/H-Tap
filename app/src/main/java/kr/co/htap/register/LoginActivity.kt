@@ -26,13 +26,13 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kr.co.htap.R
 import kr.co.htap.databinding.ActivityLoginBinding
-import kr.co.htap.navigation.NavigationActivity
 import kr.co.htap.helper.isNotLoggedIn
+import kr.co.htap.navigation.NavigationActivity
 import kr.co.htap.onboarding.OnboardingActivity
 
 /**

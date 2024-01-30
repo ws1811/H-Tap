@@ -17,14 +17,11 @@ import com.google.firebase.auth.auth
 import com.google.firebase.auth.userProfileChangeRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kr.co.htap.databinding.FragmentModifyPersonalInfoBinding
 import kr.co.htap.helper.ViewBindingFragment
 import kr.co.htap.helper.isNotLoggedIn
-import java.lang.Exception
 
 /**
  * @author 호연

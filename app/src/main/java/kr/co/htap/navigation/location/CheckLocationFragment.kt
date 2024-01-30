@@ -16,10 +16,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.firestore.firestoreSettings
-import com.google.firebase.firestore.memoryCacheSettings
-import com.google.firebase.firestore.persistentCacheSettings
 import kr.co.htap.R
 import kr.co.htap.databinding.FragmentCheckLocationBinding
 
@@ -39,26 +35,28 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
         db = FirebaseFirestore.getInstance()
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCheckLocationBinding.inflate(inflater, container, false)
-        if(branchList.isEmpty()){
+        if (branchList.isEmpty()) {
             configureInitData()
         } else setBranchList()
 
         binding.btnRefreshLocation.setOnClickListener {
-            Log.d("test lp2","${locationProvider.requestLocation()}")
-            if(locationProvider.checkPermission()){
+            Log.d("test lp2", "${locationProvider.requestLocation()}")
+            if (locationProvider.checkPermission()) {
                 setBranchList()
                 Toast.makeText(context, "위치를 갱신하셨습니다.", Toast.LENGTH_LONG).show()
             } else Toast.makeText(context, "GPS 권한이 없습니다.", Toast.LENGTH_LONG).show()
 
         }
-        binding.btnBackMain.setOnClickListener{
-            parentFragmentManager.beginTransaction().remove(this@CheckLocationFragment).commit()//현재 프레그먼트 닫기
+        binding.btnBackMain.setOnClickListener {
+            parentFragmentManager.beginTransaction().remove(this@CheckLocationFragment)
+                .commit()//현재 프레그먼트 닫기
         }
         return binding.root
     }
@@ -82,11 +80,12 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
 //        dialog?.window?.attributes = params as WindowManager.LayoutParams
 
     }
-    fun WindowManager.currentWindowMetricsPointCompat() : Point {
-        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R){
+
+    fun WindowManager.currentWindowMetricsPointCompat(): Point {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             val windowInsets = currentWindowMetrics.windowInsets
-            var insets : Insets = windowInsets.getInsets(WindowInsets.Type.navigationBars())
-            windowInsets.displayCutout?.run{
+            var insets: Insets = windowInsets.getInsets(WindowInsets.Type.navigationBars())
+            windowInsets.displayCutout?.run {
                 insets = Insets.max(
                     insets,
                     Insets.of(safeInsetLeft, safeInsetTop, safeInsetRight, safeInsetBottom)
@@ -110,11 +109,12 @@ class CheckLocationFragment(var lp: LocationProvider) : DialogFragment() {
         locationProvider.updateLocation()
         adapter = LocationRecyclerViewAdapter(locationProvider, branchList)
 
-        adapter.itemClickListener = object : LocationRecyclerViewAdapter.OnItemClickListener{
-            override fun onItemClick(name : String) {
+        adapter.itemClickListener = object : LocationRecyclerViewAdapter.OnItemClickListener {
+            override fun onItemClick(name: String) {
                 val result = name
                 setFragmentResult("requestKey", bundleOf("bundleKey" to result))
-                parentFragmentManager.beginTransaction().remove(this@CheckLocationFragment).commit()//현재 프레그먼트 닫기
+                parentFragmentManager.beginTransaction().remove(this@CheckLocationFragment)
+                    .commit()//현재 프레그먼트 닫기
             }
         }
         binding.locationRecycler.adapter = adapter

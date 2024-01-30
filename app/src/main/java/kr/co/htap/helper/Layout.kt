@@ -1,9 +1,7 @@
 package kr.co.htap.helper
 
-import android.util.TypedValue
 import android.view.View
 import android.widget.LinearLayout
-import androidx.core.content.ContentProviderCompat.requireContext
 
 /**
  *

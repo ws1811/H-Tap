@@ -14,9 +14,9 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="아이디(이메일)"
-        android:textStyle="bold"
-        android:textSize="16sp"
         android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/et_id"
         app:layout_constraintStart_toStartOf="@id/guideline_ver"
         app:layout_constraintTop_toBottomOf="@id/guideline_hor"
@@ -42,9 +42,9 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:text="비밀번호"
-        android:textStyle="bold"
-        android:textSize="16sp"
         android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/et_password"
         app:layout_constraintStart_toStartOf="@id/guideline_ver"
         app:layout_constraintTop_toBottomOf="@id/et_id"
@@ -78,9 +78,9 @@
         android:layout_marginTop="29dp"
         android:background="@drawable/border_image"
         android:backgroundTint="@color/deepPurple"
+        android:gravity="center"
         android:text="로그인"
         android:textColor="@color/white"
-        android:gravity="center"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline_hor_social"
@@ -110,13 +110,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:text="아이디 찾기"
+        android:textColor="@color/deepPurple"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="@color/deepPurple"
-        app:layout_constraintEnd_toStartOf="@+id/tv_find_password"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login"
         app:layout_constraintBottom_toTopOf="@id/guideline_hor_social"
-        />
+        app:layout_constraintEnd_toStartOf="@+id/tv_find_password"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
     <View
         android:id="@+id/divider_left"
@@ -125,9 +124,9 @@
         android:layout_marginBottom="272dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
-        app:layout_constraintTop_toBottomOf="@id/guideline_hor_social"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline_ver" />
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver"
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor_social" />
 
     <View
         android:id="@+id/divider_right"
@@ -137,9 +136,8 @@
         android:layout_marginBottom="272dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
-        app:layout_constraintTop_toBottomOf="@id/guideline_hor_social"
         app:layout_constraintHorizontal_bias="0.0"
-        />
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor_social" />
 
     <TextView
         android:id="@+id/tv_register"
@@ -147,9 +145,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="회원가입"
+        android:textColor="@color/deepPurple"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="@color/deepPurple"
         app:layout_constraintBottom_toTopOf="@+id/guideline_hor_social"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
@@ -160,28 +158,26 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:text="비밀번호 찾기"
+        android:textColor="@color/deepPurple"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="@color/deepPurple"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login"
         app:layout_constraintBottom_toTopOf="@id/guideline_hor_social"
-        />
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
     <TextView
         android:id="@+id/tv_or"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="or"
-        android:textStyle="bold"
         android:textColor="@color/deepPurple"
         android:textSize="20sp"
-        android:gravity="center"
-        app:layout_constraintStart_toEndOf="@id/divider_left"
-        app:layout_constraintEnd_toStartOf="@id/divider_right"
-        app:layout_constraintTop_toBottomOf="@id/guideline_hor_social"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/guideline_hor_social"
-        />
+        app:layout_constraintEnd_toStartOf="@id/divider_right"
+        app:layout_constraintStart_toEndOf="@id/divider_left"
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor_social" />
 
     <ImageView
         android:id="@+id/iv_google_login"

@@ -1,10 +1,9 @@
 package kr.co.htap.register
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import kr.co.htap.R
 import kr.co.htap.databinding.ActivityFindUserPasswordSuccessBinding
 
 /**
@@ -14,7 +13,7 @@ import kr.co.htap.databinding.ActivityFindUserPasswordSuccessBinding
  *
  */
 class FindUserPasswordSuccessActivity : AppCompatActivity() {
-    private lateinit var binding:ActivityFindUserPasswordSuccessBinding
+    private lateinit var binding: ActivityFindUserPasswordSuccessBinding
     private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

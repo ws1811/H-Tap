@@ -11,10 +11,10 @@
         style="@style/Widget.Material3.Button.TonalButton"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:text="메인으로"
-        android:textSize="20sp"
-        android:textColor="@color/white"
         android:backgroundTint="@color/deepPurple"
+        android:text="메인으로"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/guideline_hor_bottom"
         app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
@@ -41,8 +41,7 @@
         app:layout_constraintBottom_toBottomOf="@id/btn_toMain"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_success"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/iv_success" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_ver_start"

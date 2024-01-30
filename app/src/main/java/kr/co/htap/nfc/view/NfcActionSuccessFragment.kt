@@ -34,8 +34,8 @@ class NfcActionSuccessFragment(private val onFragmentReady: OnFragmentReady<Frag
 
     companion object {
         @JvmStatic
-        fun newInstance(onFragmentReady: OnFragmentReady<FragmentNfcActionSuccessBinding>)
-            = NfcActionSuccessFragment(onFragmentReady)
+        fun newInstance(onFragmentReady: OnFragmentReady<FragmentNfcActionSuccessBinding>) =
+            NfcActionSuccessFragment(onFragmentReady)
 
     }
 }

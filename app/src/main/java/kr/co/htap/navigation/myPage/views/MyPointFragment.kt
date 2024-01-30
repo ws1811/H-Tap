@@ -15,7 +15,6 @@ import kr.co.htap.databinding.FragmentMyPagePointBinding
 import kr.co.htap.helper.ViewBindingFragment
 import kr.co.htap.navigation.myPage.adapter.PointViewAdapter
 import kr.co.htap.navigation.myPage.model.PointHistory
-import kotlin.Exception
 
 /**
  * @author 호연

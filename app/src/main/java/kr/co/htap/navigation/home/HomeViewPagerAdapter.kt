@@ -9,9 +9,9 @@ import jp.wasabeef.glide.transformations.BlurTransformation
 import kr.co.htap.databinding.ItemFragmentMainBinding
 
 /**
-*
-* @author eunku
-*/
+ *
+ * @author eunku
+ */
 class HomeViewPagerAdapter(private val itemList: ArrayList<HomeDTO>) :
     RecyclerView.Adapter<HomeViewPagerAdapter.PagerViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerViewHolder {
@@ -32,7 +32,7 @@ class HomeViewPagerAdapter(private val itemList: ArrayList<HomeDTO>) :
     inner class PagerViewHolder(private val binding: ItemFragmentMainBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: HomeDTO, num :Int) {
+        fun bind(item: HomeDTO, num: Int) {
             Glide.with(itemView.context)
                 .load(item.imgURL)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
@@ -45,12 +45,12 @@ class HomeViewPagerAdapter(private val itemList: ArrayList<HomeDTO>) :
                 .transform(BlurTransformation(16, 4))
                 .into(binding.blurImage)
 
-            binding.textImageNumber.text = "${num+1}/${itemList.size}"
-            binding.progressBar.progress = (num+1) * 100 / itemList.size
+            binding.textImageNumber.text = "${num + 1}/${itemList.size}"
+            binding.progressBar.progress = (num + 1) * 100 / itemList.size
             binding.branchName.text = item.belong
             binding.storeName.text = item.name
             // TODO: 클릭 시 예약할 수 있는 페이지로 이동
-            binding.slideImage.setOnClickListener{
+            binding.slideImage.setOnClickListener {
 
             }
         }

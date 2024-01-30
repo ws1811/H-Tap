@@ -14,8 +14,8 @@ import kr.co.htap.R
  * @author 송원선
  * 온보딩 마지막 페이지
  */
-class OnboardingPage3Fragment:Fragment() {
-    private lateinit var startBtn:Button
+class OnboardingPage3Fragment : Fragment() {
+    private lateinit var startBtn: Button
 
     private lateinit var onboardingActivity: OnboardingActivity
 

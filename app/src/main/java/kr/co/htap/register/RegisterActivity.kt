@@ -25,7 +25,7 @@ import kr.co.htap.databinding.ActivityRegisterBinding
  * 회원 가입
  *
  */
-class RegisterActivity: AppCompatActivity(){
+class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var auth: FirebaseAuth
@@ -42,13 +42,13 @@ class RegisterActivity: AppCompatActivity(){
         Log.d("Register", "onCreate()")
 
         // 전화번호 입력시 자동 하이픈(-) 처리
-       binding.etPhone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        binding.etPhone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         // 전화번호 13자리 모두 입력시 키보드 숨김처리
-        binding.etPhone.addTextChangedListener(object :TextWatcher{
+        binding.etPhone.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                if(s?.length == 13)
+                if (s?.length == 13)
                     hideKeyboard(binding.etPhone)
             }
         })
@@ -91,13 +91,13 @@ class RegisterActivity: AppCompatActivity(){
             validation = false
         }
         // 비밀번호 & 비밀번호 확인 일치 검사
-        if (password != passwordCheck){
+        if (password != passwordCheck) {
             Toast.makeText(this, "비밀번호 확인이 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
             validation = false
         }
         // 이메일 패턴(유효성) 검사
         val pattern = android.util.Patterns.EMAIL_ADDRESS
-        if(!pattern.matcher(email).matches()) {
+        if (!pattern.matcher(email).matches()) {
             Toast.makeText(this, "이메일 형식이 올바르지 않습니다", Toast.LENGTH_SHORT).show()
             validation = false
         }
@@ -108,7 +108,7 @@ class RegisterActivity: AppCompatActivity(){
             validation = false
         }
         // 모든 검사를 통과한 경우 -> 회원 가입 진행
-        if (validation == true){
+        if (validation == true) {
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
@@ -131,7 +131,7 @@ class RegisterActivity: AppCompatActivity(){
                             .addOnSuccessListener { documentReference ->
                                 Log.d("Register", "Success adding user : email = $email")
                             }
-                            .addOnFailureListener{e->
+                            .addOnFailureListener { e ->
                                 Log.w("Register", "Error adding user", e)
                             }
                         // Firebase 사용자 displayName 설정
@@ -140,10 +140,13 @@ class RegisterActivity: AppCompatActivity(){
                             .setDisplayName(name)
                             .build()
                         curUser?.updateProfile(profileUpdates)
-                            ?.addOnCompleteListener {task->
-                                if(task.isSuccessful){
-                                    Log.d("Register", "Display name updated successfully -> displayName : ${curUser.displayName}")
-                                }else{
+                            ?.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Log.d(
+                                        "Register",
+                                        "Display name updated successfully -> displayName : ${curUser.displayName}"
+                                    )
+                                } else {
                                     Log.w("Register", "Failed to set Display name")
                                 }
                             }
